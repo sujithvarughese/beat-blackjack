@@ -214,7 +214,6 @@ const GameProvider = ({ children }) => {
     }
     // user places initial bet, set to state, then cards are dealt
     const dealHands = () => {
-        console.log(state)
         const playerHand = []
         const dealerHand = []
         let playerBlackjack = false
@@ -223,7 +222,7 @@ const GameProvider = ({ children }) => {
         dealerHand.push(drawCard())
         playerHand.push(drawCard())
         dealerHand.push(drawCard())
-
+        const hint = getBookMove(playerHand)
         // if dealer has blackjack
         if (dealerHand.reduce((acc, card) => acc + card.value, 0) === 21) {
             dealerBlackjack = true
@@ -252,6 +251,7 @@ const GameProvider = ({ children }) => {
             insuranceOption: false,
             evenMoneyOption: false,
             surrenderOption: false,
+            hint: hint,
             playerBankroll: state.playerBankroll - state.bet,
             currentBet: state.bet,
             netProfit: 0,
@@ -439,6 +439,7 @@ const GameProvider = ({ children }) => {
     const playerHit = () => {
         const bookMove = getBookMove()
         const playerHand = [...state.playerHand]
+        const hint = getBookMove(playerHand)
         playerHand.push(drawCard())
         let score = playerHand.reduce((acc, card) => acc + card.value, 0)
         const aceValue11Index = playerHand.findIndex(card => card.rank === "Ace" && card.value === 11)
@@ -449,6 +450,7 @@ const GameProvider = ({ children }) => {
         let status = {
             actionTaken: "hit",
             bookMove: bookMove,
+            hint: hint,
             showFeedback: state.settings.feedback,
             doubleDownOption: false,
             splitOption: false,
