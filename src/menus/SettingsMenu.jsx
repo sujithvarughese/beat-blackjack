@@ -227,8 +227,8 @@ const SettingsMenu = () => {
                                   value={settings.blackjackPayout}
                                   onChange={handleChange}
                                 >
-                                    <option value={3/2}>3:2</option>
-                                    <option value={6/5}>6:5</option>
+                                    <option value={1.5}>3:2</option>
+                                    <option value={1.2}>6:5</option>
                                     <option value={1}>No Bonus</option>
                                 </Select>
                             </SimpleGrid>

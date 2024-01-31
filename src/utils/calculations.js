@@ -6,4 +6,9 @@ const convertToUSD = (number) => {
     })
 }
 
+const splitHands = (hand) => {
+    const splitHands = [[hand[0]], [hand[1]]]
+
+}
+
 export { convertToUSD }

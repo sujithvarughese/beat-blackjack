@@ -107,14 +107,12 @@ const gameReducer = (state, action) => {
 
         }
     }
-
     if (action.type === PLAYER_HIT) {
         return {
             ...state,
             ...action.payload.status
         }
     }
-
     if (action.type === PLAYER_DOUBLE_DOWN) {
         return {
             ...state,
@@ -127,6 +125,15 @@ const gameReducer = (state, action) => {
             ...action.payload.status
         }
     }
+
+    if (action.type === "SPLIT") {
+        return {
+            ...state,
+            ...action.payload.status
+        }
+    }
+
+
     if (action.type === DEALER_HIT) {
         return {
             ...state,
