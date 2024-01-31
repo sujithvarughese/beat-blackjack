@@ -36,10 +36,10 @@ const Player = () => {
 
 
   useEffect(() => {
-    if (!playerHand.length) return
+    if (!bookMove) return
     toast.closeAll()
     toast(options)
-  }, [playerHand])
+  }, [playerHand, bookMove])
 
   useEffect(() => {
     if (!splitHand) return

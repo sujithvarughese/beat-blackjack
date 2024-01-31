@@ -5,6 +5,7 @@ import { Bankroll, Feedback, Player, Dealer, CurrentBet, Results, ShoeEmpty } fr
 import {Actions, AddFunds, PlaceBet, SettingsMenu} from "../menus"
 import {useGameContext} from "../context/game/GameContext.jsx";
 import { HintButton, Settings } from "../buttons";
+import { useEffect } from 'react'
 
 
 const Table = () => {
@@ -12,6 +13,8 @@ const Table = () => {
     const {
       winner,
       determineWinner,
+      playerBankroll,
+      settings,
       resultsShown,
       placeBetOption,
       settingsMenuOpen,
@@ -19,8 +22,18 @@ const Table = () => {
       hintShown,
       shoeEmptyShown,
       showFeedback,
-      addFundsShown
+      addFundsShown,
+      dealerFaceUp,
+      showAddFunds
     } = useGameContext()
+
+    const { minBet } = settings
+
+    useEffect(() => {
+      if (playerBankroll < minBet) {
+        showAddFunds()
+      }
+    }, [dealerFaceUp])
 
     return (
         <SimpleGrid

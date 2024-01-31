@@ -85,7 +85,6 @@ const initialState = {
     splitCount: 0,
     splitHands: [],
     splitDoubledHands: [],
-    splitResults: [],
 
     hintShown: false,
     hint: "",
@@ -130,7 +129,13 @@ const GameProvider = ({ children }) => {
             payload: { settings }
         })
     }
-
+    const showAddFunds = () => {
+        const status = { addFundsShown: true }
+        dispatch({
+            type: DEAL_HANDS,
+            payload: { status }
+        })
+    }
     // creates shoe using number of decks user selected, gives user option to change bet size and deal hands
     const setShoe = (sameShoe = false) => {
         const newShoe = sameShoe === true ? [...state.newShoe] : createShoe(state.settings.numDecks)
@@ -209,6 +214,7 @@ const GameProvider = ({ children }) => {
     }
     // user places initial bet, set to state, then cards are dealt
     const dealHands = () => {
+        console.log(state)
         const playerHand = []
         const dealerHand = []
         let playerBlackjack = false
@@ -230,7 +236,6 @@ const GameProvider = ({ children }) => {
         if (playerHand[0] === 11 && playerHand[1] === 11) {
             playerHand[0].value = 1
         }
-        const bookMove = getBookMove(playerHand)
         // dealer's face up card to see if insurance or even money should be offered
         const dealerFaceUp = dealerHand[0].value
 
@@ -253,12 +258,13 @@ const GameProvider = ({ children }) => {
             splitCount: 0,
             totalSplits: 0,
             splitHands: [],
+            splitDoubledHands: [],
             dealerHand: dealerHand,
             playerHand: playerHand,
             dealerBlackjack: dealerBlackjack,
             playerBlackjack: playerBlackjack,
             dealerFaceUp: dealerFaceUp,
-            bookMove: bookMove
+            bookMove: ""
         }
 
         // if insurance or even money offered, set state and break from function to give user option
@@ -473,6 +479,7 @@ const GameProvider = ({ children }) => {
                     hintOption: false,
                     playerTurn: false,
                     dealerTurn: true,
+                    dealerFaceUp: true
                 }
             } else if (score > 21) {
                 status = {
@@ -622,29 +629,47 @@ const GameProvider = ({ children }) => {
     }
 
     const playNextSplitHand = () => {
-        let splitHands = [...state.splitHands]
-        // set playerHand to current working hand at index splitCount
-        const playerHand = splitHands[state.splitCount]
-        playerHand.push(drawCard())
-        // set current player hand at index in splitHands array
-        splitHands[state.splitCount] = playerHand
-        const status = {
-            splitHands: splitHands,
-            playerHand: playerHand,
-            playerTurn: true,
-            hitOption: true,
-            stayOption: true,
-            doubleDownOption: true,
-            splitOption: playerHand[0] === playerHand[1],
-            hintOption: true,
-            surrenderOption: state.surrenderAllowed,
+        if (state.splitCount < state.totalSplits) {
+            let splitHands = [...state.splitHands]
+            // set playerHand to current working hand at index splitCount
+            const playerHand = splitHands[state.splitCount]
+            playerHand.push(drawCard())
+            // set current player hand at index in splitHands array
+            splitHands[state.splitCount] = playerHand
+            const status = {
+                splitHands: splitHands,
+                playerHand: playerHand,
+                playerTurn: true,
+                hitOption: true,
+                stayOption: true,
+                doubleDownOption: true,
+                splitOption: playerHand[0] === playerHand[1],
+                hintOption: true,
+                surrenderOption: state.surrenderAllowed,
+            }
+            dispatch({
+                type: "SPLIT",
+                payload: { status }
+            })
         }
-        dispatch({
-            type: "SPLIT",
-            payload: { status }
-        })
-
-
+        else {
+            const status = {
+                playerTurn: false,
+                hitOption: false,
+                stayOption: false,
+                doubleDownOption: false,
+                splitOption: false,
+                hintOption: false,
+                surrenderOption: false,
+                dealerTurn: true,
+                dealerFaceUp: true,
+                resultsShown: true
+            }
+            dispatch({
+                type: "SPLIT",
+                payload: { status }
+            })
+        }
     }
 
     const dealerHit = () => {
@@ -729,6 +754,7 @@ const GameProvider = ({ children }) => {
                 determineWinner,
                 setSetting,
                 addFunds,
+                showAddFunds
             }
         }>
             { children }
