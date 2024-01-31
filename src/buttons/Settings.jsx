@@ -8,7 +8,12 @@ const Settings = () => {
   const { setShowSettingsMenu } = useGameContext()
 
   return (
-    <Button colorScheme="yellow" fontSize="36px" padding="6px" onClick={()=>setShowSettingsMenu(true)}>
+    <Button
+      colorScheme="yellow"
+      fontSize="36px"
+      padding="6px"
+      onClick={()=>setShowSettingsMenu(true)}
+    >
       <RiSettings5Fill />
     </Button>
   )

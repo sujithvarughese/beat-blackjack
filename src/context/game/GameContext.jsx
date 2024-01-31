@@ -21,8 +21,6 @@ import {
     PLAYER_STAY,
     DEALER_HIT,
     DETERMINE_WINNER,
-    SHOW_HINT,
-    SET_HINT,
     ADD_FUNDS,
 
 } from './game-actions.js'
@@ -57,7 +55,7 @@ const initialState = {
     playerHand: [],
     dealerHand: [],
     dealerFaceUp: 0,
-    playerBankroll: 0,
+    playerBankroll: 500,
 
     playerBlackjack: false,
     dealerBlackjack: false,
@@ -87,6 +85,7 @@ const initialState = {
     evenMoneyOption: false,
     hintOption: false,
 
+    shoeEmptyShown: false,
     hintShown: false,
     hint: "",
     feedbackShown: false,
@@ -128,14 +127,45 @@ const GameProvider = ({ children }) => {
     }
 
     // creates shoe using number of decks user selected, gives user option to change bet size and deal hands
-    const setShoe = () => {
-        const newShoe = createShoe(state.settings.numDecks)
+    const setShoe = (sameShoe = false) => {
+        const newShoe = sameShoe === true ? [...state.newShoe] : createShoe(state.settings.numDecks)
+        console.log(newShoe)
         const status = {
             newShoe: newShoe,
             shoe: newShoe,
-            placeBetOption: true,
+            playerBankroll: sameShoe ? state.playerBankroll : state.settings.playerInitialBankroll,
+            playerBlackjack: false,
+            dealerBlackjack: false,
+            deal: false,
+            playerTurn: false,
+            dealerTurn: false,
+            doubledHand: false,
+            splitHand: false,
+            surrenderTaken: false,
+            insuranceTaken: false,
+            evenMoneyTaken: false,
+            dealOption: false,
+            addFundsOption: false,
+            hitOption: false,
+            stayOption: false,
+            doubleDownOption: false,
+            splitOption: false,
+            insuranceOption: false,
+            surrenderOption: false,
+            evenMoneyOption: false,
+            hintOption: false,
             settingsMenuOpen: false,
-            playerBankroll: state.settings.playerInitialBankroll,
+            placeBetOption: true,
+            shoeEmptyShown: false,
+            hintShown: false,
+            hint: "",
+            feedbackShown: false,
+            feedbackText: "",
+            handFinished: false,
+            dealerCardShown: false,
+            resultsShown: false,
+            winner: 0,
+
         }
         dispatch({
             type: SET_SHOE,
@@ -146,7 +176,7 @@ const GameProvider = ({ children }) => {
     const setBet = (bet) => {
         dispatch({
             type: SET_BET,
-            payload: { bet, currentBet }
+            payload: { bet }
         })
     }
 
@@ -170,7 +200,6 @@ const GameProvider = ({ children }) => {
 
     // user places initial bet, set to state, then cards are dealt
     const dealHands = () => {
-
         const playerHand = []
         const dealerHand = []
         let playerBlackjack = false
@@ -251,7 +280,8 @@ const GameProvider = ({ children }) => {
                 dealerBlackjack: true,
                 netProfit: netProfit,
                 playerBankroll: Number(state.playerBankroll) - Number(state.currentBet),
-                placeBetOption: true
+                placeBetOption: state.shoe.length > 12,
+                shoeEmptyShown: state.shoe.length <= 12,
             }
             dispatch({
                 type: DEALER_BLACKJACK,
@@ -268,7 +298,8 @@ const GameProvider = ({ children }) => {
                 playerBlackjack: true,
                 netProfit: netProfit,
                 playerBankroll: Number(state.playerBankroll) + Number(currentBet) * Number(state.blackjackPayout),
-                placeBetOption: true
+                placeBetOption: state.shoe.length > 12,
+                shoeEmptyShown: state.shoe.length <= 12,
             }
             dispatch({
                 type: PLAYER_BLACKJACK,
@@ -300,7 +331,8 @@ const GameProvider = ({ children }) => {
                 winner: 1,
                 playerBankroll:  state.playerBankroll + state.currentBet + state.currentBet,
                 netProfit: state.currentBet,
-                placeBetOption: true,
+                placeBetOption: state.shoe.length > 12,
+                shoeEmptyShown: state.shoe.length <= 12,
                 dealerCardShown: true,
                 playerBlackjack: true,
                 resultsShown: true
@@ -320,7 +352,8 @@ const GameProvider = ({ children }) => {
                 dealerBlackjack: true,
                 netProfit: netProfit,
                 playerBankroll: Number(state.playerBankroll) - Number(currentBet),
-                placeBetOption: true
+                placeBetOption: state.shoe.length > 12,
+                shoeEmptyAlert: state.shoe.length <= 12,
             }
             dispatch({
                 type: DEALER_BLACKJACK,
@@ -358,7 +391,9 @@ const GameProvider = ({ children }) => {
                 type: HANDLE_INSURANCE,
                 payload: { playerBankroll, netProfit }
             })
-            return
+
+        } else {
+
         }
         let status = {}
         status = {
@@ -422,8 +457,10 @@ const GameProvider = ({ children }) => {
                 stayOption: false,
                 playerTurn: false,
                 dealerCardShown: true,
-                placeBetOption: true,
+                placeBetOption: state.shoe.length > 12,
+                shoeEmptyShown: state.shoe.length <= 12,
                 hintOption: false,
+                showResults: true
             }
         }
         status = { ...status, playerHand}
@@ -442,29 +479,40 @@ const GameProvider = ({ children }) => {
         if (score > 21 && aceValue11Index !== -1) {
             playerHand[aceValue11Index].value = 1
         }
-
         let status = {
             actionTaken: "double down",
             bookMove: bookMove,
             showFeedback: state.settings.feedback,
-            doubledHand: true,
             playerBankroll: state.playerBankroll - state.bet,
+            doubledHand: true,
             hitOption: false,
             stayOption: false,
             doubleDownOption: false,
             surrenderOption: false,
             playerTurn: false,
-            dealerTurn: true,
             dealerCardShown: true,
             hintOption: false,
+            playerHand: playerHand
         }
-        status = { ...status, playerHand}
+        if (score > 21) {
+            status = {
+                ...status,
+                placeBetOption: state.shoe.length > 12,
+                shoeEmptyShown: state.shoe.length <= 12,
+                showResults: true,
+            }
+        } else {
+            status = {
+                ...status,
+                dealerTurn: true,
+            }
+        }
         dispatch({
             type: PLAYER_DOUBLE_DOWN,
             payload: { status }
         })
-
     }
+
     const playerStay = () => {
         const bookMove = getBookMove()
 
@@ -510,6 +558,7 @@ const GameProvider = ({ children }) => {
         let status = {
             dealerTurn: false,
             placeBetOption: state.shoe.length > 12,
+            shoeEmptyShown: state.shoe.length <= 12,
         }
         if (dealerScore > 21 || playerScore > dealerScore) {
             winner = 1
@@ -525,17 +574,6 @@ const GameProvider = ({ children }) => {
         dispatch({
             type: DETERMINE_WINNER,
             payload: { status }
-        })
-    }
-    const setShowHint = () => {
-        dispatch({
-            type: SHOW_HINT,
-        })
-    }
-    const setHint = (hint) => {
-        dispatch({
-            type: SET_HINT,
-            payload: { hint }
         })
     }
 
@@ -558,10 +596,7 @@ const GameProvider = ({ children }) => {
                 playerStay,
                 dealerHit,
                 determineWinner,
-                setShowHint,
                 setSetting,
-
-                setHint,
                 addFunds,
             }
         }>

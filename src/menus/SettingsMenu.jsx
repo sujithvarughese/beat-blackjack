@@ -1,5 +1,5 @@
 import {useGameContext} from "../context/game/GameContext.jsx";
-import { Button, ButtonGroup, FormLabel, Switch, Select, Modal, ModalBody, ModalOverlay, ModalContent, ModalHeader, Heading, VStack, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark, HStack, SimpleGrid, Text } from '@chakra-ui/react'
+import { Button, ButtonGroup, FormLabel, Switch, Select, Modal, ModalBody, ModalOverlay, ModalContent, ModalHeader, Heading, VStack, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark, HStack, SimpleGrid, Text, ModalCloseButton } from '@chakra-ui/react'
 import { HiOutlineRefresh } from "react-icons/hi";
 
 
@@ -26,7 +26,7 @@ const SettingsMenu = () => {
                           textAlign="center"
                         >Game Settings</Heading>
                     </ModalHeader>
-
+                    <ModalCloseButton />
 
                     <ModalBody>
                         <Button
@@ -34,7 +34,7 @@ const SettingsMenu = () => {
                           onClick={resetSettings}
                           position="absolute"
                           top="0"
-                          right="0"
+                          left="0"
                           margin="10px"
                         >
                             <HiOutlineRefresh />

@@ -16,8 +16,6 @@ import {
     PLAYER_STAY,
     DEALER_HIT,
     DETERMINE_WINNER,
-    SHOW_HINT,
-    SET_HINT,
     ADD_FUNDS,
 } from "./game-actions.js"
 const gameReducer = (state, action) => {
@@ -139,19 +137,6 @@ const gameReducer = (state, action) => {
         return {
             ...state,
             ...action.payload.status
-        }
-    }
-
-    if (action.type === SHOW_HINT) {
-        return {
-            ...state,
-            hintShown: true
-        }
-    }
-    if (action.type === SET_HINT) {
-        return {
-            ...state,
-            hint: action.payload.hint
         }
     }
     if (action.type === ADD_FUNDS) {

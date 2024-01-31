@@ -11,7 +11,12 @@ const PlaceBet = () => {
   }
 
   return (
-      <ButtonGroup>
+      <ButtonGroup
+        border="solid 6px #ECC94B"
+        backgroundColor="black"
+        padding="12px"
+        borderRadius="5px"
+      >
         <HStack alignItems="flex-end" gap="1rem">
 
           <VStack>
