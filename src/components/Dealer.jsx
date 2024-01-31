@@ -24,7 +24,7 @@ const Dealer = () => {
 
     return (
         <VStack>
-            <HStack position="relative" gap="2px" flexWrap="wrap">
+            <HStack position="relative" gap="2px">
                 {
                     dealerHand.map((card, index) =>
                         (index === 1 && !dealerCardShown)
