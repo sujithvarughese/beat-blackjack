@@ -1,0 +1,48 @@
+
+
+.card {
+    width: 70px;
+}
+
+.cardDoubleDown {
+    width: 70px;
+    transform: rotate(90deg)
+}
+
+.score {
+    color: #ECC94B;
+    font-size: 32px;
+    font-weight: 600;
+}
+@media (min-width: 30em) {
+    .card {
+        width: 100px;
+    }
+    .cardDoubleDown {
+        width: 100px;
+    }
+}
+@media (min-width: 62em) {
+    .card {
+        width: 120px;
+    }
+    .cardDoubleDown {
+        width: 120px;
+    }
+}
+@media (min-width: 80em) {
+    .card {
+        width: 150px;
+    }
+    .cardDoubleDown {
+        width: 150px;
+    }
+}
+@media (min-width: 96em) {
+    .card {
+        width: 180px;
+    }
+    .cardDoubleDown {
+        width: 180px;
+    }
+}

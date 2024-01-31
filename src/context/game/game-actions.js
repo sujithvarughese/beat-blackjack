@@ -1,0 +1,25 @@
+
+export const SET_SHOW_SETTINGS_MENU = "SET_SHOW_SETTINGS_MENU"
+export const SET_SETTING = "SET_SETTING"
+export const RESET_SETTINGS = "RESET_SETTINGS"
+export const SET_SHOE = "SET_SHOE"
+export const SET_BET = "SET_BET"
+export const DEAL_HANDS = 'DEAL_HANDS'
+export const DRAW_CARD = "DRAW_CARD"
+export const HANDLE_DEALER_ACE = "HANDLE_DEALER_ACE"
+export const DEALER_BLACKJACK = "DEALER_BLACKJACK"
+export const PLAYER_BLACKJACK = "PLAYER_BLACKJACK"
+export const HANDLE_EVEN_MONEY = "HANDLE_EVEN_MONEY"
+export const HANDLE_INSURANCE = "HANDLE_INSURANCE"
+export const SET_PLAYER_TURN = "SET_PLAYER_TURN"
+export const PLAYER_HIT = "PLAYER_HIT"
+export const PLAYER_DOUBLE_DOWN = "PLAYER_DOUBLE_DOWN"
+export const PLAYER_STAY = "PLAYER_STAY"
+export const DEALER_HIT = "DEALER_HIT"
+export const DETERMINE_WINNER = "DETERMINE_WINNER"
+export const SHOW_HINT = "SHOW_HINT"
+export const SET_HINT = "SET_HINT"
+
+export const ADD_FUNDS = 'ADD_FUNDS'
+
+

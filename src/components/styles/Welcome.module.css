@@ -1,0 +1,26 @@
+.container {
+    max-width: 1365px;
+    position: relative;
+}
+.background {
+    height: 100vh;
+}
+.title {
+    font-size: 68px;
+    color: var(--COLOR-LIGHT);
+    position: absolute;
+    bottom: 21rem;
+    left: 0;
+    right: 0;
+    text-align: right;
+    padding: 0 2rem;
+    text-outline: var(--COLOR-DARK);
+}
+
+.button {
+    position: absolute;
+    bottom: 6rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
