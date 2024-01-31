@@ -22,6 +22,7 @@ import {
     DEALER_HIT,
     DETERMINE_WINNER,
     ADD_FUNDS,
+    SHOW_ADD_FUNDS
 
 } from './game-actions.js'
 import currentBet from '../../components/CurrentBet.jsx'
@@ -29,7 +30,7 @@ import currentBet from '../../components/CurrentBet.jsx'
 const GameContext = createContext()
 
 const initialState = {
-    settingsMenuOpen: false,
+    settingsMenuOpen: true,
 
     settings: {
         numDecks: 1,
@@ -91,7 +92,7 @@ const initialState = {
     actionTaken: "",
     bookMove: "",
 
-    addFundsShown: true,
+    addFundsShown: false,
     shoeEmptyShown: false,
     dealerCardShown: false,
     resultsShown: false,
@@ -176,10 +177,17 @@ const GameProvider = ({ children }) => {
 
     // set state on change in PlaceBet component
     const setBet = (bet) => {
-        dispatch({
-            type: SET_BET,
-            payload: { bet }
-        })
+        if (state.playerBankroll < state.settings.minBet || state.playerBankroll < bet) {
+            dispatch({
+                type: SHOW_ADD_FUNDS
+            })
+        } else {
+            dispatch({
+                type: SET_BET,
+                payload: { bet }
+            })
+        }
+
     }
 
 

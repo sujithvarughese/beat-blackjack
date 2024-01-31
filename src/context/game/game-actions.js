@@ -17,6 +17,7 @@ export const PLAYER_DOUBLE_DOWN = "PLAYER_DOUBLE_DOWN"
 export const PLAYER_STAY = "PLAYER_STAY"
 export const DEALER_HIT = "DEALER_HIT"
 export const DETERMINE_WINNER = "DETERMINE_WINNER"
+export const SHOW_ADD_FUNDS = "SHOW_ADD_FUNDS"
 export const ADD_FUNDS = 'ADD_FUNDS'
 
 

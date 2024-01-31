@@ -17,6 +17,7 @@ import {
     DEALER_HIT,
     DETERMINE_WINNER,
     ADD_FUNDS,
+    SHOW_ADD_FUNDS
 } from "./game-actions.js"
 const gameReducer = (state, action) => {
 
@@ -146,10 +147,17 @@ const gameReducer = (state, action) => {
             ...action.payload.status
         }
     }
+    if (action.type === SHOW_ADD_FUNDS) {
+        return {
+            ...state,
+            addFundsShown: true
+        }
+    }
     if (action.type === ADD_FUNDS) {
         return {
             ...state,
-            playerBankroll: state.playerBankroll + action.payload.reloadAmount
+            playerBankroll: state.playerBankroll + action.payload.reloadAmount,
+            addFundsShown: false
         }
     }
 }
