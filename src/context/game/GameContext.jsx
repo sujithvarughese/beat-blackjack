@@ -51,7 +51,7 @@ const initialState = {
     shoe: [],
 
     bet: 25,
-    currentBet: 25,
+    currentBet: 0,
     playerHand: [],
     dealerHand: [],
     dealerFaceUp: 0,
@@ -247,7 +247,8 @@ const GameProvider = ({ children }) => {
             insuranceOption: false,
             evenMoneyOption: false,
             surrenderOption: false,
-            playerBankroll: state.playerBankroll - state.currentBet,
+            playerBankroll: state.playerBankroll - state.bet,
+            currentBet: state.bet,
             netProfit: 0,
             splitCount: 0,
             totalSplits: 0,
@@ -290,8 +291,7 @@ const GameProvider = ({ children }) => {
                 resultsShown: true,
                 dealerCardShown: true,
                 dealerBlackjack: true,
-                netProfit: netProfit,
-                playerBankroll: state.playerBankroll - state.currentBet,
+                netProfit: -state.currentBet,
                 placeBetOption: state.shoe.length > 12,
                 shoeEmptyShown: state.shoe.length <= 12,
             }
@@ -301,15 +301,14 @@ const GameProvider = ({ children }) => {
             })
         }
         else if (playerBlackjack) {
-            const netProfit = currentBet * state.blackjackPayout
             status = {
                 ...status,
                 winner: 1,
                 resultsShown: true,
                 dealerCardShown: true,
                 playerBlackjack: true,
-                netProfit: netProfit,
-                playerBankroll: state.playerBankroll + currentBet * state.blackjackPayout,
+                netProfit: state.currentBet * state.blackjackPayout,
+                playerBankroll: state.playerBankroll + state.currentBet * state.blackjackPayout,
                 placeBetOption: state.shoe.length > 12,
                 shoeEmptyShown: state.shoe.length <= 12,
             }
@@ -325,7 +324,7 @@ const GameProvider = ({ children }) => {
                 hitOption: true,
                 stayOption: true,
                 doubleDownOption: true,
-                splitOption: true,
+                splitOption: state.settings.maxNumSplits > 0,
                 hintOption: true,
                 surrenderOption: state.surrenderAllowed,
             }
@@ -341,7 +340,7 @@ const GameProvider = ({ children }) => {
             type: PLAYER_BLACKJACK,
             payload: {
                 winner: 1,
-                playerBankroll:  state.playerBankroll + state.currentBet + state.currentBet,
+                playerBankroll:  state.playerBankroll + state.currentBet,
                 netProfit: state.currentBet,
                 placeBetOption: state.shoe.length > 12,
                 shoeEmptyShown: state.shoe.length <= 12,
@@ -355,15 +354,13 @@ const GameProvider = ({ children }) => {
     const checkDealerBlackjack = () => {
         let status = {}
         if (state.dealerBlackjack) {
-            const netProfit = Number(currentBet) * -1
             status = {
                 ...status,
                 winner: -1,
                 resultsShown: true,
                 dealerCardShown: true,
                 dealerBlackjack: true,
-                netProfit: netProfit,
-                playerBankroll: state.playerBankroll - currentBet,
+                netProfit: -state.currentBet,
                 placeBetOption: state.shoe.length > 12,
                 shoeEmptyAlert: state.shoe.length <= 12,
             }
@@ -379,6 +376,7 @@ const GameProvider = ({ children }) => {
             hitOption: true,
             stayOption: true,
             doubleDownOption: true,
+            splitOption: state.settings.maxNumSplits > 0,
             hintOption: true,
             surrenderOption: state.surrenderAllowed,
         }
@@ -389,46 +387,43 @@ const GameProvider = ({ children }) => {
     }
 
     const handleInsurance = () => {
-        if (state.dealerBlackjack) {
-            let playerBankroll = state.playerBankroll - Number(state.currentBet)/2;
-            let netProfit
-            if (state.playerBlackjack) {
-                playerBankroll = state.playerBankroll + state.currentBet + state.currentBet
-                netProfit = state.currentBet
-            } else {
-                playerBankroll = state.playerBankroll + state.currentBet
-                netProfit = 0
-            }
-            dispatch({
-                type: HANDLE_INSURANCE,
-                payload: { playerBankroll, netProfit }
-            })
-
-        } else {
-
-        }
         let status = {}
-        status = {
-            ...status,
-            playerTurn: true,
-            hitOption: true,
-            stayOption: true,
-            doubleDownOption: true,
-            hintOption: true,
-            surrenderOption: state.surrenderAllowed,
+        if (state.dealerBlackjack) {
+            status = {
+                playerBankroll: state.playerBankroll + state.currentBet,
+                netProfit: 0,
+                winner: 0,
+                resultsShown: true,
+                dealerCardShown: true,
+                dealerBlackjack: true,
+                placeBetOption: state.shoe.length > 12,
+                shoeEmptyAlert: state.shoe.length <= 12,
+            }
+        } else {
+            status = {
+                playerBankroll: state.playerBankroll - state.currentBet * 0.5,
+                playerTurn: true,
+                hitOption: true,
+                stayOption: true,
+                doubleDownOption: true,
+                hintOption: true,
+                splitOption: state.settings.maxNumSplits > 0,
+                surrenderOption: state.surrenderAllowed,
+            }
         }
+
         dispatch({
-            type: DEAL_HANDS,
+            type: HANDLE_INSURANCE,
             payload: { status }
         })
-    }
 
+    }
 
     const getBookMove = (hand = state.playerHand) => {
         let playerAce11 = false
         let score = hand.reduce((acc, card) => acc + card.value, 0)
         const aceValue11Index = hand.findIndex(card => card.rank === "Ace" && card.value === 11)
-        if (score < 11 && aceValue11Index !== -1) {
+        if (aceValue11Index !== -1) {
             playerAce11 = true
         }
         return determineBookMove(playerAce11, state.dealerFaceUp, score, hand)
@@ -676,14 +671,10 @@ const GameProvider = ({ children }) => {
             shoeEmptyShown: state.shoe.length <= 12,
         }
         if (state.splitHand) {
-            state.splitHands.forEach(hand => {
-                let index = 0
+            state.splitHands.forEach((hand, index) => {
                 const playerScore = state.playerHand.reduce((acc, card) => acc + card.value, 0)
                 const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
                 if (dealerScore > 21 || playerScore > dealerScore) {
-                    if (state.splitDoubledHands[index] === true) {
-
-                    }
                     netProfit += state.currentBet
                 }
             })

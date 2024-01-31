@@ -100,11 +100,7 @@ const gameReducer = (state, action) => {
     if (action.type === HANDLE_INSURANCE) {
         return {
             ...state,
-            playerBankroll: action.payload.playerBankroll,
-            netProfit: action.payload.netProfit,
-            dealerCardShown: true,
-            resultsShown: true,
-            canPlaceBets: true
+            ...action.payload.status
 
         }
     }
