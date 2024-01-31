@@ -84,6 +84,8 @@ const initialState = {
     totalSplits: 0,
     splitCount: 0,
     splitHands: [],
+    splitDoubledHands: [],
+    splitResults: [],
 
     hintShown: false,
     hint: "",
@@ -189,15 +191,12 @@ const GameProvider = ({ children }) => {
         }
 
     }
-
-
     const addFunds = (reloadAmount) => {
         dispatch({
             type: ADD_FUNDS,
             payload: { reloadAmount }
         })
     }
-
     // sets state of shoe after popping top card
     const drawCard = () => {
         const shoe = state.shoe
@@ -208,7 +207,6 @@ const GameProvider = ({ children }) => {
         })
         return nextCard
     }
-
     // user places initial bet, set to state, then cards are dealt
     const dealHands = () => {
         const playerHand = []
@@ -467,6 +465,7 @@ const GameProvider = ({ children }) => {
             if (score >= 21) {
                 status = {
                     ...status,
+                    splitDoubledHands: [...state.splitDoubledHands, false],
                     splitCount: state.splitCount + 1
                 }
             }
@@ -502,7 +501,7 @@ const GameProvider = ({ children }) => {
 
     const playerDoubleDown = () => {
         const bookMove = getBookMove()
-        const playerHand = state.splitHand ? [state.splitHands[state.splitCount]]: [...state.playerHand]
+        const playerHand = [...state.playerHand]
         playerHand.push(drawCard())
         const aceValue11Index = playerHand.findIndex(card => card.rank === "Ace" && card.value === 11)
         let score = playerHand.reduce((acc, card) => acc + card.value, 0)
@@ -521,7 +520,6 @@ const GameProvider = ({ children }) => {
             stayOption: false,
             doubleDownOption: false,
             surrenderOption: false,
-            playerTurn: false,
             hintOption: false,
             playerHand: playerHand
         }
@@ -530,35 +528,18 @@ const GameProvider = ({ children }) => {
             splitHands[state.splitCount] = [...playerHand]
             status = {
                 ...status,
-                splitHands: splitHands
-            }
-        }
-        if (score > 21) {
-            if (state.splitHand && state.splitCount < state.totalSplits) {
-                status = {
-                    ...status,
-                    splitCount: state.splitCount + 1
-                }
-            } else {
-                status = {
-                    ...status,
-                    placeBetOption: state.shoe.length > 12,
-                    shoeEmptyShown: state.shoe.length <= 12,
-                    resultsShown: true,
-                    dealerCardShown: true,
-                }
+                splitHands: splitHands,
+                splitDoubledHands: [...state.splitDoubledHands, true],
+                splitCount: state.splitCount + 1,
             }
         } else {
-            if (state.splitHand && state.splitCount < state.totalSplits) {
-                status = {
-                    ...status,
-                    splitCount: state.splitCount + 1
-                }
-            } else {
-                status = {
-                    ...status,
-                    dealerTurn: true,
-                }
+            status = {
+                ...status,
+                placeBetOption: state.shoe.length > 12,
+                shoeEmptyShown: state.shoe.length <= 12,
+                resultsShown: true,
+                dealerCardShown: true,
+                dealerTurn: true,
             }
         }
         dispatch({
@@ -579,9 +560,10 @@ const GameProvider = ({ children }) => {
             surrenderOption: false,
             hintOption: false,
         }
-        if (state.splitHand && state.splitCount < state.totalSplits) {
+        if (state.splitHand) {
             status = {
                 ...status,
+                splitDoubledHands: [...state.splitDoubledHands, false],
                 splitCount: state.splitCount + 1
             }
         } else {
@@ -590,6 +572,9 @@ const GameProvider = ({ children }) => {
                 playerTurn: false,
                 dealerTurn: true,
                 dealerCardShown: true,
+                placeBetOption: state.shoe.length > 12,
+                shoeEmptyShown: state.shoe.length <= 12,
+                resultsShown: true
             }
         }
 
@@ -643,10 +628,11 @@ const GameProvider = ({ children }) => {
 
     const playNextSplitHand = () => {
         let splitHands = [...state.splitHands]
+        // set playerHand to current working hand at index splitCount
         const playerHand = splitHands[state.splitCount]
-        splitHands.pop()
         playerHand.push(drawCard())
-        splitHands = [...splitHands, playerHand]
+        // set current player hand at index in splitHands array
+        splitHands[state.splitCount] = playerHand
         const status = {
             splitHands: splitHands,
             playerHand: playerHand,
@@ -682,14 +668,29 @@ const GameProvider = ({ children }) => {
     }
 
     const determineWinner = () => {
-        const playerScore = state.playerHand.reduce((acc, card) => acc + card.value, 0)
-        const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
+        let netProfit = 0
         let status = {
             dealerTurn: false,
             resultsShown: true,
             placeBetOption: state.shoe.length > 12,
             shoeEmptyShown: state.shoe.length <= 12,
         }
+        if (state.splitHand) {
+            state.splitHands.forEach(hand => {
+                let index = 0
+                const playerScore = state.playerHand.reduce((acc, card) => acc + card.value, 0)
+                const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
+                if (dealerScore > 21 || playerScore > dealerScore) {
+                    if (state.splitDoubledHands[index] === true) {
+
+                    }
+                    netProfit += state.currentBet
+                }
+            })
+        }
+        const playerScore = state.playerHand.reduce((acc, card) => acc + card.value, 0)
+        const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
+
         if (dealerScore > 21 || playerScore > dealerScore) {
             status = {
                 ...status,
