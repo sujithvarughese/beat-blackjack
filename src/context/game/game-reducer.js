@@ -149,7 +149,7 @@ const gameReducer = (state, action) => {
     if (action.type === ADD_FUNDS) {
         return {
             ...state,
-            playerBankroll: Number(state.playerBankroll) + Number(action.payload.reloadAmount)
+            playerBankroll: state.playerBankroll + action.payload.reloadAmount
         }
     }
 }

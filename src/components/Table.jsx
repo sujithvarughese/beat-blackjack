@@ -2,7 +2,7 @@ import { Box, Container, HStack, Image, SimpleGrid, useToast, VStack, Text } fro
 import tableIMG from "../assets/images/table-2.png"
 import tableMobileIMG from "../assets/images/table-2 mobile.png"
 import { Bankroll, Feedback, Player, Dealer, CurrentBet, Results, ShoeEmpty } from './'
-import {Actions, PlaceBet, SettingsMenu} from "../menus"
+import {Actions, AddFunds, PlaceBet, SettingsMenu} from "../menus"
 import {useGameContext} from "../context/game/GameContext.jsx";
 import { HintButton, Settings } from "../buttons";
 
@@ -18,7 +18,8 @@ const Table = () => {
       hintOption,
       hintShown,
       shoeEmptyShown,
-      showFeedback
+      showFeedback,
+      addFundsShown
     } = useGameContext()
 
     return (
@@ -71,9 +72,10 @@ const Table = () => {
           }
 
           {settingsMenuOpen && <SettingsMenu />}
-          {showFeedback && <Feedback />}
+          {/*showFeedback && <Feedback />*/}
           {shoeEmptyShown && <ShoeEmpty />}
           {resultsShown && <Results />}
+          {addFundsShown && <AddFunds />}
 
 
 

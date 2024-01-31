@@ -27,7 +27,7 @@ const PlaceBet = () => {
               backgroundColor="white"
 
             >
-              <FormLabel fontWeight="600">Bet Amount</FormLabel>
+              <FormLabel htmlFor={bet} fontWeight="600">Bet Amount</FormLabel>
               <NumberInput
                 maxW='100px'
                 value={bet}

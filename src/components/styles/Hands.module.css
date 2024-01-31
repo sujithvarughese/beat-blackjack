@@ -30,19 +30,3 @@
         width: 120px;
     }
 }
-@media (min-width: 80em) {
-    .card {
-        width: 150px;
-    }
-    .cardDoubleDown {
-        width: 150px;
-    }
-}
-@media (min-width: 96em) {
-    .card {
-        width: 180px;
-    }
-    .cardDoubleDown {
-        width: 180px;
-    }
-}

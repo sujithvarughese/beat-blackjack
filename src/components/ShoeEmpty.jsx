@@ -1,12 +1,11 @@
-import { Button, ButtonGroup, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text } from '@chakra-ui/react'
+import { Button, ButtonGroup, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react'
 import { useGameContext } from '../context/game/GameContext.jsx'
 
 const ShoeEmpty = () => {
 
 
   const { setShoe, shoeEmptyShown, showSettingsMenu } = useGameContext()
-
-  const onClose = () => {}
+  const { onClose } = useDisclosure()
 
   return (
     <Modal isOpen={shoeEmptyShown} onClose={onClose}>

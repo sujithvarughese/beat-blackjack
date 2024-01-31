@@ -29,8 +29,7 @@ import currentBet from '../../components/CurrentBet.jsx'
 const GameContext = createContext()
 
 const initialState = {
-    settingsMenuOpen: true,
-    gameOpen: true,
+    settingsMenuOpen: false,
 
     settings: {
         numDecks: 1,
@@ -54,14 +53,12 @@ const initialState = {
     currentBet: 25,
     playerHand: [],
     dealerHand: [],
-    splitHands: [],
     dealerFaceUp: 0,
     playerBankroll: 500,
 
     playerBlackjack: false,
     dealerBlackjack: false,
 
-    deal: false,
     playerTurn: false,
     dealerTurn: false,
 
@@ -70,9 +67,6 @@ const initialState = {
     surrenderTaken: false,
     insuranceTaken: false,
     evenMoneyTaken: false,
-
-    actionTaken: "",
-    bookMove: "",
 
     dealOption: false,
     addFundsOption: false,
@@ -88,12 +82,17 @@ const initialState = {
 
     totalSplits: 0,
     splitCount: 0,
-    shoeEmptyShown: false,
+    splitHands: [],
+
     hintShown: false,
     hint: "",
     feedbackShown: false,
     feedbackText: "",
-    handFinished: false,
+    actionTaken: "",
+    bookMove: "",
+
+    addFundsShown: true,
+    shoeEmptyShown: false,
     dealerCardShown: false,
     resultsShown: false,
     winner: 0,
@@ -132,7 +131,6 @@ const GameProvider = ({ children }) => {
     // creates shoe using number of decks user selected, gives user option to change bet size and deal hands
     const setShoe = (sameShoe = false) => {
         const newShoe = sameShoe === true ? [...state.newShoe] : createShoe(state.settings.numDecks)
-        console.log(newShoe)
         const status = {
             newShoe: newShoe,
             shoe: [...newShoe],
@@ -176,12 +174,14 @@ const GameProvider = ({ children }) => {
         })
     }
 
+    // set state on change in PlaceBet component
     const setBet = (bet) => {
         dispatch({
             type: SET_BET,
             payload: { bet }
         })
     }
+
 
     const addFunds = (reloadAmount) => {
         dispatch({
@@ -431,7 +431,7 @@ const GameProvider = ({ children }) => {
 
     const playerHit = () => {
         const bookMove = getBookMove()
-        const playerHand = state.splitHand ? [state.splitHands[state.splitCount]]: [...state.playerHand]
+        const playerHand = [...state.playerHand]
         playerHand.push(drawCard())
         let score = playerHand.reduce((acc, card) => acc + card.value, 0)
         const aceValue11Index = playerHand.findIndex(card => card.rank === "Ace" && card.value === 11)
@@ -439,63 +439,45 @@ const GameProvider = ({ children }) => {
             playerHand[aceValue11Index].value = 1
             score -= 10
         }
-        const splitOption = playerHand.length === 2 && playerHand[0] === playerHand[1]
         let status = {
             actionTaken: "hit",
             bookMove: bookMove,
             showFeedback: state.settings.feedback,
             doubleDownOption: false,
-            splitOption: splitOption,
+            splitOption: false,
             surrenderOption: false,
             playerHand: playerHand
         }
 
-        if (state.splitHand) {
+        if (state.splitHand === true) {
             const splitHands = [...state.splitHands]
             splitHands[state.splitCount] = [...playerHand]
             status = {
                 ...status,
                 splitHands: splitHands
             }
-        }
-        if (score === 21) {
-            status = {
-                ...status,
-                hitOption: false,
-                stayOption: false,
-                hintOption: false,
-            }
-            if (state.splitHand === true && state.splitCount < state.splitHands.length + 1) {
+            if (score >= 21) {
                 status = {
                     ...status,
                     splitCount: state.splitCount + 1
                 }
             }
-            if (!state.splitHand) {
+        } else {
+            if (score === 21) {
                 status = {
                     ...status,
+                    hitOption: false,
+                    stayOption: false,
+                    hintOption: false,
                     playerTurn: false,
                     dealerTurn: true,
-                    dealerCardShown: true,
                 }
-            }
-        } else if (score > 21) {
-            status = {
-                ...status,
-                hitOption: false,
-                stayOption: false,
-                hintOption: false,
-
-            }
-            if (state.splitHand === true && state.splitCount > state.splitHands.length + 1) {
+            } else if (score > 21) {
                 status = {
                     ...status,
-                    splitCount: state.splitCount + 1
-                }
-            }
-            if (!state.splitHand) {
-                status = {
-                    ...status,
+                    hitOption: false,
+                    stayOption: false,
+                    hintOption: false,
                     playerTurn: false,
                     dealerCardShown: true,
                     placeBetOption: state.shoe.length > 12,
@@ -611,18 +593,26 @@ const GameProvider = ({ children }) => {
 
     const playerSplit = () => {
         const totalSplits = state.totalSplits + 1
+        // array that holds each split hand
         let splitHands = [...state.splitHands]
+        // playerHand = 2 cards which will need to be split that make up the base of a split hand
         const playerHand = [...state.playerHand]
         const bookMove = getBookMove(state.playerHand.slice(state.playerHand.length - 2))
+        // second of the split hands
         const newHand = [state.playerHand[state.playerHand.length - 1]]
+        // if not first split, pop out newest hand as we will be adding it as playerHand with one card
         if (splitHands.length > 0) {
             splitHands.pop()
         }
+        // remove the second card which is now in newHand array
         playerHand.pop()
+        // draw first card for first split hand
         playerHand.push(drawCard())
+        // split hands array will contain previous split hands and both current split hands
         splitHands = [...splitHands, playerHand, newHand]
         const status = {
             splitHands: splitHands,
+            playerHand: playerHand,
             totalSplits: totalSplits,
             splitHand: true,
             playerBankroll: state.playerBankroll - state.bet,
@@ -633,7 +623,7 @@ const GameProvider = ({ children }) => {
             hitOption: true,
             stayOption: true,
             doubleDownOption: true,
-            splitOption: playerHand.length === 2 && playerHand[0] === playerHand[1],
+            splitOption: playerHand.length === 2 && playerHand[0] === playerHand[1], // if new card we just drew is equal to original split card
             hintOption: true,
             surrenderOption: state.surrenderAllowed,
         }
