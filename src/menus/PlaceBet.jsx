@@ -12,7 +12,7 @@ const PlaceBet = () => {
 
   return (
       <ButtonGroup
-        border="solid 6px #ECC94B"
+        border="solid 3px #ECC94B"
         backgroundColor="black"
         padding="12px"
         borderRadius="5px"

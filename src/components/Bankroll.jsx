@@ -8,7 +8,7 @@ const Bankroll = () => {
 
     return (
         <VStack
-          border="solid 6px #ECC94B"
+          border="solid 3px #ECC94B"
           backgroundColor="black"
           color="white"
           fontWeight="800"

@@ -49,7 +49,7 @@ const Table = () => {
             <Dealer />
           </Box>
 
-          <Box position="absolute" left="0" right="0" bottom="10%" margin="0 auto" border="black 4px solid">
+          <Box position="absolute" left="0" right="0" bottom="11%" margin="0 auto">
             <Player />
           </Box>
 

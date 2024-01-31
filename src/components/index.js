@@ -5,8 +5,9 @@ import Feedback from './Feedback.jsx'
 import Player from "./Player.jsx";
 import ShoeEmpty from './ShoeEmpty.jsx'
 import Results from "./Results.jsx";
+import Score from "./Score.jsx"
 import Table from "./Table.jsx";
 
 
 
-export { Bankroll, CurrentBet, Dealer, Feedback, Player, Results, ShoeEmpty, Table }
+export { Bankroll, CurrentBet, Dealer, Feedback, Player, Results, Score, ShoeEmpty, Table }

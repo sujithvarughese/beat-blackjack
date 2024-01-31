@@ -1,5 +1,4 @@
 
-
 .card {
     width: 70px;
 }
@@ -8,7 +7,6 @@
     width: 70px;
     transform: rotate(90deg)
 }
-
 .score {
     color: #ECC94B;
     font-size: 32px;

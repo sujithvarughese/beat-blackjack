@@ -1,8 +1,8 @@
 import classes from "./styles/Hands.module.css";
 import {useGameContext} from "../context/game/GameContext.jsx";
 import {useEffect} from "react";
-import { Box, HStack, Image, useToast, VStack } from '@chakra-ui/react'
-
+import { Box, Heading, HStack, Image, Text, useToast, VStack } from '@chakra-ui/react'
+import { Score } from "./"
 const Player = () => {
 
   const {
@@ -47,65 +47,75 @@ const Player = () => {
   }, [splitCount])
 
     return (
-      <VStack>
+      <Box>
         {
           splitHand ?
             <HStack
               width="100%"
-              justifyContent="space-evenly"
+              justifyContent="center"
+              gap="250px"
             >
               {
-                splitHands.map((hand, index) => {
+                splitHands.map((playerHand, index) => {
                   return (
-                    <VStack
-                      key={index}
-                      flexDirection="column-reverse"
-                    >
-                      {
-                        hand.map((card, index) =>
-                          (doubledHand && index === 2)
-                            ?
-                            <Image key={index}
-                                   className={classes.cardDoubleDown}
-                                   src={card.img}
-                                   alt={card.value}
-                            />
-                            :
-                            <Image
-                              key={index}
-                              className={classes.card}
-                              src={card.img}
-                              alt={card.value}
-                              position="absolute"
-                              top={`calc(-50px * ${index})`}
+                    <VStack key={index}>
+                      <VStack
+                          flexDirection="column-reverse"
+                      >
+                        {
+                            playerHand.map((card, index) =>
+                                (doubledHand && index === 2)
+                              ?
+                              <Image key={index}
+                                     className={classes.cardDoubleDown}
+                                     src={card.img}
+                                     alt={card.value}
+                              />
+                              :
+                              <Image
+                                key={index}
+                                className={classes.card}
+                                src={card.img}
+                                alt={card.value}
+                                position="absolute"
+                                bottom={`calc(30px * ${index})`}
+                                sx={{ transform: `translate(calc(20px * ${index}))` }}
+                              />
+                          )
+                        }
+                      </VStack>
+                      {playerHand.length !== 0 && <Score playerHand={playerHand} zIndex="100"/>}
 
-                            />
-                        )
-                      }
+
                     </VStack>
                   )
                 })
               }
             </HStack>
             :
-            <HStack gap="2px" flexWrap="wrap">
-              {
-                playerHand.map((card, index) =>
-                  (doubledHand && index === 2)
-                    ?
-                    <Image key={index} className={classes.cardDoubleDown} src={card.img} alt={card.value} />
-                    :
-                    <Image key={index} className={classes.card} src={card.img} alt={card.value} />
-                )
-              }
-            </HStack>
+            <VStack>
+                <HStack gap="2px" flexWrap="wrap">
+                    {
+                        playerHand.map((card, index) =>
+                            (doubledHand && index === 2)
+                                ?
+                                <Image key={index} className={classes.cardDoubleDown} src={card.img} alt={card.value} />
+                                :
+                                <Image key={index} className={classes.card} src={card.img} alt={card.value} />
+                        )
+                    }
+
+                </HStack>
+              {playerHand.length !== 0 && <Score playerHand={playerHand} zIndex="100"/>}
+
+            </VStack>
+
+
         }
 
-        <Box className={classes.score}>
-          {playerHand.length !== 0 && playerHand.reduce((acc, card) => acc + card.value, 0)}
-        </Box>
 
-      </VStack>
+
+      </Box>
     );
 };
 
