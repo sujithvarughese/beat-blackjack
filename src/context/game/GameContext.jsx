@@ -86,6 +86,7 @@ const initialState = {
     evenMoneyOption: false,
     hintOption: false,
 
+    totalSplits: 0,
     splitCount: 0,
     shoeEmptyShown: false,
     hintShown: false,
@@ -243,6 +244,8 @@ const GameProvider = ({ children }) => {
             playerBankroll: state.playerBankroll - state.currentBet,
             netProfit: 0,
             splitCount: 0,
+            totalSplits: 0,
+            splitHands: [],
             dealerHand: dealerHand,
             playerHand: playerHand,
             dealerBlackjack: dealerBlackjack,
@@ -436,17 +439,20 @@ const GameProvider = ({ children }) => {
             playerHand[aceValue11Index].value = 1
             score -= 10
         }
+        const splitOption = playerHand.length === 2 && playerHand[0] === playerHand[1]
         let status = {
             actionTaken: "hit",
             bookMove: bookMove,
             showFeedback: state.settings.feedback,
             doubleDownOption: false,
+            splitOption: splitOption,
             surrenderOption: false,
             playerHand: playerHand
         }
-        const splitHands = [...state.splitHands]
-        splitHands[state.splitCount] = [...playerHand]
+
         if (state.splitHand) {
+            const splitHands = [...state.splitHands]
+            splitHands[state.splitCount] = [...playerHand]
             status = {
                 ...status,
                 splitHands: splitHands
@@ -458,6 +464,12 @@ const GameProvider = ({ children }) => {
                 hitOption: false,
                 stayOption: false,
                 hintOption: false,
+            }
+            if (state.splitHand === true && state.splitCount < state.splitHands.length + 1) {
+                status = {
+                    ...status,
+                    splitCount: state.splitCount + 1
+                }
             }
             if (!state.splitHand) {
                 status = {
@@ -475,12 +487,13 @@ const GameProvider = ({ children }) => {
                 hintOption: false,
 
             }
-            if (state.splitHand === true) {
+            if (state.splitHand === true && state.splitCount > state.splitHands.length + 1) {
                 status = {
                     ...status,
                     splitCount: state.splitCount + 1
                 }
-            } else {
+            }
+            if (!state.splitHand) {
                 status = {
                     ...status,
                     playerTurn: false,
@@ -499,12 +512,13 @@ const GameProvider = ({ children }) => {
 
     const playerDoubleDown = () => {
         const bookMove = getBookMove()
-        const playerHand = [...state.playerHand]
+        const playerHand = state.splitHand ? [state.splitHands[state.splitCount]]: [...state.playerHand]
         playerHand.push(drawCard())
         const aceValue11Index = playerHand.findIndex(card => card.rank === "Ace" && card.value === 11)
         let score = playerHand.reduce((acc, card) => acc + card.value, 0)
         if (score > 21 && aceValue11Index !== -1) {
             playerHand[aceValue11Index].value = 1
+            score -= 10
         }
         let status = {
             actionTaken: "double down",
@@ -518,21 +532,43 @@ const GameProvider = ({ children }) => {
             doubleDownOption: false,
             surrenderOption: false,
             playerTurn: false,
-            dealerCardShown: true,
             hintOption: false,
             playerHand: playerHand
         }
-        if (score > 21) {
+        if (state.splitHand) {
+            const splitHands = [...state.splitHands]
+            splitHands[state.splitCount] = [...playerHand]
             status = {
                 ...status,
-                placeBetOption: state.shoe.length > 12,
-                shoeEmptyShown: state.shoe.length <= 12,
-                resultsShown: true,
+                splitHands: splitHands
+            }
+        }
+        if (score > 21) {
+            if (state.splitHand && state.splitCount < state.totalSplits) {
+                status = {
+                    ...status,
+                    splitCount: state.splitCount + 1
+                }
+            } else {
+                status = {
+                    ...status,
+                    placeBetOption: state.shoe.length > 12,
+                    shoeEmptyShown: state.shoe.length <= 12,
+                    resultsShown: true,
+                    dealerCardShown: true,
+                }
             }
         } else {
-            status = {
-                ...status,
-                dealerTurn: true,
+            if (state.splitHand && state.splitCount < state.totalSplits) {
+                status = {
+                    ...status,
+                    splitCount: state.splitCount + 1
+                }
+            } else {
+                status = {
+                    ...status,
+                    dealerTurn: true,
+                }
             }
         }
         dispatch({
@@ -543,8 +579,7 @@ const GameProvider = ({ children }) => {
 
     const playerStay = () => {
         const bookMove = getBookMove()
-
-        const status = {
+        let status = {
             actionTaken: "stay",
             bookMove: bookMove,
             showFeedback: state.settings.feedback,
@@ -552,11 +587,22 @@ const GameProvider = ({ children }) => {
             stayOption: false,
             doubleDownOption: false,
             surrenderOption: false,
-            playerTurn: false,
-            dealerTurn: true,
-            dealerCardShown: true,
             hintOption: false,
         }
+        if (state.splitHand && state.splitCount < state.totalSplits) {
+            status = {
+                ...status,
+                splitCount: state.splitCount + 1
+            }
+        } else {
+            status = {
+                ...status,
+                playerTurn: false,
+                dealerTurn: true,
+                dealerCardShown: true,
+            }
+        }
+
         dispatch({
             type: PLAYER_STAY,
             payload: { status }
@@ -564,14 +610,21 @@ const GameProvider = ({ children }) => {
     }
 
     const playerSplit = () => {
-        const splitHands = [[state.playerHand[0]], [state.playerHand[1]]]
-        const newHand = state.playerHand[state.playerHand.length - 1]
-        splitHands[state.splitCount].push(drawCard())
-        const bookMove = getBookMove(splitHands[0])
+        const totalSplits = state.totalSplits + 1
+        let splitHands = [...state.splitHands]
+        const playerHand = [...state.playerHand]
+        const bookMove = getBookMove(state.playerHand.slice(state.playerHand.length - 2))
+        const newHand = [state.playerHand[state.playerHand.length - 1]]
+        if (splitHands.length > 0) {
+            splitHands.pop()
+        }
+        playerHand.pop()
+        playerHand.push(drawCard())
+        splitHands = [...splitHands, playerHand, newHand]
         const status = {
             splitHands: splitHands,
+            totalSplits: totalSplits,
             splitHand: true,
-            splitCount: splitCount,
             playerBankroll: state.playerBankroll - state.bet,
             actionTaken: "split",
             bookMove: bookMove,
@@ -580,7 +633,7 @@ const GameProvider = ({ children }) => {
             hitOption: true,
             stayOption: true,
             doubleDownOption: true,
-            splitOption: true,
+            splitOption: playerHand.length === 2 && playerHand[0] === playerHand[1],
             hintOption: true,
             surrenderOption: state.surrenderAllowed,
         }
@@ -591,6 +644,27 @@ const GameProvider = ({ children }) => {
     }
 
     const playNextSplitHand = () => {
+        let splitHands = [...state.splitHands]
+        const playerHand = splitHands[state.splitCount]
+        splitHands.pop()
+        playerHand.push(drawCard())
+        splitHands = [...splitHands, playerHand]
+        const status = {
+            splitHands: splitHands,
+            playerHand: playerHand,
+            playerTurn: true,
+            hitOption: true,
+            stayOption: true,
+            doubleDownOption: true,
+            splitOption: playerHand[0] === playerHand[1],
+            hintOption: true,
+            surrenderOption: state.surrenderAllowed,
+        }
+        dispatch({
+            type: "SPLIT",
+            payload: { status }
+        })
+
 
     }
 
@@ -660,6 +734,8 @@ const GameProvider = ({ children }) => {
                 playerDoubleDown,
                 playerStay,
                 dealerHit,
+                playerSplit,
+                playNextSplitHand,
                 determineWinner,
                 setSetting,
                 addFunds,

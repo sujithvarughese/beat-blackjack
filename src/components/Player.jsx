@@ -5,10 +5,11 @@ import { Box, HStack, Image, VStack } from '@chakra-ui/react'
 
 const Player = () => {
 
-    const { playerHand, doubledHand, splitHand, splitHands, splitCount } = useGameContext()
+    const { playerHand, doubledHand, splitHand, splitHands, splitCount, playNextSplitHand } = useGameContext()
 
     useEffect(() => {
-
+      if (!splitHand) return
+      playNextSplitHand()
     }, [splitCount])
 
 
@@ -17,18 +18,36 @@ const Player = () => {
 
           {
             splitHand ?
-              <HStack>
+              <HStack
+                justifyContent="space-between"
+                alignItems="flex-end"
+              >
                 {
                   splitHands.map((hand, index) => {
                     return (
-                      <VStack key={index}>
+                      <VStack
+                        key={index}
+                        flexDirection="column-reverse"
+                        justifyContent="flex-end"
+                        alignItems="end"
+                      >
                         {
                           hand.map((card, index) =>
                             (doubledHand && index === 2)
                               ?
-                              <Image key={index} className={classes.cardDoubleDown} src={card.img} alt={card.value} />
+                              <Image key={index}
+                                     className={classes.cardDoubleDown}
+                                     src={card.img}
+                                     alt={card.value}
+                              />
                               :
-                              <Image key={index} className={classes.card} src={card.img} alt={card.value} />
+                              <Image
+                                key={index}
+                                className={classes.card}
+                                src={card.img}
+                                alt={card.value}
+
+                              />
                           )
                         }
                       </VStack>
