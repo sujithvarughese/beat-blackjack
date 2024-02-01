@@ -69,6 +69,7 @@ const SettingsMenu = () => {
                                   colorScheme="yellow"
                                   name="minBet"
                                   id="minBet"
+                                  type="number"
                                   onChange={val=>setSetting({ minBet: val })}
                                   value={settings.minBet}
                                   min={25}
@@ -90,6 +91,7 @@ const SettingsMenu = () => {
                                   colorScheme="yellow"
                                   name="maxBet"
                                   id="maxBet"
+                                  type="number"
                                   onChange={val=>setSetting({ maxBet: val })}
                                   value={settings.maxBet}
                                   min={500}
@@ -105,16 +107,17 @@ const SettingsMenu = () => {
                             </SimpleGrid>
 
                             <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="5px" justifyItems="end" alignItems="center">
-                                <FormLabel htmlFor="playerBankroll">Bankroll</FormLabel>
+                                <FormLabel htmlFor="playerInitialBankroll">Bankroll</FormLabel>
                                 <Slider
                                   aria-label="slider"
                                   colorScheme="yellow"
-                                  name="playerBankroll"
-                                  id="playerBankroll"
+                                  name="playerInitialBankroll"
+                                  id="playerInitialBankroll"
+                                  type="number"
                                   onChange={val=>setSetting({ playerInitialBankroll: val })}
                                   value={settings.playerInitialBankroll}
                                   min={500}
-                                  max={10000}
+                                  max={100000}
                                   step={100}
                                 >
                                     <SliderTrack>

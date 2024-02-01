@@ -19,5 +19,5 @@ export const DEALER_HIT = "DEALER_HIT"
 export const DETERMINE_WINNER = "DETERMINE_WINNER"
 export const SHOW_ADD_FUNDS = "SHOW_ADD_FUNDS"
 export const ADD_FUNDS = 'ADD_FUNDS'
-
+export const SHOW_SHOE_EMPTY_ALERT = "SHOW_SHOE_EMPTY_ALERT"
 

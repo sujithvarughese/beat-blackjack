@@ -10,127 +10,113 @@ import { useEffect } from 'react'
 
 const Table = () => {
 
-    const {
-      winner,
-      determineWinner,
-      playerBankroll,
-      settings,
-      resultsShown,
-      placeBetOption,
-      settingsMenuOpen,
-      hintOption,
-      hintShown,
-      shoeEmptyShown,
-      showFeedback,
-      addFundsShown,
-      dealerFaceUp,
-      showAddFunds
-    } = useGameContext()
+  const {
+    resultsShown,
+    placeBetOption,
+    settingsMenuOpen,
+    hintOption,
+    shoeEmptyShown,
+    addFundsShown,
+  } = useGameContext()
 
-    const { minBet } = settings
 
-    useEffect(() => {
-      if (playerBankroll < minBet) {
-        showAddFunds()
-      }
-    }, [dealerFaceUp])
 
-    return (
+  return (
+    <SimpleGrid
+      maxWidth="1980px"
+      position="relative"
+    >
+      <Image
+        display={{ base: "block", md: "none" }}
+        src={tableMobileIMG}
+      ></Image>
+      <Image
+        display={{ base: "none", md: "block" }}
+        src={tableIMG}
+        filter="blur(3px)"
+      ></Image>
+
+      <Box position="absolute" top="1%" left="1%">
+        <Bankroll />
+      </Box>
+
+      <Box position="absolute" top="2%" right="2%">
+        <Settings />
+      </Box>
+
+      <Box
+          position="absolute"
+          top={{ base: "20%", md: "10%" }}
+          alignItems='center'
+          justifyContent='center'
+          textAlign='center'
+          left="0"
+          right="0"
+          margin="0 auto"
+          zIndex="10"
+      >
+        <Dealer />
+      </Box>
+
+      <Box
+          position="absolute"
+          left="0"
+          right="0"
+          bottom="18%"
+          margin="0 auto"
+      >
+        <Player />
+      </Box>
+
+      <SimpleGrid position="absolute" bottom="3%" right="3%">
+        <Actions />
+      </SimpleGrid>
+
+      {
+        placeBetOption &&
         <SimpleGrid
-          maxWidth="1980px"
-          position="relative"
+            position="absolute"
+            display="flex"
+            alignItems='center'
+            justifyContent='center'
+            textAlign='center'
+            right={{ base: "0", md: "3%" }}
+            bottom={{ base: "10%", md: "3%" }}
+            left={{ base: "0", md: "revert" }}
+            margin="0 auto"
+
         >
-          <Image
-            display={{ base: "block", md: "none" }}
-            src={tableMobileIMG}
-          ></Image>
-          <Image
-            display={{ base: "none", md: "block" }}
-            src={tableIMG}
-            filter="blur(3px)"
-          ></Image>
-
-          <Box position="absolute" top="1%" left="1%">
-            <Bankroll />
-          </Box>
-
-          <Box position="absolute" top="2%" right="2%">
-            <Settings />
-          </Box>
-
-          <Box
-              position="absolute"
-              top={{ base: "20%", md: "10%" }}
-              alignItems='center'
-              justifyContent='center'
-              textAlign='center'
-              left="0"
-              right="0"
-              margin="0 auto"
-              zIndex="10"
-          >
-            <Dealer />
-          </Box>
-
-          <Box
-              position="absolute"
-              left="0"
-              right="0"
-              bottom="18%"
-              margin="0 auto"
-          >
-            <Player />
-          </Box>
-
-          <SimpleGrid position="absolute" bottom="3%" right="3%">
-            <Actions />
-          </SimpleGrid>
-
-          {
-            placeBetOption &&
-            <SimpleGrid
-                position="absolute"
-                display="flex"
-                alignItems='center'
-                justifyContent='center'
-                textAlign='center'
-                right={{ base: "0", md: "3%" }}
-                bottom={{ base: "10%", md: "3%" }}
-                left={{ base: "0", md: "revert" }}
-                margin="0 auto"
-
-            >
-              <PlaceBet />
-            </SimpleGrid>
-          }
-
-          {
-            hintOption &&
-            <HStack
-                position="absolute"
-                left={{ md: "3%" }}
-                right={{ base: "2%", md: "revert" }}
-                bottom={{ md: "3%" }}
-                top={{ base: "13%", md: "revert" }}
-            >
-              <HintButton />
-            </HStack>
-          }
-
-          {settingsMenuOpen && <SettingsMenu />}
-          {/*showFeedback && <Feedback />*/}
-          {shoeEmptyShown && <ShoeEmpty />}
-          {resultsShown && <Results />}
-          {addFundsShown && <AddFunds />}
-
-
-
-
-
-
+          <PlaceBet />
         </SimpleGrid>
+      }
 
-    );
+      {
+        hintOption &&
+        <HStack
+            position="absolute"
+            left={{ md: "3%" }}
+            right={{ base: "2%", md: "revert" }}
+            bottom={{ md: "3%" }}
+            top={{ base: "13%", md: "revert" }}
+        >
+          <HintButton />
+        </HStack>
+      }
+
+      {settingsMenuOpen && <SettingsMenu />}
+      {/*showFeedback && <Feedback />*/}
+      {shoeEmptyShown && <ShoeEmpty />}
+      {resultsShown && <Results />}
+      {addFundsShown && <AddFunds />}
+
+
+
+
+
+
+    </SimpleGrid>
+
+  );
 };
 
 export default Table;

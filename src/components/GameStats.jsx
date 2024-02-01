@@ -1,6 +1,9 @@
-import React from 'react'
+import { useGameContext } from '../context/game/GameContext.jsx'
 
 const GameStats = () => {
+
+    // const { totalBuyIn, playerBankroll,  } = useGameContext()
+
     return (
         <div>
             

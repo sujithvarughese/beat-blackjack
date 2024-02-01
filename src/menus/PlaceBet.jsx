@@ -1,14 +1,20 @@
 import { Button, ButtonGroup, FormLabel, HStack, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Slider, SliderFilledTrack, SliderMark, SliderThumb, SliderTrack, VStack } from '@chakra-ui/react'
 import { useGameContext } from '../context/game/GameContext.jsx'
+import { useEffect } from 'react'
 
 const PlaceBet = () => {
 
-  const { settings, playerBankroll, bet, setBet, dealHands } = useGameContext()
+  const { settings, playerBankroll, bet, setBet, dealHands, showAddFunds, shoe, showShoeEmptyAlert } = useGameContext()
 
+  useEffect(() => {
+    if (shoe.length < 16) {
+      showShoeEmptyAlert()
+    }
+    if (playerBankroll < settings.minBet) {
+      showAddFunds()
+    }
+  }, [])
 
-  if (playerBankroll < settings.minBet) {
-    console.log("NSF")
-  }
 
   return (
       <ButtonGroup
@@ -31,8 +37,11 @@ const PlaceBet = () => {
               <FormLabel htmlFor={bet} fontWeight="600">Bet Amount</FormLabel>
               <NumberInput
                 maxW='100px'
+                name="bet"
+                id="bet"
+                type="number"
                 value={bet}
-                onChange={val=> setBet(val)}
+                onChange={val=> setBet(Number(val))}
                 min={settings.minBet}
                 max={settings.maxBet > playerBankroll ? playerBankroll : settings.maxBet}
                 step={25}
@@ -44,7 +53,16 @@ const PlaceBet = () => {
                 </NumberInputStepper>
               </NumberInput>
             </HStack>
-            <Button colorScheme="yellow" fontSize="24px" fontWeight="700" border="solid #ECC94B 12px" size="lg" onClick={dealHands}>Deal</Button>
+            <Button
+                colorScheme="yellow"
+                fontSize="24px"
+                fontWeight="700"
+                border="solid #ECC94B 12px"
+                size="lg"
+                onClick={dealHands}
+                isDisabled={playerBankroll < bet}
+            >Deal<
+            /Button>
           </VStack>
 
           <Slider

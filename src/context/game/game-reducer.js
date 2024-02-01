@@ -18,7 +18,8 @@ import {
     DEALER_HIT,
     DETERMINE_WINNER,
     ADD_FUNDS,
-    SHOW_ADD_FUNDS
+    SHOW_ADD_FUNDS,
+    SHOW_SHOE_EMPTY_ALERT
 } from "./game-actions.js"
 const gameReducer = (state, action) => {
 
@@ -162,6 +163,12 @@ const gameReducer = (state, action) => {
             ...state,
             playerBankroll: action.payload.playerBankroll,
             addFundsShown: false
+        }
+    }
+    if (action.type === SHOW_SHOE_EMPTY_ALERT) {
+        return {
+            ...state,
+            shoeEmptyShown: true
         }
     }
 }
