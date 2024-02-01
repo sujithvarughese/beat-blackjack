@@ -26,6 +26,7 @@ const Table = () => {
       maxWidth="1980px"
       height="100vh"
       position="relative"
+      margin="auto"
     >
       <Image
         display={{ base: "block", md: "none" }}
@@ -35,7 +36,6 @@ const Table = () => {
       <Image
         display={{ base: "none", md: "block" }}
         src={tableIMG}
-        height="100vh"
         filter="blur(3px)"
       ></Image>
 

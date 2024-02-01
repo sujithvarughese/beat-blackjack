@@ -304,8 +304,9 @@ const GameProvider = ({ children }) => {
                 type: SET_STATE,
                 payload: { status }
             })
+            return
         }
-        else if (dealer21) {
+        if (dealer21) {
             if (playerBlackjack) {
                 status = {
                     ...status,
@@ -328,10 +329,11 @@ const GameProvider = ({ children }) => {
                 type: SET_STATE,
                 payload: { status }
             })
+            return
         }
 
         // handle blackjacks (only reaches if insurance and even money are not allowed)
-        else if (dealerBlackjack) {
+        if (dealerBlackjack) {
             status = {
                 ...status,
                 netProfit: -currentBet,
@@ -343,8 +345,9 @@ const GameProvider = ({ children }) => {
                 type: SET_STATE,
                 payload: { status }
             })
+            return
         }
-        else if (playerBlackjack) {
+        if (playerBlackjack) {
             status = {
                 ...status,
                 resultsShown: true,
@@ -358,25 +361,25 @@ const GameProvider = ({ children }) => {
                 type: SET_STATE,
                 payload: { status }
             })
+            return
         }
-        else {
-            status = {
-                ...status,
-                playerTurn: true,
-                hitOption: true,
-                stayOption: true,
-                doubleDownOption: true,
-                // because we changed the ace value to 1 if both hold cards are aces
-                splitOption: (playerHand[0].value === playerHand[1].value || (playerHand[0].value === 1 && playerHand[1].value === 11)) && state.settings.maxNumSplits > 0,
-                surrenderOption: state.settings.surrenderAllowed,
-                hintOption: state.settings.hints,
-                hint: hint
-            }
-            dispatch({
-                type: SET_STATE,
-                payload: { status }
-            })
+
+        status = {
+            ...status,
+            playerTurn: true,
+            hitOption: true,
+            stayOption: true,
+            doubleDownOption: true,
+            // because we changed the ace value to 1 if both hold cards are aces
+            splitOption: (playerHand[0].value === playerHand[1].value || (playerHand[0].value === 1 && playerHand[1].value === 11)) && state.settings.maxNumSplits > 0,
+            surrenderOption: state.settings.surrenderAllowed,
+            hintOption: state.settings.hints,
+            hint: hint
         }
+        dispatch({
+            type: SET_STATE,
+            payload: { status }
+        })
     }
 
     const handleEvenMoney = () => {
@@ -395,6 +398,7 @@ const GameProvider = ({ children }) => {
     }
     const handleInsurance = () => {
         let status = {}
+        console.log(state.dealerBlackjack)
         if (state.dealerBlackjack) {
             status = {
                 playerBankroll: state.playerBankroll + state.currentBet,
@@ -402,7 +406,6 @@ const GameProvider = ({ children }) => {
                 winner: 0,
                 resultsShown: true,
                 dealerCardShown: true,
-                dealerBlackjack: true,
                 placeBetOption: true,
                 insuranceOption: false,
             }
