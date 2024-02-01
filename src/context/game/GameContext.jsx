@@ -198,9 +198,10 @@ const GameProvider = ({ children }) => {
 
     }
     const addFunds = (reloadAmount) => {
+        const playerBankroll = state.playerBankroll + Number(reloadAmount)
         dispatch({
             type: ADD_FUNDS,
-            payload: { reloadAmount }
+            payload: { playerBankroll }
         })
     }
     // sets state of shoe after popping top card
@@ -483,7 +484,7 @@ const GameProvider = ({ children }) => {
                     hintOption: false,
                     playerTurn: false,
                     dealerTurn: true,
-                    dealerFaceUp: true
+                    dealerCardShown: true
                 }
             } else if (score > 21) {
                 status = {
@@ -617,7 +618,6 @@ const GameProvider = ({ children }) => {
     }
 
     const playerSplit = () => {
-        const totalSplits = state.totalSplits + 2
         // array that holds each split hand
         let splitHands = [...state.splitHands]
         // playerHand = 2 cards which will need to be split that make up the base of a split hand
@@ -638,7 +638,7 @@ const GameProvider = ({ children }) => {
         const status = {
             splitHands: splitHands,
             playerHand: playerHand,
-            totalSplits: totalSplits,
+            totalSplits: state.totalSplits + 1,
             splitHand: true,
             playerBankroll: state.playerBankroll - state.bet,
             actionTaken: "split",
@@ -695,7 +695,7 @@ const GameProvider = ({ children }) => {
                 hintOption: false,
                 surrenderOption: false,
                 dealerTurn: true,
-                dealerFaceUp: true,
+                dealerCardShown: true,
                 resultsShown: true
             }
             dispatch({

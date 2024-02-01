@@ -42,7 +42,9 @@ const Player = () => {
   }, [playerHand, bookMove])
 
   useEffect(() => {
+    console.log(splitHand)
     if (!splitHand) return
+    console.log("12")
     playNextSplitHand()
   }, [splitCount])
 

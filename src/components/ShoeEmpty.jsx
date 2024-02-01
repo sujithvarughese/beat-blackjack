@@ -10,12 +10,10 @@ const ShoeEmpty = () => {
   return (
     <Modal isOpen={shoeEmptyShown} onClose={onClose}>
       <ModalOverlay>
-        <ModalContent>
+        <ModalContent textAlign="center">
           <ModalHeader>
             Shoe is Finished
           </ModalHeader>
-          <ModalCloseButton />
-
           <ModalBody>
             <Text>The shoe is empty. What would you like to do?</Text>
             <ButtonGroup display="flex" flexDirection="column">

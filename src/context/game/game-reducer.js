@@ -160,7 +160,7 @@ const gameReducer = (state, action) => {
     if (action.type === ADD_FUNDS) {
         return {
             ...state,
-            playerBankroll: state.playerBankroll + action.payload.reloadAmount,
+            playerBankroll: action.payload.playerBankroll,
             addFundsShown: false
         }
     }
