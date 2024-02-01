@@ -15,7 +15,7 @@ const determineBookMove = (playerAce11, dealerFaceUp, playerScore, playerHand, s
         if (playerScore === 16 && playerHand.length === 2 && playerHand[0].value === playerHand[1].value) {
           return split
         }
-        if (playerScore === 14 && playerHand.length === 2 && playerHand[0].value === playerHand[1].value && dealerFaceUp >= 4 && dealerFaceUp <=7)
+        else if (playerScore === 14 && playerHand.length === 2 && playerHand[0].value === playerHand[1].value && dealerFaceUp >= 4 && dealerFaceUp <=7)
           return split
       } else if (dealerFaceUp >= 2 && dealerFaceUp <= 6) {
         return stay

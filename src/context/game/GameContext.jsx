@@ -343,8 +343,8 @@ const GameProvider = ({ children }) => {
                 resultsShown: true,
                 dealerCardShown: true,
                 playerBlackjack: true,
-                netProfit: currentBet * state.blackjackPayout,
-                playerBankroll: state.playerBankroll + currentBet * Number(state.blackjackPayout),
+                netProfit: currentBet * Number(state.blackjackPayout),
+                playerBankroll: state.playerBankroll + state.bet * Number(state.blackjackPayout),
                 placeBetOption: true,
             }
             dispatch({
@@ -362,7 +362,8 @@ const GameProvider = ({ children }) => {
                 // because we changed the ace value to 1 if both hold cards are aces
                 splitOption: (playerHand[0].value === playerHand[1].value || (playerHand[0].value === 1 && playerHand[1].value === 11)) && state.settings.maxNumSplits > 0,
                 surrenderOption: state.settings.surrenderAllowed,
-                hintOption: state.settings.hints
+                hintOption: state.settings.hints,
+                hint: hint
             }
             dispatch({
                 type: SET_STATE,
@@ -452,7 +453,7 @@ const GameProvider = ({ children }) => {
         if (aceValue11Index !== -1) {
             playerAce11 = true
         }
-        return determineBookMove(playerAce11, state.dealerFaceUpValue, score, hand, state.settings.maxNumSplits > 0)
+        return determineBookMove(playerAce11, state.dealerFaceUpValue, score, hand, state.settings.maxNumSplits > 0, state.surrenderAllowed)
     }
 
     const playerHit = () => {
@@ -474,6 +475,7 @@ const GameProvider = ({ children }) => {
             doubleDownOption: false,
             splitOption: false,
             surrenderOption: false,
+            insuranceOption: false,
             playerHand: playerHand
         }
 
@@ -636,6 +638,10 @@ const GameProvider = ({ children }) => {
         let splitHands = [...state.splitHands]
         // playerHand = 2 cards which will need to be split that make up the base of a split hand
         const playerHand = [...state.playerHand]
+        // since we changed the Ace value to 1 on the initial deal, should be changed back to 11 for split hand
+        if (playerHand[0].value === 1 && playerHand[1].value === 1) {
+            playerHand[0].value = 11
+        }
         const bookMove = getBookMove(state.playerHand.slice(state.playerHand.length - 2))
         // second of the split hands
         const newHand = [state.playerHand[state.playerHand.length - 1]]
