@@ -5,7 +5,7 @@ const Split = () => {
 
     const { playerSplit } = useGameContext()
 
-    return <Button onClick={playerSplit} colorScheme="yellow" size="lg">Split</Button>;
+    return <Button onClick={playerSplit} colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Split</Button>;
 };
 
 export default Split;

@@ -1,6 +1,10 @@
 import { Button } from '@chakra-ui/react'
-const Surrender = ({ action }) => {
-    return <Button onClick={action} colorScheme="yellow" size="lg">Surrender</Button>;
+import { useGameContext } from '../context/game/GameContext.jsx'
+const Surrender = () => {
+
+    const { surrender } = useGameContext()
+
+    return <Button onClick={surrender} colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Surrender</Button>;
 };
 
 export default Surrender;

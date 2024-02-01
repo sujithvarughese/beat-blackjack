@@ -1,4 +1,4 @@
-
+export const SET_STATE = "SET_STATE"
 export const SET_SHOW_SETTINGS_MENU = "SET_SHOW_SETTINGS_MENU"
 export const SET_SETTING = "SET_SETTING"
 export const RESET_SETTINGS = "RESET_SETTINGS"

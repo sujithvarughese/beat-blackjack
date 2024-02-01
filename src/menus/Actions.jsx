@@ -14,13 +14,15 @@ const Actions = () => {
     surrenderOption,
   } = useGameContext()
 
+  console.log(surrenderOption)
+
   return (
     <ButtonGroup>
-      {doubleDownOption && <DoubleDown />}
       {splitOption && <Split />}
       {evenMoneyOption && <TakeEvenMoney />}
       {insuranceOption && <TakeInsurance />}
       {surrenderOption && <Surrender />}
+      {doubleDownOption && <DoubleDown />}
       {hitOption && <Hit />}
       {stayOption && <Stay />}
     </ButtonGroup>

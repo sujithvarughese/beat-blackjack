@@ -15,7 +15,8 @@ const PlaceBet = () => {
         border="solid 3px #ECC94B"
         backgroundColor="black"
         padding="12px"
-        borderRadius="5px"
+        borderRadius="10px"
+        zIndex="10"
       >
         <HStack alignItems="flex-end" gap="1rem">
 

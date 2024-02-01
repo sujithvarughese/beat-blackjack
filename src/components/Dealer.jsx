@@ -24,18 +24,27 @@ const Dealer = () => {
 
     return (
         <VStack>
-            <HStack position="relative" gap="2px">
+            <HStack justifyContent="center">
                 {
                     dealerHand.map((card, index) =>
                         (index === 1 && !dealerCardShown)
                             ?
-                            <Image key={index} className={classes.card} src={cardBackIMG} alt="card-back"
-                                   position="absolute"
-                                   right="50px"
-                                   zIndex="-10"
+                            <Image
+                                key={index}
+                                className={classes.card}
+                                src={cardBackIMG} alt="card-back"
+                                position="absolute"
+                                zIndex="-10"
+                                sx={{ transform: `translate(calc(40px))` }}
                             />
                             :
-                            <Image key={index} className={classes.card} src={card.img} alt={card.value} />
+                            <Image
+                                key={index}
+                                className={classes.card}
+                                src={card.img}
+                                alt={card.value}
+                                sx={{ transform: `translate(calc(-40px * ${index}))` }}
+                            />
                     )
                 }
             </HStack>

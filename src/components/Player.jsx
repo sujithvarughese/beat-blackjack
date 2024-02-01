@@ -1,7 +1,7 @@
 import classes from "./styles/Hands.module.css";
 import {useGameContext} from "../context/game/GameContext.jsx";
 import {useEffect} from "react";
-import { Box, Heading, HStack, Image, Text, useToast, VStack } from '@chakra-ui/react'
+import { Box, Container, Heading, HStack, Image, Text, useToast, VStack } from '@chakra-ui/react'
 import { Score } from "./"
 const Player = () => {
 
@@ -70,6 +70,8 @@ const Player = () => {
                                      className={classes.cardDoubleDown}
                                      src={card.img}
                                      alt={card.value}
+                                     position="absolute"
+                                     bottom={`calc(30px * ${index})`}
                               />
                               :
                               <Image
@@ -84,9 +86,9 @@ const Player = () => {
                           )
                         }
                       </VStack>
-                      {playerHand.length !== 0 && <Score playerHand={playerHand} zIndex="100"/>}
-
-
+                      {playerHand.length !== 0 &&
+                          <Score playerHand={playerHand}/>
+                      }
                     </VStack>
                   )
                 })
@@ -94,19 +96,37 @@ const Player = () => {
             </HStack>
             :
             <VStack>
-                <HStack gap="2px" flexWrap="wrap">
+                <VStack>
                     {
                         playerHand.map((card, index) =>
                             (doubledHand && index === 2)
                                 ?
-                                <Image key={index} className={classes.cardDoubleDown} src={card.img} alt={card.value} />
+                                <Image
+                                    key={index}
+                                    className={classes.cardDoubleDown}
+                                    src={card.img}
+                                    alt={card.value}
+                                />
                                 :
-                                <Image key={index} className={classes.card} src={card.img} alt={card.value} />
+                                <Image
+                                    key={index}
+                                    className={classes.card}
+                                    src={card.img}
+                                    alt={card.value}
+
+                                    position="absolute"
+                                    bottom={`calc(20px * ${index})`}
+                                    sx={{ transform: `translate(calc(30px * ${index}))` }}
+                                />
+
+
                         )
                     }
 
-                </HStack>
-              {playerHand.length !== 0 && <Score playerHand={playerHand} zIndex="100"/>}
+                </VStack>
+              {playerHand.length !== 0 &&
+                  <Score playerHand={playerHand} zIndex="10"/>
+              }
 
             </VStack>
 

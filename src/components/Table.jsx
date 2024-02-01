@@ -58,11 +58,27 @@ const Table = () => {
             <Settings />
           </Box>
 
-          <Box position="absolute" top="10%" left="0" right="0" margin="0 auto" zIndex="10">
+          <Box
+              position="absolute"
+              top={{ base: "20%", md: "10%" }}
+              alignItems='center'
+              justifyContent='center'
+              textAlign='center'
+              left="0"
+              right="0"
+              margin="0 auto"
+              zIndex="10"
+          >
             <Dealer />
           </Box>
 
-          <Box position="absolute" left="0" right="0" bottom="11%" margin="0 auto">
+          <Box
+              position="absolute"
+              left="0"
+              right="0"
+              bottom="18%"
+              margin="0 auto"
+          >
             <Player />
           </Box>
 
@@ -72,14 +88,31 @@ const Table = () => {
 
           {
             placeBetOption &&
-            <SimpleGrid position="absolute" right="3%" bottom="3%">
+            <SimpleGrid
+                position="absolute"
+                display="flex"
+                alignItems='center'
+                justifyContent='center'
+                textAlign='center'
+                right={{ base: "0", md: "3%" }}
+                bottom={{ base: "10%", md: "3%" }}
+                left={{ base: "0", md: "revert" }}
+                margin="0 auto"
+
+            >
               <PlaceBet />
             </SimpleGrid>
           }
 
           {
             hintOption &&
-            <HStack position="absolute" left="3%" bottom="3%">
+            <HStack
+                position="absolute"
+                left={{ md: "3%" }}
+                right={{ base: "2%", md: "revert" }}
+                bottom={{ md: "3%" }}
+                top={{ base: "13%", md: "revert" }}
+            >
               <HintButton />
             </HStack>
           }

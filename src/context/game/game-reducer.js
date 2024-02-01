@@ -1,4 +1,5 @@
 import {
+    SET_STATE,
     SET_SHOW_SETTINGS_MENU,
     SET_SETTING,
     RESET_SETTINGS,
@@ -20,6 +21,13 @@ import {
     SHOW_ADD_FUNDS
 } from "./game-actions.js"
 const gameReducer = (state, action) => {
+
+    if (action.type === SET_STATE) {
+        return {
+            ...state,
+            ...action.payload.status
+        }
+    }
 
     if (action.type === SET_SHOW_SETTINGS_MENU) {
         return {

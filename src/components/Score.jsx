@@ -5,12 +5,13 @@ const Score = ({ playerHand }) => {
 
     return (
         <Heading
-            zIndex="100"
             backgroundColor="black"
             color="#ECC94B"
             border="#ECC94B solid 2px"
             borderRadius="8px"
-            padding="4px"
+            padding="2px"
+            position="absolute"
+            bottom="-55px"
         >
             {playerHand.reduce((acc, card) => acc + card.value, 0)}
         </Heading>

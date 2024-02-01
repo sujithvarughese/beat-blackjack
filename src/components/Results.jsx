@@ -27,19 +27,19 @@ const Results = () => {
           alignItems='center'
           justifyContent='center'
           textAlign='center'
-          height={{base: "200px", lg: "100px"}}
+          height={{base: "50px", lg: "100px"}}
           width={{base: "90%", lg: "50%"}}
           position="absolute"
-          top="0"
-          bottom="0"
+          top="12%"
           left="0"
           right="0"
           margin="auto"
           zIndex="10"
           backgroundColor="black"
-          border="solid 6px #ECC94B"
+          border="solid 3px #ECC94B"
           padding="12px"
-          borderRadius="5px"
+          borderRadius="10px"
+          opacity="75%"
         >
             <Box>
                 <AlertTitle

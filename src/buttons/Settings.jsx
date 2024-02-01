@@ -10,8 +10,9 @@ const Settings = () => {
   return (
     <Button
       colorScheme="yellow"
-      fontSize="36px"
+      fontSize="48px"
       padding="6px"
+      height="100%"
       onClick={()=>setShowSettingsMenu(true)}
     >
       <RiSettings5Fill />

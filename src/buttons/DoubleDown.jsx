@@ -5,7 +5,7 @@ const DoubleDown = () => {
 
     const { playerDoubleDown } = useGameContext()
 
-    return <Button onClick={playerDoubleDown} colorScheme="yellow" size="lg">Double Down</Button>;
+    return <Button onClick={playerDoubleDown} colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Double</Button>;
 };
 
 export default DoubleDown;

@@ -3,6 +3,7 @@ import gameReducer from "./game-reducer.js";
 import { createShoe } from '../../utils/deck.js'
 import determineBookMove from '../../utils/determineBookMove.js'
 import {
+    SET_STATE,
     SET_SHOW_SETTINGS_MENU,
     SET_SETTING,
     RESET_SETTINGS,
@@ -232,7 +233,7 @@ const GameProvider = ({ children }) => {
             playerBlackjack = true
         }
         // if both player's cards are aces
-        if (playerHand[0] === 11 && playerHand[1] === 11) {
+        if (playerHand[0].value === 11 && playerHand[1].value === 11) {
             playerHand[0].value = 1
         }
         // dealer's face up card to see if insurance or even money should be offered
@@ -250,7 +251,6 @@ const GameProvider = ({ children }) => {
             evenMoneyTaken: false,
             insuranceOption: false,
             evenMoneyOption: false,
-            surrenderOption: false,
             hint: hint,
             playerBankroll: state.playerBankroll - state.bet,
             currentBet: state.bet,
@@ -300,6 +300,7 @@ const GameProvider = ({ children }) => {
                 netProfit: -state.currentBet,
                 placeBetOption: state.shoe.length > 12,
                 shoeEmptyShown: state.shoe.length <= 12,
+                addFundsShown: state.playerBankroll < state.settings.minBet
             }
             dispatch({
                 type: DEALER_BLACKJACK,
@@ -332,7 +333,7 @@ const GameProvider = ({ children }) => {
                 doubleDownOption: true,
                 splitOption: state.settings.maxNumSplits > 0,
                 hintOption: true,
-                surrenderOption: state.surrenderAllowed,
+                surrenderOption: state.settings.surrenderAllowed,
             }
             dispatch({
                 type: DEAL_HANDS,
@@ -369,6 +370,7 @@ const GameProvider = ({ children }) => {
                 netProfit: -state.currentBet,
                 placeBetOption: state.shoe.length > 12,
                 shoeEmptyAlert: state.shoe.length <= 12,
+                addFundsShown: state.playerBankroll < state.settings.minBet
             }
             dispatch({
                 type: DEALER_BLACKJACK,
@@ -490,6 +492,7 @@ const GameProvider = ({ children }) => {
                     stayOption: false,
                     hintOption: false,
                     playerTurn: false,
+                    addFundsShown: state.playerBankroll < state.settings.minBet,
                     dealerCardShown: true,
                     placeBetOption: state.shoe.length > 12,
                     shoeEmptyShown: state.shoe.length <= 12,
@@ -541,6 +544,7 @@ const GameProvider = ({ children }) => {
                 ...status,
                 placeBetOption: state.shoe.length > 12,
                 shoeEmptyShown: state.shoe.length <= 12,
+                addFundsShown: state.playerBankroll < state.settings.minBet,
                 resultsShown: true,
                 dealerCardShown: true,
                 dealerTurn: true,
@@ -578,12 +582,36 @@ const GameProvider = ({ children }) => {
                 dealerCardShown: true,
                 placeBetOption: state.shoe.length > 12,
                 shoeEmptyShown: state.shoe.length <= 12,
+                addFundsShown: state.playerBankroll < state.settings.minBet,
                 resultsShown: true
             }
         }
 
         dispatch({
             type: PLAYER_STAY,
+            payload: { status }
+        })
+    }
+
+    const surrender = () => {
+        const bookMove = getBookMove()
+        const status = {
+            actionTaken: "surrender",
+            bookMove: bookMove,
+            showFeedback: state.settings.feedback,
+            playerBankroll: state.playerBankroll + state.bet * 0.5,
+            netProfit: -state.bet * 0.5,
+            hitOption: false,
+            stayOption: false,
+            doubleDownOption: false,
+            surrenderOption: false,
+            hintOption: false,
+            placeBetOption: state.shoe.length > 12,
+            shoeEmptyShown: state.shoe.length <= 12,
+            addFundsShown: state.playerBankroll < state.settings.minBet
+        }
+        dispatch({
+            type: SET_STATE,
             payload: { status }
         })
     }
@@ -631,7 +659,7 @@ const GameProvider = ({ children }) => {
     }
 
     const playNextSplitHand = () => {
-        if (state.splitCount < state.totalSplits) {
+        if (state.splitCount <= state.totalSplits) {
             let splitHands = [...state.splitHands]
             // set playerHand to current working hand at index splitCount
             const playerHand = splitHands[state.splitCount]
@@ -753,6 +781,7 @@ const GameProvider = ({ children }) => {
                 dealerHit,
                 playerSplit,
                 playNextSplitHand,
+                surrender,
                 determineWinner,
                 setSetting,
                 addFunds,
