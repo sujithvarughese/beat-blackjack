@@ -617,7 +617,7 @@ const GameProvider = ({ children }) => {
     }
 
     const playerSplit = () => {
-        const totalSplits = state.totalSplits + 1
+        const totalSplits = state.totalSplits + 2
         // array that holds each split hand
         let splitHands = [...state.splitHands]
         // playerHand = 2 cards which will need to be split that make up the base of a split hand
@@ -659,6 +659,9 @@ const GameProvider = ({ children }) => {
     }
 
     const playNextSplitHand = () => {
+        console.log(state.splitHand)
+        console.log(state.splitCount)
+        console.log(state.totalSplits)
         if (state.splitCount <= state.totalSplits) {
             let splitHands = [...state.splitHands]
             // set playerHand to current working hand at index splitCount
@@ -724,37 +727,41 @@ const GameProvider = ({ children }) => {
             resultsShown: true,
             placeBetOption: state.shoe.length > 12,
             shoeEmptyShown: state.shoe.length <= 12,
+            addFundsShown: state.playerBankroll < state.settings.minBet
         }
+        const getProfit = () => {
+            const playerScore = state.playerHand.reduce((acc, card) => acc + card.value, 0)
+            const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
+            if (dealerScore > 21 || playerScore > dealerScore) {
+                netProfit += currentBet * 2
+                status = {
+                    ...status,
+                    playerBankroll: state.doubledHand ? state.playerBankroll + state.bet * 4 : state.playerBankroll + state.bet * 2,
+                    winner: 1,
+                }
+            } else if (dealerScore > playerScore) {
+                status = {
+                    ...status,
+                    winner: -1
+                }
+            } else {
+                netProfit += currentBet
+                status = {
+                    ...status,
+                    winner: 0,
+                    playerBankroll: state.playerBankroll + state.bet
+                }
+            }
+        }
+
         if (state.splitHand) {
             state.splitHands.forEach((hand, index) => {
-                const playerScore = state.playerHand.reduce((acc, card) => acc + card.value, 0)
-                const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
-                if (dealerScore > 21 || playerScore > dealerScore) {
-                    netProfit += state.currentBet
-                }
+                getProfit()
             })
-        }
-        const playerScore = state.playerHand.reduce((acc, card) => acc + card.value, 0)
-        const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
-
-        if (dealerScore > 21 || playerScore > dealerScore) {
-            status = {
-                ...status,
-                playerBankroll: state.doubledHand ? state.playerBankroll + state.bet * 4 : state.playerBankroll + state.bet * 2,
-                winner: 1
-            }
-        } else if (dealerScore > playerScore) {
-            status = {
-                ...status,
-                winner: -1
-            }
         } else {
-          status = {
-              ...status,
-              winner: 0,
-              playerBankroll: state.playerBankroll + state.bet
-          }
+            getProfit()
         }
+        status = { ...status, netProfit }
         dispatch({
             type: DETERMINE_WINNER,
             payload: { status }

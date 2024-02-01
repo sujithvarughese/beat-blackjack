@@ -14,8 +14,6 @@ const Actions = () => {
     surrenderOption,
   } = useGameContext()
 
-  console.log(surrenderOption)
-
   return (
     <ButtonGroup>
       {splitOption && <Split />}

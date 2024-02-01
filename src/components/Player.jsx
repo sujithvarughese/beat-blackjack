@@ -71,7 +71,7 @@ const Player = () => {
                                      src={card.img}
                                      alt={card.value}
                                      position="absolute"
-                                     bottom={`calc(30px * ${index})`}
+                                     bottom="85px"
                               />
                               :
                               <Image
@@ -106,6 +106,8 @@ const Player = () => {
                                     className={classes.cardDoubleDown}
                                     src={card.img}
                                     alt={card.value}
+                                    position="absolute"
+                                    bottom="85px"
                                 />
                                 :
                                 <Image
