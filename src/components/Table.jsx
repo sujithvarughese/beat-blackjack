@@ -24,15 +24,18 @@ const Table = () => {
   return (
     <SimpleGrid
       maxWidth="1980px"
+      height="100vh"
       position="relative"
     >
       <Image
         display={{ base: "block", md: "none" }}
         src={tableMobileIMG}
+        height="100vh"
       ></Image>
       <Image
         display={{ base: "none", md: "block" }}
         src={tableIMG}
+        height="100vh"
         filter="blur(3px)"
       ></Image>
 
@@ -52,7 +55,7 @@ const Table = () => {
           textAlign='center'
           left="0"
           right="0"
-          margin="0 auto"
+
           zIndex="10"
       >
         <Dealer />
@@ -68,7 +71,11 @@ const Table = () => {
         <Player />
       </Box>
 
-      <SimpleGrid position="absolute" bottom="3%" right="3%">
+      <SimpleGrid
+        position="absolute"
+        bottom="3%"
+        right="3%"
+      >
         <Actions />
       </SimpleGrid>
 
@@ -81,7 +88,7 @@ const Table = () => {
             justifyContent='center'
             textAlign='center'
             right={{ base: "0", md: "3%" }}
-            bottom={{ base: "10%", md: "3%" }}
+            bottom={{ base: "1%", md: "3%" }}
             left={{ base: "0", md: "revert" }}
             margin="0 auto"
 
@@ -104,9 +111,8 @@ const Table = () => {
       }
 
       {settingsMenuOpen && <SettingsMenu />}
-      {/*showFeedback && <Feedback />*/}
       {shoeEmptyShown && <ShoeEmpty />}
-      {resultsShown && <Results />}
+      {/*resultsShown && <Results />*/}
       {addFundsShown && <AddFunds />}
 
 

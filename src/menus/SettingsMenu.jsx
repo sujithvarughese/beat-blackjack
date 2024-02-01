@@ -117,7 +117,7 @@ const SettingsMenu = () => {
                                   onChange={val=>setSetting({ playerInitialBankroll: val })}
                                   value={settings.playerInitialBankroll}
                                   min={500}
-                                  max={100000}
+                                  max={10000}
                                   step={100}
                                 >
                                     <SliderTrack>

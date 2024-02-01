@@ -64,31 +64,33 @@ const Player = () => {
                           flexDirection="column-reverse"
                       >
                         {
-                            playerHand.map((card, index) =>
-                                (doubledHand && index === 2)
-                              ?
-                              <Image key={index}
-                                     className={classes.cardDoubleDown}
-                                     src={card.img}
-                                     alt={card.value}
-                                     position="absolute"
-                                     bottom="85px"
-                              />
-                              :
-                              <Image
-                                key={index}
-                                className={classes.card}
-                                src={card.img}
-                                alt={card.value}
-                                position="absolute"
-                                bottom={`calc(30px * ${index})`}
-                                sx={{ transform: `translate(calc(20px * ${index}))` }}
-                              />
+                          playerHand.map((card, index) =>
+                              (doubledHand && index === 2)
+                            ?
+                            <Image key={index}
+                                   className={classes.cardDoubleDown}
+                                   src={card.img}
+                                   alt={card.value}
+                                   position="absolute"
+                                   bottom="85px"
+                            />
+                            :
+                            <Image
+                              key={index}
+                              className={classes.card}
+                              src={card.img}
+                              alt={card.value}
+                              position="absolute"
+                              bottom={`calc(30px * ${index})`}
+                              sx={{ transform: `translate(calc(20px * ${index}))` }}
+                            />
                           )
                         }
                       </VStack>
                       {playerHand.length !== 0 &&
-                          <Score playerHand={playerHand}/>
+                          <Box position="absolute" bottom="-55px">
+                            <Score hand={playerHand}/>
+                          </Box>
                       }
                     </VStack>
                   )
@@ -97,38 +99,36 @@ const Player = () => {
             </HStack>
             :
             <VStack>
-                <VStack>
-                    {
-                        playerHand.map((card, index) =>
-                            (doubledHand && index === 2)
-                                ?
-                                <Image
-                                    key={index}
-                                    className={classes.cardDoubleDown}
-                                    src={card.img}
-                                    alt={card.value}
-                                    position="absolute"
-                                    bottom="85px"
-                                />
-                                :
-                                <Image
-                                    key={index}
-                                    className={classes.card}
-                                    src={card.img}
-                                    alt={card.value}
-
-                                    position="absolute"
-                                    bottom={`calc(20px * ${index})`}
-                                    sx={{ transform: `translate(calc(30px * ${index}))` }}
-                                />
-
-
-                        )
-                    }
-
-                </VStack>
+              <VStack>
+              {
+                playerHand.map((card, index) =>
+                  (doubledHand && index === 2)
+                    ?
+                    <Image
+                        key={index}
+                        className={classes.cardDoubleDown}
+                        src={card.img}
+                        alt={card.value}
+                        position="absolute"
+                        bottom="85px"
+                    />
+                    :
+                    <Image
+                        key={index}
+                        className={classes.card}
+                        src={card.img}
+                        alt={card.value}
+                        position="absolute"
+                        bottom={`calc(20px * ${index})`}
+                        sx={{ transform: `translate(calc(30px * ${index}))` }}
+                    />
+                )
+              }
+              </VStack>
               {playerHand.length !== 0 &&
-                  <Score playerHand={playerHand} zIndex="10"/>
+                  <Box position="absolute" bottom="-55px">
+                    <Score hand={playerHand}/>
+                  </Box>
               }
 
             </VStack>
