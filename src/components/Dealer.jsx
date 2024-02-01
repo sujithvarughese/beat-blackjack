@@ -2,7 +2,7 @@ import classes from "./styles/Hands.module.css";
 import {useGameContext} from "../context/game/GameContext.jsx";
 import cardBackIMG from "../assets/images/backs/astronaut.svg";
 import {useEffect} from "react";
-import { Box, Container, HStack, Image, VStack } from '@chakra-ui/react'
+import { Box, Container, HStack, Image, SimpleGrid, VStack } from '@chakra-ui/react'
 import { Score } from './index.js'
 
 //const getValue = (hand) => hand.reduce((acc, card) => acc + card.value, 0)
@@ -24,13 +24,7 @@ const Dealer = () => {
   console.log(dealerHand)
 
     return (
-      <Container>
-        { dealerCardShown === true && dealerHand.length !== 0 &&
-          <Box zIndex="100" position="absolute" top="-50%" left="0" right="0" width="46px" margin="auto">
-            <Score hand={dealerHand} />
-          </Box>
-        }
-
+      <SimpleGrid>
         <HStack position="relative" justifyContent="center" width="100%" sx={{ transform: `translate(70px)` }}>
           {
             dealerHand.map((card, index) =>
@@ -56,7 +50,13 @@ const Dealer = () => {
             )
           }
         </HStack>
-      </Container>
+
+        { dealerCardShown === true && dealerHand.length !== 0 &&
+          <Box zIndex="100" margin="5px auto">
+            <Score hand={dealerHand} />
+          </Box>
+        }
+      </SimpleGrid>
     );
 };
 
