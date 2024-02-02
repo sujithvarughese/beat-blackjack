@@ -13,7 +13,7 @@ const Bankroll = () => {
           color="white"
           fontWeight="800"
           padding={{ base: "5px", sm: "10px"}}
-          borderRadius="5px"
+          borderRadius="10px"
           alignItems="flex-start"
         >
           <HStack>

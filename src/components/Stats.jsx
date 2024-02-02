@@ -39,7 +39,7 @@ const Stats = () => {
       color="white"
       fontWeight="800"
       padding={{ base: "5px", sm: "10px"}}
-      borderRadius="5px"
+      borderRadius="10px"
     >
       <StatLabel>Gain/Loss</StatLabel>
       <StatNumber>{convertToUSD(profit)}</StatNumber>

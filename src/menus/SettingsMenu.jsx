@@ -19,7 +19,7 @@ const SettingsMenu = () => {
     return (
         <Modal isOpen={settingsMenuOpen} onClose={()=>setShowSettingsMenu(false)}>
             <ModalOverlay>
-                <ModalContent padding="30px">
+                <ModalContent padding={{ base: "12px", md: "30px" }} marginX={{ base: "15px", md: "revert" }}>
                     <ModalHeader>
                         <Heading
                           fontSize="24px"
@@ -152,7 +152,7 @@ const SettingsMenu = () => {
                             <HStack width="100%" justifyContent="space-between">
                                 <FormLabel htmlFor="dealerHitSoft17">Dealer Hit Soft 17</FormLabel>
                                 <Switch
-
+                                  colorScheme="orange"
                                   id="dealerHitSoft17"
                                   type="checkbox"
                                   name="dealerHitSoft17"
@@ -165,6 +165,7 @@ const SettingsMenu = () => {
                             <HStack width="100%" justifyContent="space-between">
                                 <FormLabel htmlFor="insuranceAllowed">Insurance</FormLabel>
                                 <Switch
+                                  colorScheme="orange"
                                   name="insuranceAllowed"
                                   id="insuranceAllowed"
                                   value={settings.insuranceAllowed}
@@ -177,6 +178,7 @@ const SettingsMenu = () => {
                             <HStack width="100%" justifyContent="space-between">
                                 <FormLabel htmlFor="evenMoneyAllowed">Even Money on Blackjack</FormLabel>
                                 <Switch
+                                  colorScheme="orange"
                                   name="evenMoneyAllowed"
                                   id="evenMoneyAllowed"
                                   value={settings.evenMoneyAllowed}
@@ -189,6 +191,7 @@ const SettingsMenu = () => {
                             <HStack width="100%" justifyContent="space-between">
                                 <FormLabel htmlFor="surrenderAllowed">Surrender</FormLabel>
                                 <Switch
+                                  colorScheme="orange"
                                   name="surrenderAllowed"
                                   id="surrenderAllowed"
                                   value={settings.surrenderAllowed}
@@ -201,6 +204,7 @@ const SettingsMenu = () => {
                             <HStack width="100%" justifyContent="space-between">
                                 <FormLabel htmlFor="feedback">Live Feedback</FormLabel>
                                 <Switch
+                                  colorScheme="orange"
                                   name="feedback"
                                   id="feedback"
                                   value={settings.feedback}
@@ -213,6 +217,7 @@ const SettingsMenu = () => {
                             <HStack width="100%" justifyContent="space-between">
                                 <FormLabel htmlFor="hints">Hints</FormLabel>
                                 <Switch
+                                  colorScheme="orange"
                                   name="hints"
                                   id="hints"
                                   value={settings.hints}

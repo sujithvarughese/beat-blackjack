@@ -40,7 +40,7 @@ const Table = () => {
         src={tableIMG}
       ></Image>
 
-      <SimpleGrid position="absolute" top="1%" left="1%">
+      <SimpleGrid position="absolute" top="1%" left="1%" display="flex" flexDir="column" gap="5px">
         <Bankroll />
         <Stats />
       </SimpleGrid>
@@ -74,14 +74,7 @@ const Table = () => {
         <Player />
       </Box>
 
-
-
       {(playerTurn || insuranceOpen) && <Actions />}
-
-
-
-
-
 
       {
         placeBetOption &&
