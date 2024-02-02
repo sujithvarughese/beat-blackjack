@@ -1,12 +1,11 @@
-import { Box, Container, HStack, Image, SimpleGrid, useToast, VStack, Text } from '@chakra-ui/react'
+import { Box, Container, HStack, Image, SimpleGrid, VStack, Text } from '@chakra-ui/react'
 import tableIMG from "../assets/images/table-2.png"
 import tableMobileIMG from "../assets/images/table-2 mobile.png"
-import { Bankroll, Player, Dealer, CurrentBet, Results, ShoeEmpty } from './'
+import { Bankroll, Player, Dealer, CurrentBet, Results, ShoeEmpty, StatsMobileWrapper } from './'
 import {Actions, AddFunds, PlaceBet, SettingsMenu} from "../menus"
 import {useGameContext} from "../context/game/GameContext.jsx";
 import { HintButton, SettingsBtn } from "../buttons";
-import { useEffect } from 'react'
-import GameStats from './GameStats.jsx'
+import Stats from './Stats.jsx'
 
 
 const Table = () => {
@@ -39,12 +38,11 @@ const Table = () => {
       <Image
         display={{ base: "none", md: "block" }}
         src={tableIMG}
-        filter="blur(3px)"
       ></Image>
 
       <SimpleGrid position="absolute" top="1%" left="1%">
         <Bankroll />
-        <GameStats />
+        <Stats />
       </SimpleGrid>
 
 
@@ -54,7 +52,7 @@ const Table = () => {
 
       <Box
           position="absolute"
-          top={{ base: "20%", md: "10%" }}
+          top={{ base: "26%", md: "10%" }}
           alignItems='center'
           justifyContent='center'
           textAlign='center'
@@ -110,7 +108,7 @@ const Table = () => {
             left={{ md: "3%" }}
             right={{ base: "2%", md: "revert" }}
             bottom={{ md: "3%" }}
-            top={{ base: "13%", md: "revert" }}
+            top={{ base: "10%", md: "revert" }}
         >
           <HintButton />
         </HStack>

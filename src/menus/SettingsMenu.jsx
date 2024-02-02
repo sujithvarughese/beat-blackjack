@@ -5,7 +5,7 @@ import { HiOutlineRefresh } from "react-icons/hi";
 
 const SettingsMenu = () => {
 
-    const { settings, setSetting, resetSettings, settingsMenuOpen, setShoe, setShowSettingsMenu } = useGameContext()
+    const { settings, setSetting, resetSettings, settingsMenuOpen, setShoe, setShowSettingsMenu, placeBetOption } = useGameContext()
 
     const handleChange = (e) => {
         //setValues({ ...values, [e.target.name]: e.target.value})
@@ -40,7 +40,7 @@ const SettingsMenu = () => {
                             <HiOutlineRefresh />
                         </Button>
                         <VStack gap="14px">
-                            <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" justifyItems="end" alignItems="center">
+                            <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="16px" justifyItems="end" alignItems="center">
                                 <FormLabel htmlFor="numDecks">Decks</FormLabel>
                                 <Slider
                                   aria-label="slider"
@@ -62,7 +62,7 @@ const SettingsMenu = () => {
                                 <Text paddingLeft="4">{settings.numDecks}</Text>
                             </SimpleGrid>
 
-                            <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="1px" justifyItems="end" alignItems="center">
+                            <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="9px" justifyItems="end" alignItems="center">
                                 <FormLabel htmlFor="minBet" display="flex">MinBet</FormLabel>
                                 <Slider
                                   aria-label="slider"
@@ -84,8 +84,8 @@ const SettingsMenu = () => {
                                 <Text>${settings.minBet}</Text>
                             </SimpleGrid>
 
-                            <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="5px" justifyItems="end" alignItems="center">
-                                <FormLabel htmlFor="minBet">MaxBet</FormLabel>
+                            <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="4px" justifyItems="end" alignItems="center">
+                                <FormLabel htmlFor="maxBet">MaxBet</FormLabel>
                                 <Slider
                                   aria-label="slider"
                                   colorScheme="yellow"
@@ -106,7 +106,7 @@ const SettingsMenu = () => {
                                 <Text>${settings.maxBet}</Text>
                             </SimpleGrid>
 
-                            <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="5px" justifyItems="end" alignItems="center">
+                            <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" justifyItems="end" alignItems="center">
                                 <FormLabel htmlFor="playerInitialBankroll">Bankroll</FormLabel>
                                 <Slider
                                   aria-label="slider"
@@ -128,7 +128,7 @@ const SettingsMenu = () => {
                                 <Text>${settings.playerInitialBankroll}</Text>
                             </SimpleGrid>
 
-                            <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="1px" justifyItems="end" alignItems="center">
+                            <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="18px" justifyItems="end" alignItems="center">
                                 <FormLabel htmlFor="maxNumSplits" display="flex">Splits</FormLabel>
                                 <Slider
                                   aria-label="slider"
@@ -239,6 +239,7 @@ const SettingsMenu = () => {
 
 
                             <ButtonGroup colorScheme="yellow">
+                                {placeBetOption && <Button onClick={()=>setShowSettingsMenu(false)}>Resume</Button>}
                                 <Button onClick={setShoe}>Start Game</Button>
                             </ButtonGroup>
                         </VStack>
