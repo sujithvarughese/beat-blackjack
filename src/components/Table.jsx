@@ -6,6 +6,7 @@ import {Actions, AddFunds, PlaceBet, SettingsMenu} from "../menus"
 import {useGameContext} from "../context/game/GameContext.jsx";
 import { HintButton, Settings } from "../buttons";
 import { useEffect } from 'react'
+import GameStats from './GameStats.jsx'
 
 
 const Table = () => {
@@ -24,7 +25,6 @@ const Table = () => {
   return (
     <SimpleGrid
       maxWidth="1980px"
-      height="100vh"
       position="relative"
       margin="auto"
     >
@@ -77,6 +77,10 @@ const Table = () => {
         right="3%"
       >
         <Actions />
+      </SimpleGrid>
+
+      <SimpleGrid>
+        <GameStats />
       </SimpleGrid>
 
       {

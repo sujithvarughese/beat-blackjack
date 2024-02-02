@@ -100,14 +100,9 @@ const initialState = {
     dealerCardShown: false,
     resultsShown: false,
     winner: 0,
-    netProfit: 0,
+    handWinLossAmount: 0,
+    numHandsPlayed: 0,
 
-    statistics: {
-        winPercent: "", // --> formant "x% / y hands"
-        avgBetSize: 0,
-        netProfit: "",
-        count: "", // --> format "+4"
-    }
 }
 
 const GameProvider = ({ children }) => {
@@ -238,7 +233,7 @@ const GameProvider = ({ children }) => {
 
             playerBankroll: state.playerBankroll - state.bet,
             currentBet: state.bet,
-            netProfit: 0,
+            handWinLossAmount: 0,
 
             splitCount: 0,
             totalSplits: 0,
@@ -311,7 +306,8 @@ const GameProvider = ({ children }) => {
                 status = {
                     ...status,
                     playerBankroll: state.playerBankroll, // overwrite where we deducted one bet
-                    netProfit: 0,
+                    handWinLossAmount: 0,
+                    numHandsPlayed: state.numHandsPlayed + 1,
                     resultsShown: true,
                     dealerCardShown: true,
                     placeBetOption: true
@@ -319,7 +315,8 @@ const GameProvider = ({ children }) => {
             } else {
                 status = {
                     ...status,
-                    netProfit: -currentBet,
+                    handWinLossAmount: state.handWinLossAmount + currentBet * -1,
+                    numHandsPlayed: state.numHandsPlayed + 1,
                     resultsShown: true,
                     dealerCardShown: true,
                     placeBetOption: true
@@ -336,7 +333,8 @@ const GameProvider = ({ children }) => {
         if (dealerBlackjack) {
             status = {
                 ...status,
-                netProfit: -currentBet,
+                handWinLossAmount: state.handWinLossAmount + currentBet * -1,
+                numHandsPlayed: state.numHandsPlayed + 1,
                 resultsShown: true,
                 dealerCardShown: true,
                 placeBetOption: true,
@@ -353,7 +351,8 @@ const GameProvider = ({ children }) => {
                 resultsShown: true,
                 dealerCardShown: true,
                 playerBlackjack: true,
-                netProfit: currentBet * Number(state.settings.blackjackPayout),
+                handWinLossAmount: state.handWinLossAmount + currentBet * Number(state.settings.blackjackPayout),
+                numHandsPlayed: state.numHandsPlayed + 1,
                 playerBankroll: state.playerBankroll + state.bet * Number(state.settings.blackjackPayout),
                 placeBetOption: true,
             }
@@ -386,7 +385,8 @@ const GameProvider = ({ children }) => {
         const status = {
             winner: 1,
             playerBankroll:  state.playerBankroll + state.currentBet + state.currentBet,
-            netProfit: state.currentBet,
+            handWinLossAmount: state.currentBet,
+            numHandsPlayed: state.numHandsPlayed + 1,
             placeBetOption: true,
             dealerCardShown: true,
             resultsShown: true
@@ -398,11 +398,11 @@ const GameProvider = ({ children }) => {
     }
     const handleInsurance = () => {
         let status = {}
-        console.log(state.dealerBlackjack)
         if (state.dealerBlackjack) {
             status = {
                 playerBankroll: state.playerBankroll + state.currentBet,
-                netProfit: 0,
+                handWinLossAmount: 0,
+                numHandsPlayed: state.numHandsPlayed + 1,
                 winner: 0,
                 resultsShown: true,
                 dealerCardShown: true,
@@ -435,7 +435,8 @@ const GameProvider = ({ children }) => {
                 resultsShown: true,
                 dealerCardShown: true,
                 dealerBlackjack: true,
-                netProfit: -state.currentBet,
+                handWinLossAmount: state.handWinLossAmount - state.currentBet,
+                numHandsPlayed: state.numHandsPlayed + 1,
                 placeBetOption: true,
             }
         }  else if (state.playerBlackjack) {
@@ -443,7 +444,8 @@ const GameProvider = ({ children }) => {
                 resultsShown: true,
                 dealerCardShown: true,
                 playerBlackjack: true,
-                netProfit: currentBet * Number(state.settings.blackjackPayout),
+                handWinLossAmount: state.handWinLossAmount + currentBet * Number(state.settings.blackjackPayout),
+                numHandsPlayed: state.numHandsPlayed + 1,
                 playerBankroll: state.playerBankroll + state.bet * Number(state.settings.blackjackPayout),
                 placeBetOption: true,
             }
@@ -582,6 +584,8 @@ const GameProvider = ({ children }) => {
                 placeBetOption: state.shoe.length > 12,
                 shoeEmptyShown: state.shoe.length <= 12,
                 addFundsShown: state.playerBankroll < state.settings.minBet,
+                handWinLossAmount: state.handWinLossAmount,
+                numHandsPlayed: state.numHandsPlayed + 1,
                 resultsShown: true,
                 dealerCardShown: true,
                 dealerTurn: true,
@@ -617,10 +621,6 @@ const GameProvider = ({ children }) => {
                 playerTurn: false,
                 dealerTurn: true,
                 dealerCardShown: true,
-                placeBetOption: state.shoe.length > 12,
-                shoeEmptyShown: state.shoe.length <= 12,
-                addFundsShown: state.playerBankroll < state.settings.minBet,
-                resultsShown: true
             }
         }
 
@@ -637,7 +637,8 @@ const GameProvider = ({ children }) => {
             bookMove: bookMove,
             showFeedback: state.settings.feedback,
             playerBankroll: state.playerBankroll + state.bet * 0.5,
-            netProfit: -state.bet * 0.5,
+            handWinLossAmount: -state.bet * 0.5,
+            numHandsPlayed: state.numHandsPlayed + 1,
             hitOption: false,
             stayOption: false,
             doubleDownOption: false,
@@ -652,6 +653,8 @@ const GameProvider = ({ children }) => {
             payload: { status }
         })
     }
+    
+    
 
     const playerSplit = () => {
         // array that holds each split hand
@@ -763,47 +766,52 @@ const GameProvider = ({ children }) => {
     }
 
     const determineWinner = () => {
-        let netProfit = 0
         let status = {
             dealerTurn: false,
             resultsShown: true,
             placeBetOption: state.shoe.length > 12,
             shoeEmptyShown: state.shoe.length <= 12,
-            addFundsShown: state.playerBankroll < state.settings.minBet
+            addFundsShown: state.playerBankroll < state.settings.minBet,
+            numHandsPlayed: state.numHandsPlayed + 1,
         }
-        const getProfit = () => {
+
+        const getProfit = (index) => {
             const playerScore = state.playerHand.reduce((acc, card) => acc + card.value, 0)
             const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
+            let currentBet = state.bet
+            if (state.splitHand === true && state.splitHand[index] === true) {
+                currentBet += state.bet
+            }
+            if (!state.splitHand && state.doubledHand === true) {
+                currentBet += state.bet
+            }
+
             if (dealerScore > 21 || playerScore > dealerScore) {
-                netProfit += currentBet * 2
                 status = {
                     ...status,
-                    playerBankroll: state.doubledHand ? state.playerBankroll + state.bet * 4 : state.playerBankroll + state.bet * 2,
-                    winner: 1,
+                    handWinLossAmount: state.handWinLossAmount + currentBet,
+                    playerBankroll: state.playerBankroll + currentBet,
                 }
             } else if (dealerScore > playerScore) {
                 status = {
                     ...status,
-                    winner: -1
+                    handWinLossAmount: state.handWinLossAmount - currentBet,
+                    playerBankroll: state.playerBankroll - currentBet,
                 }
             } else {
-                netProfit += currentBet
                 status = {
                     ...status,
-                    winner: 0,
-                    playerBankroll: state.playerBankroll + state.bet
+                    playerBankroll: state.playerBankroll + currentBet
                 }
             }
         }
-
         if (state.splitHand) {
             state.splitHands.forEach((hand, index) => {
-                getProfit()
+                getProfit(index)
             })
         } else {
             getProfit()
         }
-        status = { ...status, netProfit }
         dispatch({
             type: DETERMINE_WINNER,
             payload: { status }

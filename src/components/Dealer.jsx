@@ -21,7 +21,6 @@ const Dealer = () => {
       }
     }
   }, [dealerCardShown, dealerHand]);
-  console.log(dealerHand)
 
     return (
       <SimpleGrid>

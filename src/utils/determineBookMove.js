@@ -6,7 +6,7 @@ const determineBookMove = (playerAce11, dealerFaceUp, playerScore, playerHand, s
   const split = "split"
   const surrender = "surrender"
 
-  console.log(`playerAcr: ${playerAce11}, dealerFaceUp: ${dealerFaceUp}, playerScore: ${playerScore}, splitsAllowed: ${splitsAllowed}, surrenderAllowed: ${surrenderAllowed}`)
+  // console.log(`playerAcr: ${playerAce11}, dealerFaceUp: ${dealerFaceUp}, playerScore: ${playerScore}, splitsAllowed: ${splitsAllowed}, surrenderAllowed: ${surrenderAllowed}`)
 
   if (!playerAce11) {
     if (playerScore >= 17) {
