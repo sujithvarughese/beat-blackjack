@@ -54,8 +54,7 @@ const Player = () => {
           splitHand ?
             <HStack
               width="100%"
-              justifyContent="center"
-              gap="250px"
+              justifyContent="space-around"
             >
               {
                 splitHands.map((playerHand, index) => {
@@ -89,7 +88,7 @@ const Player = () => {
                         }
                       </VStack>
                       {playerHand.length !== 0 &&
-                          <Box position="absolute" bottom="-55px">
+                          <Box position="absolute" bottom="5px" width="55px" textAlign="center">
                             <Score hand={playerHand}/>
                           </Box>
                       }
@@ -127,7 +126,7 @@ const Player = () => {
               }
               </VStack>
               {playerHand.length !== 0 &&
-                  <Box position="absolute" bottom="-55px">
+                  <Box position="absolute" bottom="5px" width="55px" textAlign="center">
                     <Score hand={playerHand}/>
                   </Box>
               }

@@ -6,7 +6,7 @@ const SurrenderBtn = () => {
 
     if (!settings.surrenderAllowed) return
 
-    return <Button onClick={surrender} colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Surrender</Button>;
+    return <Button onClick={surrender} width="100%" colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Surrender</Button>;
 };
 
 export default SurrenderBtn;

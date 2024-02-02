@@ -1,10 +1,11 @@
 import { Stats } from "./"
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Container, SimpleGrid } from '@chakra-ui/react'
 
-const StatsMobileWrapper = () => {
+const StatsWrapper = (props) => {
   return (
     <Accordion
       allowToggle
+
     >
       <AccordionItem border="solid 3px #ECC94B"
         backgroundColor="black"
@@ -18,7 +19,7 @@ const StatsMobileWrapper = () => {
         </AccordionButton>
 
        <AccordionPanel padding="none" margin="0">
-        <SimpleGrid width="100%"><Stats /></SimpleGrid>
+         {props.children}
        </AccordionPanel>
 
 
@@ -28,4 +29,4 @@ const StatsMobileWrapper = () => {
   )
 }
 
-export default StatsMobileWrapper
+export default StatsWrapper

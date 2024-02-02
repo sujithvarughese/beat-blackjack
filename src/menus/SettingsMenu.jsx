@@ -138,7 +138,7 @@ const SettingsMenu = () => {
                                   onChange={val=>setSetting({ maxNumSplits: val })}
                                   value={settings.maxNumSplits}
                                   min={0}
-                                  max={6}
+                                  max={3}
                                   step={1}
                                 >
                                     <SliderTrack>

@@ -2,7 +2,7 @@ import { ButtonGroup } from '@chakra-ui/react'
 import { DoubleBtn, InsuranceBtnGrp, HitBtn, SplitBtn, StayBtn, SurrenderBtn, EvenMoneyBtnGrp } from '../buttons/index.js'
 import { useGameContext } from '../context/game/GameContext.jsx'
 
-const Actions = () => {
+const ActionButtons = () => {
 
   const { insuranceOpen } = useGameContext()
 
@@ -25,4 +25,4 @@ const Actions = () => {
   )
 }
 
-export default Actions
+export default ActionButtons

@@ -5,7 +5,7 @@ const HitBtn = () => {
 
     const { playerHit } = useGameContext()
 
-    return <Button onClick={playerHit} colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Hit</Button>;
+    return <Button onClick={playerHit} width="100%" colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Hit</Button>;
 };
 
 export default HitBtn;

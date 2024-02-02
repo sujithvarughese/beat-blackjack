@@ -5,7 +5,7 @@ const StayBtn = () => {
 
     const { playerStay } = useGameContext()
 
-    return <Button onClick={playerStay} colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Stay</Button>;
+    return <Button onClick={playerStay} width="100%" colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Stay</Button>;
 };
 
 export default StayBtn;

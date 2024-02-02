@@ -51,7 +51,7 @@ const Dealer = () => {
         </HStack>
 
         { dealerCardShown === true && dealerHand.length !== 0 &&
-          <Box zIndex="100" margin="5px auto">
+          <Box zIndex="100" position="absolute" left="0" right="0" width="55px" top="75px" textAlign="center" margin="auto">
             <Score hand={dealerHand} />
           </Box>
         }

@@ -1,38 +1,37 @@
 import {useGameContext} from "../context/game/GameContext.jsx";
-import { Alert, AlertTitle, Box } from '@chakra-ui/react'
+import { Alert, AlertTitle, Text } from '@chakra-ui/react'
+import { convertToUSD }from "../utils/calculations.js"
 const Results = () => {
 
-    const { winner, playerBlackjack, dealerBlackjack } = useGameContext()
+    const { handWinLossAmount, playerBlackjack, dealerBlackjack } = useGameContext()
 
-    let text
-    let type
-    if (winner === 1) {
-        text = "You Win"
-    } else if (winner === -1) {
-        text = "You Lose"
+    let heading = ""
+    let description = ""
+    if (handWinLossAmount > 0) {
+        heading = "You Win"
+    } else if (handWinLossAmount > 0) {
+        heading = "You Lose"
     } else {
-        text = "Push"
+        heading = "Push"
     }
     if (playerBlackjack) {
-        text = "Congratulations, you have blackjack!"
+        heading = "Congratulations, you have blackjack!"
     }
     if (dealerBlackjack) {
-        text = "Sorry, dealer has blackjack"
+        heading = "Dealer has blackjack"
     }
 
     return (
         <Alert
           variant='subtle'
-          flexDirection='column'
+          flexDirection="column"
           alignItems='center'
           justifyContent='center'
           textAlign='center'
-          height={{base: "50px", lg: "100px"}}
-          width={{base: "90%", lg: "50%"}}
+          maxWidth={{base: "90%", lg: "50%"}}
           position="absolute"
-          top="12%"
-          left="0"
-          right="0"
+          placeSelf="center"
+          placeItems="center"
           margin="auto"
           zIndex="10"
           backgroundColor="black"
@@ -40,15 +39,12 @@ const Results = () => {
           padding="12px"
           borderRadius="10px"
           opacity="75%"
+          color="white"
         >
-            <Box>
-                <AlertTitle
-                    color="white"
-                    fontSize="32px"
-                    lineHeight="1.5"
-                >{text}
-                </AlertTitle>
-            </Box>
+
+            <AlertTitle fontSize="32px" textAlign="center">{heading}</AlertTitle>
+            <Text fontSize="20px" textAlign="center">Net Gain: {convertToUSD(handWinLossAmount)}</Text>
+
 
 
         </Alert>

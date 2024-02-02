@@ -1,8 +1,8 @@
 import { Box, Container, HStack, Image, SimpleGrid, VStack, Text } from '@chakra-ui/react'
 import tableIMG from "../assets/images/table-2.png"
 import tableMobileIMG from "../assets/images/table-2 mobile.png"
-import { Bankroll, Player, Dealer, CurrentBet, Results, ShoeEmpty, StatsMobileWrapper } from './'
-import {Actions, AddFunds, PlaceBet, SettingsMenu} from "../menus"
+import { Bankroll, Player, Dealer, CurrentBet, Results, ShoeEmpty, StatsWrapper } from './'
+import {ActionButtons, AddFunds, PlaceBet, SettingsMenu} from "../menus"
 import {useGameContext} from "../context/game/GameContext.jsx";
 import { HintButton, SettingsBtn } from "../buttons";
 import Stats from './Stats.jsx'
@@ -74,7 +74,7 @@ const Table = () => {
         <Player />
       </Box>
 
-      {(playerTurn || insuranceOpen) && <Actions />}
+      {(playerTurn || insuranceOpen) && <ActionButtons />}
 
       {
         placeBetOption &&
@@ -109,7 +109,7 @@ const Table = () => {
 
       {settingsMenuOpen && <SettingsMenu />}
       {shoeEmptyShown && <ShoeEmpty />}
-      {/*resultsShown && <Results />*/}
+      {resultsShown && <Results />}
       {addFundsShown && <AddFunds />}
 
 

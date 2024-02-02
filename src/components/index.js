@@ -6,9 +6,9 @@ import ShoeEmpty from '../menus/ShoeEmpty.jsx'
 import Results from "./Results.jsx";
 import Score from "./Score.jsx"
 import Stats from './Stats.jsx'
-import StatsMobileWrapper from './StatsMobileWrapper.jsx'
+import StatsWrapper from './StatsWrapper.jsx'
 import Table from "./Table.jsx";
 
 
 
-export { Bankroll, CurrentBet, Dealer, Player, Results, Score, ShoeEmpty, Stats, StatsMobileWrapper, Table }
+export { Bankroll, CurrentBet, Dealer, Player, Results, Score, ShoeEmpty, Stats, StatsWrapper, Table }

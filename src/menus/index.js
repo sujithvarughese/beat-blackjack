@@ -1,6 +1,6 @@
-import Actions from './Actions.jsx'
+import ActionButtons from './ActionButtons.jsx'
 import AddFunds from './AddFunds.jsx'
 import PlaceBet from './PlaceBet.jsx'
 import SettingsMenu from './SettingsMenu.jsx'
 
-export { Actions, AddFunds, PlaceBet, SettingsMenu }
+export { ActionButtons, AddFunds, PlaceBet, SettingsMenu }

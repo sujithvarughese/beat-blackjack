@@ -7,7 +7,7 @@ const DoubleBtn = () => {
 
     if (playerHand.length !== 2) return
 
-    return <Button onClick={playerDoubleDown} colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Double</Button>;
+    return <Button onClick={playerDoubleDown} width="100%" colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Double</Button>;
 };
 
 export default DoubleBtn;
