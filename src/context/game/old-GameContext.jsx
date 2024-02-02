@@ -26,11 +26,11 @@ import {
     SHOW_ADD_FUNDS,
     SHOW_SHOE_EMPTY_ALERT
 } from './game-actions.js'
+import currentBet from '../../components/CurrentBet.jsx'
 
-const GameContext = createContext()
+const OldGameContext = createContext()
 
-const initialState= {
-
+const initialState = {
     settingsMenuOpen: true,
 
     settings: {
@@ -52,6 +52,7 @@ const initialState= {
     shoe: [],
 
     bet: 25,
+    currentBet: 0,
     playerHand: [],
     dealerHand: [],
     dealerFaceUpValue: 0,
@@ -63,8 +64,6 @@ const initialState= {
 
     playerTurn: false,
     dealerTurn: false,
-
-    insuranceOpen: false,
 
     doubledHand: false,
     splitHand: false,
@@ -233,6 +232,7 @@ const GameProvider = ({ children }) => {
             evenMoneyOption: false,
 
             playerBankroll: state.playerBankroll - state.bet,
+            currentBet: state.bet,
             handWinLossAmount: 0,
 
             splitCount: 0,
@@ -315,7 +315,7 @@ const GameProvider = ({ children }) => {
             } else {
                 status = {
                     ...status,
-                    handWinLossAmount: state.handWinLossAmount + state.bet * -1,
+                    handWinLossAmount: state.handWinLossAmount + currentBet * -1,
                     numHandsPlayed: state.numHandsPlayed + 1,
                     resultsShown: true,
                     dealerCardShown: true,
@@ -333,7 +333,7 @@ const GameProvider = ({ children }) => {
         if (dealerBlackjack) {
             status = {
                 ...status,
-                handWinLossAmount: state.handWinLossAmount + state.bet * -1,
+                handWinLossAmount: state.handWinLossAmount + currentBet * -1,
                 numHandsPlayed: state.numHandsPlayed + 1,
                 resultsShown: true,
                 dealerCardShown: true,
@@ -351,7 +351,7 @@ const GameProvider = ({ children }) => {
                 resultsShown: true,
                 dealerCardShown: true,
                 playerBlackjack: true,
-                handWinLossAmount: state.handWinLossAmount + state.bet * Number(state.settings.blackjackPayout),
+                handWinLossAmount: state.handWinLossAmount + currentBet * Number(state.settings.blackjackPayout),
                 numHandsPlayed: state.numHandsPlayed + 1,
                 playerBankroll: state.playerBankroll + state.bet * Number(state.settings.blackjackPayout),
                 placeBetOption: true,
@@ -384,8 +384,8 @@ const GameProvider = ({ children }) => {
     const handleEvenMoney = () => {
         const status = {
             winner: 1,
-            playerBankroll:  state.playerBankroll + state.bet + state.bet,
-            handWinLossAmount: state.bet,
+            playerBankroll:  state.playerBankroll + state.currentBet + state.currentBet,
+            handWinLossAmount: state.currentBet,
             numHandsPlayed: state.numHandsPlayed + 1,
             placeBetOption: true,
             dealerCardShown: true,
@@ -400,7 +400,7 @@ const GameProvider = ({ children }) => {
         let status = {}
         if (state.dealerBlackjack) {
             status = {
-                playerBankroll: state.playerBankroll + state.bet,
+                playerBankroll: state.playerBankroll + state.currentBet,
                 handWinLossAmount: 0,
                 numHandsPlayed: state.numHandsPlayed + 1,
                 winner: 0,
@@ -411,7 +411,7 @@ const GameProvider = ({ children }) => {
             }
         } else {
             status = {
-                playerBankroll: state.playerBankroll - state.bet * 0.5,
+                playerBankroll: state.playerBankroll - state.currentBet * 0.5,
                 playerTurn: true,
                 hitOption: true,
                 stayOption: true,
@@ -435,7 +435,7 @@ const GameProvider = ({ children }) => {
                 resultsShown: true,
                 dealerCardShown: true,
                 dealerBlackjack: true,
-                handWinLossAmount: state.handWinLossAmount - state.bet,
+                handWinLossAmount: state.handWinLossAmount - state.currentBet,
                 numHandsPlayed: state.numHandsPlayed + 1,
                 placeBetOption: true,
             }
@@ -444,7 +444,7 @@ const GameProvider = ({ children }) => {
                 resultsShown: true,
                 dealerCardShown: true,
                 playerBlackjack: true,
-                handWinLossAmount: state.handWinLossAmount + state.bet * Number(state.settings.blackjackPayout),
+                handWinLossAmount: state.handWinLossAmount + currentBet * Number(state.settings.blackjackPayout),
                 numHandsPlayed: state.numHandsPlayed + 1,
                 playerBankroll: state.playerBankroll + state.bet * Number(state.settings.blackjackPayout),
                 placeBetOption: true,
@@ -560,6 +560,7 @@ const GameProvider = ({ children }) => {
             bookMove: bookMove,
             showFeedback: state.settings.feedback,
             playerBankroll: state.playerBankroll - state.bet,
+            currentBet: state.bet * 2,
             doubledHand: true,
             hitOption: false,
             stayOption: false,
@@ -819,7 +820,7 @@ const GameProvider = ({ children }) => {
 
 
     return (
-        <GameContext.Provider value={
+        <OldGameContext.Provider value={
             {
                 ...state,
                 setShowSettingsMenu,
@@ -846,10 +847,10 @@ const GameProvider = ({ children }) => {
             }
         }>
             { children }
-        </GameContext.Provider>
+        </OldGameContext.Provider>
     )
 }
 
-const useGameContext = () => useContext(GameContext)
+const useGameContext = () => useContext(OldGameContext)
 
 export { GameProvider, useGameContext };

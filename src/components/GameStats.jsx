@@ -1,6 +1,6 @@
 import { useGameContext } from '../context/game/GameContext.jsx'
 import { useEffect, useState } from 'react'
-import { Box, HStack, Text } from '@chakra-ui/react'
+import { Box, HStack, SimpleGrid, Stat, StatArrow, StatHelpText, StatLabel, StatNumber, Text } from '@chakra-ui/react'
 import { convertToUSD } from '../utils/calculations.js'
 
 const GameStats = () => {
@@ -16,8 +16,6 @@ const GameStats = () => {
     const calculateROI = () => (profit/totalWagered) * 100
     const currentRoi = calculateROI()
 
-  console.log(profit)
-  console.log(totalWagered)
 
     useEffect(() => {
       if (numHandsPlayed < 1) return
@@ -28,24 +26,31 @@ const GameStats = () => {
     }, [numHandsPlayed])
 
     return (
-        <Box>
-            <HStack>
-                <Text>Hands Played</Text>
-                <Text>{numHandsPlayed}</Text>
-            </HStack>
-            <HStack>
-                <Text>Average Bet</Text>
-                <Text>{convertToUSD(avgBetSize)}</Text>
-            </HStack>
-            <HStack>
-                <Text>Profit</Text>
-                <Text>{convertToUSD(profit)}</Text>
-            </HStack>
-            <HStack>
-                <Text>ROI</Text>
-                <Text>{Math.round(roi)}%</Text>
-            </HStack>
-        </Box>
+
+      <Stat
+        border="solid 3px #ECC94B"
+        backgroundColor="black"
+        color="white"
+        fontWeight="800"
+        padding={{ base: "5px", sm: "10px"}}
+        borderRadius="5px"
+      >
+        <StatLabel>Gain/Loss</StatLabel>
+        <StatNumber>{convertToUSD(profit)}</StatNumber>
+
+        <StatHelpText>
+          <StatArrow type={profit >= 0 ? "increase" : "decrease"}/>
+          ROI: {Math.round(roi)}%
+        </StatHelpText>
+        <StatLabel>
+          Hands Played: {numHandsPlayed}
+        </StatLabel>
+        <StatLabel>
+          Average Bet: {convertToUSD(avgBetSize)}
+        </StatLabel>
+      </Stat>
+
+
     )
 }
 

@@ -4,7 +4,7 @@ import tableMobileIMG from "../assets/images/table-2 mobile.png"
 import { Bankroll, Feedback, Player, Dealer, CurrentBet, Results, ShoeEmpty } from './'
 import {Actions, AddFunds, PlaceBet, SettingsMenu} from "../menus"
 import {useGameContext} from "../context/game/GameContext.jsx";
-import { HintButton, Settings } from "../buttons";
+import { HintButton, SettingsBtn } from "../buttons";
 import { useEffect } from 'react'
 import GameStats from './GameStats.jsx'
 
@@ -39,12 +39,16 @@ const Table = () => {
         filter="blur(3px)"
       ></Image>
 
-      <Box position="absolute" top="1%" left="1%">
+      <SimpleGrid         position="absolute"
+                          top="1%"
+                          left="1%">
         <Bankroll />
-      </Box>
+        <GameStats />
+      </SimpleGrid>
+
 
       <Box position="absolute" top="2%" right="2%">
-        <Settings />
+        <SettingsBtn />
       </Box>
 
       <Box
@@ -71,17 +75,20 @@ const Table = () => {
         <Player />
       </Box>
 
+
+
       <SimpleGrid
         position="absolute"
         bottom="3%"
-        right="3%"
+        right={{ base: "revert", md: "3%" }}
+        width={{ base: "100%", md: "revert" }}
       >
         <Actions />
       </SimpleGrid>
 
-      <SimpleGrid>
-        <GameStats />
-      </SimpleGrid>
+
+
+
 
       {
         placeBetOption &&

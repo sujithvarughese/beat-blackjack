@@ -3,7 +3,7 @@ import { RiSettings5Fill } from "react-icons/ri";
 import { Button } from '@chakra-ui/react'
 import { useGameContext } from '../context/game/GameContext.jsx'
 
-const Settings = () => {
+const SettingsBtn = () => {
 
   const { setShowSettingsMenu } = useGameContext()
 
@@ -20,4 +20,4 @@ const Settings = () => {
   )
 }
 
-export default Settings
+export default SettingsBtn

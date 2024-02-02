@@ -1,12 +1,12 @@
 
-import DoubleDown from "./DoubleDown.jsx";
-import TakeInsurance from "./TakeInsurance.jsx";
+import DoubleBtn from "./DoubleBtn.jsx";
+import InsuranceBtnGrp from "./InsuranceBtnGrp.jsx";
 import HintButton from './HintButton.jsx'
-import Hit from "./Hit.jsx"
-import Settings from './Settings.jsx'
-import Split from "./Split.jsx";
-import Stay from "./Stay.jsx"
-import Surrender from "./Surrender.jsx";
-import TakeEvenMoney from "./TakeEvenMoney.jsx";
+import HitBtn from "./HitBtn.jsx"
+import SettingsBtn from './SettingsBtn.jsx'
+import SplitBtn from "./SplitBtn.jsx";
+import StayBtn from "./StayBtn.jsx"
+import SurrenderBtn from "./SurrenderBtn.jsx";
+import EvenMoneyBtnGrp from "./EvenMoneyBtnGrp.jsx";
 
-export { DoubleDown, TakeInsurance, HintButton, Hit, Settings, Split, Stay, Surrender, TakeEvenMoney }
+export { DoubleBtn, InsuranceBtnGrp, HintButton, HitBtn, SettingsBtn, SplitBtn, StayBtn, SurrenderBtn, EvenMoneyBtnGrp }
