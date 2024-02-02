@@ -13,7 +13,8 @@ const Player = () => {
     splitCount,
     playNextSplitHand,
     actionTaken,
-    bookMove
+    bookMove,
+    settings
   } = useGameContext()
 
   const toast = useToast()
@@ -36,7 +37,7 @@ const Player = () => {
 
 
   useEffect(() => {
-    if (!bookMove) return
+    if (!bookMove || settings.feedback === false) return
     toast.closeAll()
     toast(options)
   }, [playerHand, bookMove])

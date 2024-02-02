@@ -1,7 +1,7 @@
 import { Box, Container, HStack, Image, SimpleGrid, useToast, VStack, Text } from '@chakra-ui/react'
 import tableIMG from "../assets/images/table-2.png"
 import tableMobileIMG from "../assets/images/table-2 mobile.png"
-import { Bankroll, Feedback, Player, Dealer, CurrentBet, Results, ShoeEmpty } from './'
+import { Bankroll, Player, Dealer, CurrentBet, Results, ShoeEmpty } from './'
 import {Actions, AddFunds, PlaceBet, SettingsMenu} from "../menus"
 import {useGameContext} from "../context/game/GameContext.jsx";
 import { HintButton, SettingsBtn } from "../buttons";
@@ -12,6 +12,9 @@ import GameStats from './GameStats.jsx'
 const Table = () => {
 
   const {
+    playerTurn,
+    insuranceOpen,
+
     resultsShown,
     placeBetOption,
     settingsMenuOpen,
@@ -39,9 +42,7 @@ const Table = () => {
         filter="blur(3px)"
       ></Image>
 
-      <SimpleGrid         position="absolute"
-                          top="1%"
-                          left="1%">
+      <SimpleGrid position="absolute" top="1%" left="1%">
         <Bankroll />
         <GameStats />
       </SimpleGrid>
@@ -77,14 +78,8 @@ const Table = () => {
 
 
 
-      <SimpleGrid
-        position="absolute"
-        bottom="3%"
-        right={{ base: "revert", md: "3%" }}
-        width={{ base: "100%", md: "revert" }}
-      >
-        <Actions />
-      </SimpleGrid>
+      {(playerTurn || insuranceOpen) && <Actions />}
+
 
 
 
@@ -109,7 +104,7 @@ const Table = () => {
       }
 
       {
-        hintOption &&
+        playerTurn &&
         <HStack
             position="absolute"
             left={{ md: "3%" }}

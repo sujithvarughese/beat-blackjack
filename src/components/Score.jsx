@@ -11,7 +11,6 @@ const Score = ({ hand }) => {
             borderRadius="8px"
             padding="2px"
             zIndex="10"
-
         >
             {hand.reduce((acc, card) => acc + card.value, 0)}
         </Heading>

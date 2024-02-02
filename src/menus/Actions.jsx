@@ -4,30 +4,23 @@ import { useGameContext } from '../context/game/GameContext.jsx'
 
 const Actions = () => {
 
-  const {
-    hitOption,
-    stayOption,
-    doubleDownOption,
-    splitOption,
-    insuranceOption,
-    evenMoneyOption,
-    surrenderOption,
-
-    playerTurn,
-    insuranceOpen
-  } = useGameContext()
+  const { insuranceOpen } = useGameContext()
 
   return (
     <ButtonGroup
-      justifyContent="space-around" flex-wrap="wrap"
+      position="absolute"
+      bottom="3%"
+      right={{ base: "revert", md: "3%" }}
+      width={{ base: "100%", md: "revert" }}
+      justifyContent="space-around"
+      flex-wrap="wrap"
     >
-      {splitOption && <SplitBtn />}
-      {evenMoneyOption && <EvenMoneyBtnGrp />}
-      {insuranceOption && <InsuranceBtnGrp />}
-      {surrenderOption && <SurrenderBtn />}
-      {doubleDownOption && <DoubleBtn />}
-      {hitOption && <HitBtn />}
-      {stayOption && <StayBtn />}
+      {insuranceOpen && <EvenMoneyBtnGrp /> && <InsuranceBtnGrp />}
+      <SurrenderBtn />
+      <SplitBtn />
+      <DoubleBtn />
+      <HitBtn />
+      <StayBtn />
     </ButtonGroup>
   )
 }
