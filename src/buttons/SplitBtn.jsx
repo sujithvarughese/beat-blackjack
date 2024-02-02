@@ -4,8 +4,7 @@ import { useGameContext } from '../context/game/GameContext.jsx'
 const SplitBtn = () => {
 
     const { playerSplit, totalSplits, playerHand, settings } = useGameContext()
-    console.log(totalSplits)
-    console.log(settings.maxNumSplits)
+
     if (
       settings.maxNumSplits === 0 ||
       totalSplits >= settings.maxNumSplits ||

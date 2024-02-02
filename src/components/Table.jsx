@@ -34,6 +34,7 @@ const Table = () => {
         display={{ base: "block", md: "none" }}
         src={tableMobileIMG}
         height="100vh"
+        width="100vw"
       ></Image>
       <Image
         display={{ base: "none", md: "block" }}

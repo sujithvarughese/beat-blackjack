@@ -6,21 +6,22 @@ import { convertToUSD } from '../utils/calculations.js'
 const Stats = () => {
   const { numHandsPlayed, handWinLossAmount, bet } = useGameContext()
 
-  const [totalWagered, setTotalWagered] = useState(bet)
+  const [totalWagered, setTotalWagered] = useState(0)
   const [avgBetSize, setAvgBetSize] = useState(0)
   const [profit, setProfit] = useState(0)
   const [roi, setRoi] = useState(0)
   const addValueAndCalculateAvg = () => {
-    if (numHandsPlayed === 0) return bet
     return ((numHandsPlayed - 1) / numHandsPlayed) * avgBetSize + (1 / numHandsPlayed) * bet
   }
+  const calculateROI = () => {
+    if (totalWagered === 0) {
+      return
+    }
+    return (((profit + handWinLossAmount) - (totalWagered + bet))/(totalWagered + bet)) * 100
+  }
 
-  const currentAverage = addValueAndCalculateAvg()
-  const calculateROI = () => (profit/totalWagered) * 100
   const currentRoi = calculateROI()
-
-
-
+  const currentAverage = addValueAndCalculateAvg()
 
   useEffect(() => {
     setTotalWagered(prev => prev + bet)

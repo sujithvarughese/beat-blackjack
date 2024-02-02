@@ -9,16 +9,16 @@ const Results = () => {
     let description = ""
     if (handWinLossAmount > 0) {
         heading = "You Win"
-    } else if (handWinLossAmount > 0) {
-        heading = "You Lose"
+    } else if (handWinLossAmount < 0) {
+        heading = ""
     } else {
         heading = "Push"
     }
     if (playerBlackjack) {
-        heading = "Congratulations, you have blackjack!"
+        heading = "Blackjack!"
     }
     if (dealerBlackjack) {
-        heading = "Dealer has blackjack"
+        heading = "Dealer blackjack"
     }
 
     return (
@@ -26,9 +26,10 @@ const Results = () => {
           variant='subtle'
           flexDirection="column"
           alignItems='center'
+          gap="8px"
           justifyContent='center'
           textAlign='center'
-          maxWidth={{base: "90%", lg: "50%"}}
+          maxWidth="400px"
           position="absolute"
           placeSelf="center"
           placeItems="center"

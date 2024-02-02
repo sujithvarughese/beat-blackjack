@@ -99,7 +99,6 @@ const initialState= {
 
 const GameProvider = ({ children }) => {
 
-
     const [state, dispatch] = useReducer(gameReducer, initialState)
 
     const setShowSettingsMenu = (bool) => {
