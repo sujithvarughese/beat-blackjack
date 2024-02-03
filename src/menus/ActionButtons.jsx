@@ -4,7 +4,18 @@ import { useGameContext } from '../context/game/GameContext.jsx'
 
 const ActionButtons = () => {
 
-  const { insuranceOpen } = useGameContext()
+  const {
+    insuranceOpen,
+    playerHand,
+    playerDoubleDown,
+    playerBlackjack,
+    playerHit,
+    playerStay,
+    settings,
+    surrender,
+    playerSplit,
+    totalSplits,
+  } = useGameContext()
 
   return (
     <ButtonGroup
@@ -15,12 +26,23 @@ const ActionButtons = () => {
       justifyContent="space-around"
       flex-wrap="wrap"
     >
-      {insuranceOpen && <EvenMoneyBtnGrp /> && <InsuranceBtnGrp />}
-      <SurrenderBtn />
-      <SplitBtn />
-      <DoubleBtn />
-      <HitBtn />
-      <StayBtn />
+      {insuranceOpen && playerBlackjack && <EvenMoneyBtnGrp />}
+      {insuranceOpen && !playerBlackjack && <InsuranceBtnGrp />}
+
+      {settings.surrenderAllowed && <SurrenderBtn action={surrender} />}
+
+      {
+        settings.maxNumSplits > 0
+        && totalSplits < settings.maxNumSplits
+        && playerHand.length === 2
+        && (playerHand[0].value === playerHand[1].value
+          || playerHand[0].value === 1 && playerHand[1].value === 11) // when both cards are aces, we changed the first value to 1
+        && <SplitBtn action={playerSplit}/>
+      }
+
+      {playerHand.length === 2 && <DoubleBtn action={playerDoubleDown} />}
+      <HitBtn action={playerHit} />
+      <StayBtn action={playerStay} />
     </ButtonGroup>
   )
 }

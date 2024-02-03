@@ -2,9 +2,7 @@ import { Button, ButtonGroup } from '@chakra-ui/react'
 import { useGameContext } from '../context/game/GameContext.jsx'
 const InsuranceBtnGrp = () => {
 
-  const { playerBlackjack, handleInsurance, checkDealerBlackjack } = useGameContext()
-
-  if (playerBlackjack) return
+  const { handleInsurance, checkDealerBlackjack } = useGameContext()
 
   return (
     <ButtonGroup>

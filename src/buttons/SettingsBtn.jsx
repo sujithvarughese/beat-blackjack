@@ -5,7 +5,7 @@ import { useGameContext } from '../context/game/GameContext.jsx'
 
 const SettingsBtn = () => {
 
-  const { setShowSettingsMenu, placeBetOption } = useGameContext()
+  const { toggleSettingsMenu, placeBetOption } = useGameContext()
 
   return (
     <Button
@@ -13,7 +13,7 @@ const SettingsBtn = () => {
       fontSize="48px"
       padding="6px"
       height="100%"
-      onClick={()=>setShowSettingsMenu(true)}
+      onClick={toggleSettingsMenu}
       isDisabled={!placeBetOption}
     >
       <RiSettings5Fill />

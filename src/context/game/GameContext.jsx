@@ -114,7 +114,6 @@ const GameProvider = ({ children }) => {
             payload: { setting }
         })
     }
-
     // set to initial settings state
     const resetSettings = () => {
         const { settings } = initialState
@@ -123,7 +122,6 @@ const GameProvider = ({ children }) => {
             payload: { settings }
         })
     }
-
 
     // creates shoe using number of decks user selected, gives user option to change bet size and deal hands
     const setShoe = (sameShoe = false) => {

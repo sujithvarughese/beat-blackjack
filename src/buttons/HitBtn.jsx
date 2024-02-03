@@ -1,11 +1,8 @@
 import { Button } from '@chakra-ui/react'
-import {useGameContext} from "../context/game/GameContext.jsx";
 
-const HitBtn = () => {
+const HitBtn = ({ action }) => {
 
-    const { playerHit } = useGameContext()
-
-    return <Button onClick={playerHit} width="100%" colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Hit</Button>;
+    return <Button onClick={action} width="100%" colorScheme="yellow" size={{ base: "md", lg: "lg" }}>Hit</Button>;
 };
 
 export default HitBtn;
