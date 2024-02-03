@@ -11,15 +11,17 @@ import Stats from './Stats.jsx'
 const Table = () => {
 
   const {
+    settingsMenuOpen,
+    shoeEmptyMenuOpen,
+    addFundsMenuOpen,
+
     playerTurn,
     insuranceOpen,
-
     resultsShown,
     placeBetOption,
-    settingsMenuOpen,
+
     hintOption,
-    shoeEmptyShown,
-    addFundsShown,
+
   } = useGameContext()
 
 
@@ -109,9 +111,10 @@ const Table = () => {
       }
 
       {settingsMenuOpen && <SettingsMenu />}
-      {shoeEmptyShown && <ShoeEmpty />}
+      {shoeEmptyMenuOpen && <ShoeEmpty />}
+      {addFundsMenuOpen && <AddFunds />}
       {resultsShown && <Results />}
-      {addFundsShown && <AddFunds />}
+
 
 
 

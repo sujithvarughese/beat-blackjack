@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from 'react'
 import { useGameContext } from "../context/game/GameContext.jsx";
 import {
     Button,
@@ -20,12 +20,13 @@ import {
 
 const AddFunds = () => {
 
-  const { addFundsShown, addFunds } = useGameContext()
+  const { addFunds, addFundsMenuOpen, toggleAddFundsMenu } = useGameContext()
   const { onClose } = useDisclosure()
   const [reloadState, setReloadState] = useState(500)
 
+
   return (
-    <Modal isOpen={addFundsShown} onClose={onClose}>
+    <Modal isOpen={addFundsMenuOpen} onClose={onClose} closeOnOverlayClick={false}>
       <ModalOverlay label="Reload Amount">
         <ModalContent>
           <ModalHeader textAlign="center">
@@ -73,7 +74,10 @@ const AddFunds = () => {
                     <SliderThumb/>
                 </Slider>
                 <Button
-                    onClick={()=>addFunds(reloadState)}
+                    onClick={() => {
+                      addFunds(reloadState)
+                      toggleAddFundsMenu()
+                    }}
                     colorScheme="yellow"
                     alignSelf="center"
                 >

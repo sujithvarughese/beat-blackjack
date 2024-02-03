@@ -4,17 +4,18 @@ import { useEffect } from 'react'
 
 const PlaceBet = () => {
 
-  const { settings, playerBankroll, bet, setBet, dealHands, showAddFunds, shoe, showShoeEmptyAlert } = useGameContext()
+  const { resultsShown, settings, playerBankroll, bet, setBet, dealHands, showAddFunds, shoe, toggleShoeEmptyMenu } = useGameContext()
 
   useEffect(() => {
     if (shoe.length < 16) {
-      showShoeEmptyAlert()
+      toggleShoeEmptyMenu()
     }
     if (playerBankroll < settings.minBet) {
       showAddFunds()
     }
-  }, [])
-
+  }, [resultsShown])
+  console.log(shoe)
+  console.log(playerBankroll)
 
   return (
       <ButtonGroup

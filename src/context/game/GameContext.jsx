@@ -4,7 +4,9 @@ import { createShoe } from '../../utils/deck.js'
 import determineBookMove from '../../utils/determineBookMove.js'
 import {
     SET_STATE,
-    SET_SHOW_SETTINGS_MENU,
+    TOGGLE_SETTINGS_MENU,
+    TOGGLE_SHOE_EMPTY_MENU,
+    TOGGLE_ADD_FUNDS_MENU,
     SET_SETTING,
     RESET_SETTINGS,
     SET_SHOE,
@@ -23,8 +25,7 @@ import {
     DEALER_HIT,
     DETERMINE_WINNER,
     ADD_FUNDS,
-    SHOW_ADD_FUNDS,
-    SHOW_SHOE_EMPTY_ALERT
+
 } from './game-actions.js'
 
 const GameContext = createContext()
@@ -32,6 +33,8 @@ const GameContext = createContext()
 const initialState= {
 
     settingsMenuOpen: true,
+    addFundsMenuOpen: false,
+    shoeEmptyMenuOpen: false,
 
     settings: {
         numDecks: 1,
@@ -55,7 +58,7 @@ const initialState= {
     playerHand: [],
     dealerHand: [],
     dealerFaceUpValue: 0,
-    playerBankroll: 0,
+    playerBankroll: 500,
 
     playerBlackjack: false,
     dealerBlackjack: false,
@@ -88,8 +91,7 @@ const initialState= {
     actionTaken: "",
     bookMove: "",
 
-    addFundsShown: false,
-    shoeEmptyShown: false,
+
     dealerCardShown: false,
     resultsShown: false,
     handWinLossAmount: 0,
@@ -101,12 +103,9 @@ const GameProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(gameReducer, initialState)
 
-    const setShowSettingsMenu = (bool) => {
-        dispatch({
-            type: SET_SHOW_SETTINGS_MENU,
-            payload: { bool }
-        })
-    }
+    const toggleSettingsMenu = () => dispatch({ type: TOGGLE_SETTINGS_MENU, })
+    const toggleShoeEmptyMenu = () => dispatch({ type: TOGGLE_SHOE_EMPTY_MENU })
+    const toggleAddFundsMenu = () => dispatch({ type: TOGGLE_ADD_FUNDS_MENU, })
 
     // state for individual settings changed when user adjusts setting value
     const setSetting = (setting) => {
@@ -124,16 +123,8 @@ const GameProvider = ({ children }) => {
             payload: { settings }
         })
     }
-    const showAddFunds = () => {
-        dispatch({
-            type: SHOW_ADD_FUNDS,
-        })
-    }
-    const showShoeEmptyAlert = () => {
-        dispatch({
-            type: SHOW_SHOE_EMPTY_ALERT
-        })
-    }
+
+
     // creates shoe using number of decks user selected, gives user option to change bet size and deal hands
     const setShoe = (sameShoe = false) => {
         // if user wants to play the same shoe again
@@ -681,7 +672,10 @@ const GameProvider = ({ children }) => {
         <GameContext.Provider value={
             {
                 ...state,
-                setShowSettingsMenu,
+                toggleSettingsMenu,
+                toggleShoeEmptyMenu,
+                toggleAddFundsMenu,
+
                 setBet,
                 resetSettings,
                 setShoe,
@@ -700,8 +694,7 @@ const GameProvider = ({ children }) => {
                 determineWinner,
                 setSetting,
                 addFunds,
-                showAddFunds,
-                showShoeEmptyAlert
+
             }
         }>
             { children }

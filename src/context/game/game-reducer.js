@@ -1,6 +1,6 @@
 import {
     SET_STATE,
-    SET_SHOW_SETTINGS_MENU,
+    TOGGLE_SETTINGS_MENU,
     SET_SETTING,
     RESET_SETTINGS,
     SET_BET,
@@ -18,8 +18,8 @@ import {
     DEALER_HIT,
     DETERMINE_WINNER,
     ADD_FUNDS,
-    SHOW_ADD_FUNDS,
-    SHOW_SHOE_EMPTY_ALERT
+    TOGGLE_ADD_FUNDS_MENU,
+    TOGGLE_SHOE_EMPTY_MENU
 } from "./game-actions.js"
 const gameReducer = (state, action) => {
 
@@ -29,11 +29,22 @@ const gameReducer = (state, action) => {
             ...action.payload.status
         }
     }
-
-    if (action.type === SET_SHOW_SETTINGS_MENU) {
+    if (action.type === TOGGLE_SETTINGS_MENU) {
         return {
             ...state,
-            settingsMenuOpen: action.payload.bool,
+            settingsMenuOpen: !state.settingsMenuOpen,
+        }
+    }
+    if (action.type === TOGGLE_SHOE_EMPTY_MENU) {
+        return {
+            ...state,
+            shoeEmptyMenuOpen: !state.shoeEmptyMenuOpen
+        }
+    }
+    if (action.type === TOGGLE_ADD_FUNDS_MENU) {
+        return {
+            ...state,
+            addFundsMenuOpen: !state.addFundsMenuOpen
         }
     }
     if (action.type === SET_SETTING) {
@@ -152,12 +163,7 @@ const gameReducer = (state, action) => {
             ...action.payload.status
         }
     }
-    if (action.type === SHOW_ADD_FUNDS) {
-        return {
-            ...state,
-            addFundsShown: true
-        }
-    }
+
     if (action.type === ADD_FUNDS) {
         return {
             ...state,
@@ -165,12 +171,7 @@ const gameReducer = (state, action) => {
             addFundsShown: false
         }
     }
-    if (action.type === SHOW_SHOE_EMPTY_ALERT) {
-        return {
-            ...state,
-            shoeEmptyShown: true
-        }
-    }
+
 }
 
 export default gameReducer

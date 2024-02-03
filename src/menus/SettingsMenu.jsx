@@ -5,7 +5,7 @@ import { HiOutlineRefresh } from "react-icons/hi";
 
 const SettingsMenu = () => {
 
-    const { settings, setSetting, resetSettings, settingsMenuOpen, setShoe, setShowSettingsMenu, placeBetOption } = useGameContext()
+    const { settings, setSetting, resetSettings, settingsMenuOpen, setShoe, toggleSettingsMenu, placeBetOption } = useGameContext()
 
     const handleChange = (e) => {
         //setValues({ ...values, [e.target.name]: e.target.value})
@@ -17,7 +17,7 @@ const SettingsMenu = () => {
     }
 
     return (
-        <Modal isOpen={settingsMenuOpen} onClose={()=>setShowSettingsMenu(false)}>
+        <Modal isOpen={settingsMenuOpen} onClose={toggleSettingsMenu} closeOnOverlayClick={false}>
             <ModalOverlay>
                 <ModalContent padding={{ base: "12px", md: "30px" }} marginX={{ base: "15px", md: "revert" }}>
                     <ModalHeader>
@@ -26,7 +26,6 @@ const SettingsMenu = () => {
                           textAlign="center"
                         >Game Settings</Heading>
                     </ModalHeader>
-                    <ModalCloseButton />
 
                     <ModalBody>
                         <Button
@@ -34,7 +33,7 @@ const SettingsMenu = () => {
                           onClick={resetSettings}
                           position="absolute"
                           top="0"
-                          left="0"
+                          right="0"
                           margin="10px"
                         >
                             <HiOutlineRefresh />
@@ -244,7 +243,7 @@ const SettingsMenu = () => {
 
 
                             <ButtonGroup colorScheme="yellow">
-                                {placeBetOption && <Button onClick={()=>setShowSettingsMenu(false)}>Resume</Button>}
+                                {placeBetOption && <Button onClick={toggleSettingsMenu}>Resume</Button>}
                                 <Button onClick={setShoe}>Start Game</Button>
                             </ButtonGroup>
                         </VStack>
