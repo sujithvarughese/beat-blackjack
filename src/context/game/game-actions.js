@@ -8,6 +8,10 @@ export const SET_SHOE = "SET_SHOE"
 export const SET_BET = "SET_BET"
 export const DEAL_HANDS = 'DEAL_HANDS'
 export const DRAW_CARD = "DRAW_CARD"
+
+export const SET_DEALER_INITIAL = "SET_DEALER_INITIAL"
+export const SET_PLAYER_INITIAL = "SET_PLAYER_INITIAL"
+
 export const HANDLE_DEALER_ACE = "HANDLE_DEALER_ACE"
 export const DEALER_BLACKJACK = "DEALER_BLACKJACK"
 export const PLAYER_BLACKJACK = "PLAYER_BLACKJACK"

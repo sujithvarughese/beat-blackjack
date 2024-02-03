@@ -29,7 +29,7 @@ const ActionButtons = () => {
       {insuranceOpen && playerBlackjack && <EvenMoneyBtnGrp />}
       {insuranceOpen && !playerBlackjack && <InsuranceBtnGrp />}
 
-      {settings.surrenderAllowed && <SurrenderBtn action={surrender} />}
+      {settings.surrenderAllowed && playerHand.length === 2 && <SurrenderBtn action={surrender} />}
 
       {
         settings.maxNumSplits > 0

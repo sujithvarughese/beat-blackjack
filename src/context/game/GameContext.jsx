@@ -11,6 +11,8 @@ import {
     RESET_SETTINGS,
     SET_SHOE,
     SET_BET,
+    SET_DEALER_INITIAL,
+    SET_PLAYER_INITIAL,
     DEAL_HANDS,
     DRAW_CARD,
     HANDLE_DEALER_ACE,
@@ -91,7 +93,6 @@ const initialState= {
     actionTaken: "",
     bookMove: "",
 
-
     dealerCardShown: false,
     resultsShown: false,
     handWinLossAmount: 0,
@@ -153,6 +154,18 @@ const GameProvider = ({ children }) => {
             payload: { playerBankroll }
         })
     }
+    const setDealerInitial = ({ dealerBlackjack, dealer21, dealerFaceUpValue }) => {
+        dispatch({
+            type: SET_DEALER_INITIAL,
+            payload: { dealerBlackjack, dealer21, dealerFaceUpValue }
+        })
+    }
+    const setPlayerInitial = ({ playerBlackjack, playerHand, hint }) => {
+        dispatch({
+            type: SET_PLAYER_INITIAL,
+            payload: { playerBlackjack, playerHand, hint }
+        })
+    }
     // sets state of shoe after popping top card
     const drawCard = () => {
         const shoe = state.shoe
@@ -187,42 +200,23 @@ const GameProvider = ({ children }) => {
         const playerHand = []
         const dealerHand = []
         let playerBlackjack = false
-        let dealerBlackjack = false
-        let dealer21 = false
+
         playerHand.push(drawCard())
         dealerHand.push(drawCard())
         playerHand.push(drawCard())
         dealerHand.push(drawCard())
 
-        // if dealer has blackjack or 21 with Ace under (action goes differently for each)
-        if (dealerHand[0].value === 11 && dealerHand[1] === 10) {
-            dealerBlackjack = true
-        } else if (dealerHand[0].value === 10 && dealerHand[1] === 11){
-            dealer21 = true
-        }
-        // if player has blackjack
-        if (playerHand.reduce((acc, card) => acc + card.value, 0) === 21) {
-            playerBlackjack = true
-        }
-        // if both player's cards are aces, make the first value === 1
-        if (playerHand[0].value === 11 && playerHand[1].value === 11) {
-            playerHand[0].value = 1
-        }
-        // dealer's face up card to see if insurance or even money should be offered
-        const dealerFaceUpValue = dealerHand[0].value
-        const hint = getBookMove(playerHand, dealerFaceUpValue)
+
+        const hint = getBookMove(playerHand, state.dealerFaceUpValue)
         status = {
             ...status,
             hint: hint,
             dealerHand: dealerHand,
             playerHand: playerHand,
             playerBlackjack: playerBlackjack,
-            dealerBlackjack: dealerBlackjack,
-            dealer21: dealer21,
-            dealerFaceUpValue: dealerFaceUpValue,
         }
         // if insurance or even money offered, set state and break from function to give user option
-        if (dealerFaceUpValue === 11 && (state.settings.evenMoneyAllowed || state.settings.insuranceAllowed)) {
+        if (state.dealerFaceUpValue === 11 && (state.settings.evenMoneyAllowed || state.settings.insuranceAllowed)) {
             status = { ...status, insuranceOpen: true }
             dispatch({
                 type: SET_STATE,
@@ -231,7 +225,7 @@ const GameProvider = ({ children }) => {
             return
         }
         // dealer21 = dealer made 21 with A face down (no insurance)
-        if (dealer21) {
+        if (state.dealer21) {
             if (playerBlackjack) {
                 status = {
                     ...status,
@@ -260,7 +254,7 @@ const GameProvider = ({ children }) => {
         }
 
         // handle blackjacks (only reaches if insurance and even money are not allowed)
-        if (dealerBlackjack) {
+        if (state.dealerBlackjack) {
             status = {
                 ...status,
                 handWinLossAmount: state.handWinLossAmount + state.bet * -1,
@@ -302,6 +296,7 @@ const GameProvider = ({ children }) => {
             type: SET_STATE,
             payload: { status }
         })
+        console.log(state.dealerHand)
     }
 
     const handleEvenMoney = () => {
@@ -673,11 +668,13 @@ const GameProvider = ({ children }) => {
                 toggleSettingsMenu,
                 toggleShoeEmptyMenu,
                 toggleAddFundsMenu,
-
                 setBet,
                 resetSettings,
                 setShoe,
                 dealHands,
+                setDealerInitial,
+                setPlayerInitial,
+
                 handleInsurance,
                 handleEvenMoney,
                 checkDealerBlackjack,

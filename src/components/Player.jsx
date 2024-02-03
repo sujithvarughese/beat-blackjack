@@ -7,6 +7,9 @@ const Player = () => {
 
   const {
     playerHand,
+    dealerFaceUpValue,
+    setPlayerInitial,
+
     doubledHand,
     splitHand,
     splitHands,
@@ -14,18 +17,36 @@ const Player = () => {
     playNextSplitHand,
     actionTaken,
     bookMove,
-    settings
+    settings,
+    getBookMove
   } = useGameContext()
 
-  const toast = useToast()
+  const checkPlayerBlackjacks = () => {
+    let playerBlackjack
+    // if player has blackjack
+    if (playerHand.reduce((acc, card) => acc + card.value, 0) === 21) {
+      playerBlackjack = true
+    }
+    // if both player's cards are aces, make the first value === 1
+    if (playerHand[0].value === 11 && playerHand[1].value === 11) {
+      playerHand[0].value = 1
+    }
+    const hint = getBookMove(playerHand, dealerFaceUpValue)
+    setPlayerInitial({ playerBlackjack, playerHand, hint })
+  }
 
+  useEffect(() => {
+    if (!dealerFaceUpValue) return
+    checkPlayerBlackjacks()
+  }, [dealerFaceUpValue])
+
+  const toast = useToast()
   const options = actionTaken === bookMove ?
     {
       title: "Good Move!",
       position: "top",
       status: "success",
       duration: 1000
-
     }
     :
     {
@@ -34,7 +55,6 @@ const Player = () => {
       status: "warning",
       duration: 1000
     }
-
 
   useEffect(() => {
     if (!bookMove || settings.feedback === false) return

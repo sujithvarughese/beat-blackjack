@@ -19,8 +19,10 @@ import {
     DETERMINE_WINNER,
     ADD_FUNDS,
     TOGGLE_ADD_FUNDS_MENU,
-    TOGGLE_SHOE_EMPTY_MENU
-} from "./game-actions.js"
+    TOGGLE_SHOE_EMPTY_MENU,
+    SET_DEALER_INITIAL,
+    SET_PLAYER_INITIAL
+} from './game-actions.js'
 const gameReducer = (state, action) => {
 
     if (action.type === SET_STATE) {
@@ -72,7 +74,6 @@ const gameReducer = (state, action) => {
         return {
             ...state,
             bet: action.payload.bet,
-            currentBet: action.payload.bet
         }
     }
     // remove bet amount from bankroll and set bet and bankroll in state
@@ -86,6 +87,21 @@ const gameReducer = (state, action) => {
         return {
             ...state,
             shoe: action.payload.shoe
+        }
+    }
+    if (action.type === SET_DEALER_INITIAL) {
+        return {
+            ...state,
+            dealerBlackjack: action.payload.dealerBlackjack,
+            dealer21: action.payload.dealer21,
+            dealerFaceUpValue: action.payload.dealerFaceUpValue
+        }
+    }
+    if (action.type === SET_PLAYER_INITIAL) {
+        return {
+            ...state,
+            playerBlackjack: action.payload.playerBlackjack,
+            playerHand: action.payload.playerHand,
         }
     }
     if (action.type === HANDLE_DEALER_ACE) {
