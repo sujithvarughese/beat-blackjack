@@ -8,8 +8,7 @@ import {
     DEAL_HANDS,
     DRAW_CARD,
     HANDLE_DEALER_ACE,
-    DEALER_BLACKJACK,
-    PLAYER_BLACKJACK,
+
     HANDLE_INSURANCE,
     HANDLE_EVEN_MONEY,
     PLAYER_HIT,
@@ -21,7 +20,20 @@ import {
     TOGGLE_ADD_FUNDS_MENU,
     TOGGLE_SHOE_EMPTY_MENU,
     SET_DEALER_INITIAL,
-    SET_PLAYER_INITIAL
+    SET_PLAYER_INITIAL,
+
+
+    PLAYER_EVEN_MONEY_PAYOUT,
+    PLAYER_INSURANCE_PAYOUT,
+    PLAYER_WIN,
+    DEALER_WIN,
+    PLAYER_PUSH,
+    DEALER_BLACKJACK,
+    PLAYER_BLACKJACK,
+
+    SHOW_RESULTS,
+    SET_PLAYER_TURN,
+
 } from './game-actions.js'
 const gameReducer = (state, action) => {
 
@@ -118,9 +130,9 @@ const gameReducer = (state, action) => {
             dealerCardShown: action.payload.dealerCardShown,
             resultsShown: action.payload.resultsShown,
             canPlaceBets: action.payload.canPlaceBets
-
         }
     }
+
     if (action.type === DEALER_BLACKJACK) {
         return {
             ...state,
@@ -137,7 +149,6 @@ const gameReducer = (state, action) => {
         return {
             ...state,
             ...action.payload.status
-
         }
     }
     if (action.type === PLAYER_HIT) {
@@ -188,6 +199,143 @@ const gameReducer = (state, action) => {
         }
     }
 
+
+    if (action.type === PLAYER_EVEN_MONEY_PAYOUT) {
+        return {
+            ...state,
+            resultsShown: true,
+            dealerCardShown: true,
+            placeBetOption: true,
+            doubledHand: false,
+            splitHand: false,
+            surrenderTaken: false,
+            insuranceTaken: false,
+            evenMoneyTaken: false,
+
+        }
+    }
+
+
+    if (action.type === PLAYER_INSURANCE_PAYOUT) {
+        return {
+            ...state,
+            resultsShown: true,
+            dealerCardShown: true,
+            placeBetOption: true,
+            insuranceTaken: true,
+            playerBankroll: state.playerBankroll + state.netDebit,
+            netCredit: state.netDebit
+        }
+    }
+    if (action.type === DEALER_BLACKJACK) {
+        return {
+            ...state,
+            resultsShown: true,
+            dealerCardShown: true,
+            placeBetOption: true,
+            doubledHand: false,
+            splitHand: false,
+            surrenderTaken: false,
+            insuranceTaken: false,
+            evenMoneyTaken: false,
+            ...action.payload.status
+        }
+    }
+    if (action.type === PLAYER_BLACKJACK) {
+        return {
+            ...state,
+            ...action.payload.status,
+            resultsShown: true,
+            dealerCardShown: true,
+            placeBetOption: true,
+            doubledHand: false,
+            splitHand: false,
+            surrenderTaken: false,
+            insuranceTaken: false,
+            evenMoneyTaken: false,
+
+        }
+    }
+    if (action.type === PLAYER_WIN) {
+        return {
+            ...state,
+            resultsShown: true,
+            dealerCardShown: true,
+            placeBetOption: true,
+            doubledHand: false,
+            splitHand: false,
+            surrenderTaken: false,
+            insuranceTaken: false,
+            evenMoneyTaken: false,
+            ...action.payload.status
+        }
+    }
+    if (action.type === DEALER_WIN) {
+        return {
+            ...state,
+            resultsShown: true,
+            dealerCardShown: true,
+            placeBetOption: true,
+            doubledHand: false,
+            splitHand: false,
+            surrenderTaken: false,
+            insuranceTaken: false,
+            evenMoneyTaken: false,
+            ...action.payload.status
+        }
+    }
+    if (action.type === PLAYER_PUSH) {
+        return {
+            ...state,
+            ...action.payload.status,
+            resultsShown: true,
+            dealerCardShown: true,
+            placeBetOption: true,
+            doubledHand: false,
+            splitHand: false,
+            surrenderTaken: false,
+            insuranceTaken: false,
+            evenMoneyTaken: false,
+
+        }
+    }
+    if (action.type === PLAYER_PUSH) {
+        return {
+            ...state,
+            ...action.payload.status,
+            resultsShown: true,
+            dealerCardShown: true,
+            placeBetOption: true,
+
+        }
+    }
+    if (action.type === SHOW_RESULTS) {
+        return {
+            ...state,
+            ...action.payload.status,
+            resultsShown: true,
+            dealerCardShown: true,
+            placeBetOption: true,
+            numHandsPlayed: state.numHandsPlayed + 1
+        }
+    }
+
+    if (action.type === SET_PLAYER_TURN) {
+        return {
+            ...state,
+            ...action.payload.status,
+            playerTurn: true,
+        }
+    }
+
+
+
 }
+
+
+
+
+
+
 
 export default gameReducer

@@ -19,25 +19,7 @@ const Dealer = () => {
   }
     = useGameContext()
 
-  const checkDealerBlackjacks = () => {
-    // if dealer has blackjack or 21 with Ace under (action goes differently for each)
-    let dealerBlackjack, dealer21, dealerFaceUpValue
-    if (dealerHand[0].value === 11 && dealerHand[1] === 10) {
-      dealerBlackjack = true
-    } else if (dealerHand[0].value === 10 && dealerHand[1] === 11){
-      dealer21 = true
-    }
-    // dealer's face up card to see if insurance or even money should be offered
-    dealerFaceUpValue = dealerHand[0].value
-    setDealerInitial({ dealerBlackjack, dealer21, dealerFaceUpValue })
-  }
 
-  // if dealer hand length is not 2, then return
-  // set Dealer blackjack, dealer 21(21 with Ace as hidden card) and dealer's face up value
-  useEffect(() => {
-    if (dealerHand.length !== 2) return
-    checkDealerBlackjacks()
-  }, [dealerHand])
 
   useEffect(() => {
     const score = dealerHand.reduce((acc, card) => acc + card.value, 0)

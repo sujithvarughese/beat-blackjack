@@ -3,13 +3,13 @@ import { Alert, AlertTitle, Text } from '@chakra-ui/react'
 import { convertToUSD }from "../utils/calculations.js"
 const Results = () => {
 
-    const { handWinLossAmount, playerBlackjack, dealerBlackjack } = useGameContext()
+    const { netCredit, playerBlackjack, dealerBlackjack } = useGameContext()
 
     let heading = ""
     let description = ""
-    if (handWinLossAmount > 0) {
+    if (netCredit > 0) {
         heading = "You Win"
-    } else if (handWinLossAmount < 0) {
+    } else if (netCredit < 0) {
         heading = ""
     } else {
         heading = "Push"
@@ -44,7 +44,7 @@ const Results = () => {
         >
 
             <AlertTitle fontSize="32px" textAlign="center">{heading}</AlertTitle>
-            <Text fontSize="20px" textAlign="center">Net Gain: {convertToUSD(handWinLossAmount)}</Text>
+            <Text fontSize="20px" textAlign="center">Net Gain: {convertToUSD(netCredit)}</Text>
 
 
 

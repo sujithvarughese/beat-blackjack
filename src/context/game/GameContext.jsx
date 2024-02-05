@@ -28,7 +28,16 @@ import {
     DETERMINE_WINNER,
     ADD_FUNDS,
 
+    PLAYER_PUSH,
+    PLAYER_WIN,
+    DEALER_WIN,
+    PLAYER_EVEN_MONEY_PAYOUT,
+    PLAYER_INSURANCE_PAYOUT,
+
+    SHOW_RESULTS
+
 } from './game-actions.js'
+import { useToast } from '@chakra-ui/react'
 
 const GameContext = createContext()
 
@@ -61,6 +70,8 @@ const initialState= {
     dealerHand: [],
     dealerFaceUpValue: 0,
     playerBankroll: 500,
+    netDebit: 0,
+    netCredit: 0,
 
     playerBlackjack: false,
     dealerBlackjack: false,
@@ -95,7 +106,6 @@ const initialState= {
 
     dealerCardShown: false,
     resultsShown: false,
-    handWinLossAmount: 0,
     numHandsPlayed: 0,
 
 }
@@ -182,14 +192,12 @@ const GameProvider = ({ children }) => {
             placeBetOption: false,
             resultsShown: false,
             dealerCardShown: false,
+
             doubledHand: false,
             splitHand: false,
             surrenderTaken: false,
             insuranceTaken: false,
             evenMoneyTaken: false,
-
-            playerBankroll: state.playerBankroll - state.bet,
-            handWinLossAmount: 0,
 
             splitCount: 0,
             totalSplits: 0,
@@ -197,97 +205,83 @@ const GameProvider = ({ children }) => {
             splitDoubledHands: [],
             bookMove: ""
         }
+
+        let playerBankroll = state.playerBankroll - state.bet
+        let netDebit =  state.bet
+        let netCredit = 0
         const playerHands = []
         const currentPlayerHand = []
         const dealerHand = []
         let playerBlackjack = false
+        let dealerBlackjack
+        let dealer21
+        let dealerFaceUpValue
 
         currentPlayerHand.push(drawCard())
         dealerHand.push(drawCard())
         currentPlayerHand.push(drawCard())
         dealerHand.push(drawCard())
 
+        if (currentPlayerHand.reduce((acc, card) => acc + card.value, 0) === 21) {
+            playerBlackjack = true
+        }
+        // if both player's cards are aces, make the first value === 1
+        if (currentPlayerHand[0].value === 11 && currentPlayerHand[1].value === 11) {
+            currentPlayerHand[0].value = 1
+        }
+        if (dealerHand[0].value === 11 && dealerHand[1] === 10) {
+            dealerBlackjack = true
+        } else if (dealerHand[0].value === 10 && dealerHand[1] === 11){
+            dealer21 = true
+        }
+        // dealer's face up card to see if insurance or even money should be offered
+        dealerFaceUpValue = dealerHand[0].value
 
-        const hint = getBookMove(currentPlayerHand, state.dealerFaceUpValue)
+        const bookMove = getBookMove(currentPlayerHand, dealerFaceUpValue)
+
         status = {
             ...status,
-            hint: hint,
+            bookMove: bookMove,
             dealerHand: dealerHand,
+            playerHands: playerHands,
             currentPlayerHand: currentPlayerHand,
             playerBlackjack: playerBlackjack,
-        }
-        // if insurance or even money offered, set state and break from function to give user option
-        if (state.dealerFaceUpValue === 11 && (state.settings.evenMoneyAllowed || state.settings.insuranceAllowed)) {
-            status = { ...status, insuranceOpen: true }
-            dispatch({
-                type: SET_STATE,
-                payload: { status }
-            })
-            return
-        }
-        // dealer21 = dealer made 21 with A face down (no insurance)
-        if (state.dealer21) {
-            if (playerBlackjack) {
-                status = {
-                    ...status,
-                    playerBankroll: state.playerBankroll, // overwrite where we deducted one bet
-                    handWinLossAmount: 0,
-                    numHandsPlayed: state.numHandsPlayed + 1,
-                    resultsShown: true,
-                    dealerCardShown: true,
-                    placeBetOption: true
-                }
-            } else {
-                status = {
-                    ...status,
-                    handWinLossAmount: state.bet * -1,
-                    numHandsPlayed: state.numHandsPlayed + 1,
-                    resultsShown: true,
-                    dealerCardShown: true,
-                    placeBetOption: true
-                }
-            }
-            dispatch({
-                type: SET_STATE,
-                payload: { status }
-            })
-            return
+            dealerBlackjack: dealerBlackjack,
+            dealer21: dealer21,
+            dealerFaceUpValue: dealerFaceUpValue,
+            playerBankroll: playerBankroll,
+            netDebit: netDebit,
+            netCredit: netCredit
         }
 
-        // handle blackjacks (only reaches if insurance and even money are not allowed)
-        if (state.dealerBlackjack) {
-            status = {
-                ...status,
-                handWinLossAmount: state.handWinLossAmount + state.bet * -1,
-                numHandsPlayed: state.numHandsPlayed + 1,
-                resultsShown: true,
-                dealerCardShown: true,
-                placeBetOption: true,
-            }
-            dispatch({
-                type: SET_STATE,
-                payload: { status }
-            })
+        // if insurance or even money offered, set state and break from function to give user option
+        if (dealerFaceUpValue === 11 && (state.settings.evenMoneyAllowed || state.settings.insuranceAllowed)) {
+            status = { ...status, insuranceOpen: true }
+            dispatch({ type: SET_STATE, payload: { status } })
+            return
+        }
+        // remaining code in this function assumes no insurance/even money option
+        // dealer21 = dealer made 21 with A face down (no insurance)
+        if (dealer21 && playerBlackjack) {
+            dispatch({ type: SHOW_RESULTS, payload: { status, netCredit: netCredit + state.bet } })
+            return
+        }
+        if (dealer21 || dealerBlackjack) {
+            dispatch({ type: SHOW_RESULTS, payload: { status, dealerBlackjack: true } })
             return
         }
         if (playerBlackjack) {
-            status = {
-                ...status,
-                resultsShown: true,
-                dealerCardShown: true,
-                playerBlackjack: true,
-                handWinLossAmount: state.handWinLossAmount + state.bet * Number(state.settings.blackjackPayout),
-                numHandsPlayed: state.numHandsPlayed + 1,
-                playerBankroll: state.playerBankroll + state.bet * Number(state.settings.blackjackPayout),
-                placeBetOption: true,
-            }
             dispatch({
-                type: SET_STATE,
-                payload: { status }
+                type: SHOW_RESULTS,
+                payload: {
+                    status,
+                    playerBlackjack: true,
+                    playerBankroll: playerBankroll + netCredit * Number(state.settings.blackjackPayout),
+                    netCredit: netCredit * Number(state.settings.blackjackPayout)
+                }
             })
             return
         }
-
         status = {
             ...status,
             playerTurn: true,
@@ -297,75 +291,48 @@ const GameProvider = ({ children }) => {
             type: SET_STATE,
             payload: { status }
         })
-        console.log(state.dealerHand)
     }
 
     const handleEvenMoney = () => {
         const status = {
-            playerBankroll:  state.playerBankroll + state.bet + state.bet,
-            handWinLossAmount: state.bet,
-            numHandsPlayed: state.numHandsPlayed + 1,
-            placeBetOption: true,
-            dealerCardShown: true,
-            resultsShown: true
+            playerBankroll:  state.playerBankroll + state.netDebit * 2,
+            netCredit: state.netDebit * 2,
         }
         dispatch({
-            type: SET_STATE,
+            type: SHOW_RESULTS,
             payload: { status }
         })
     }
     const handleInsurance = () => {
+
         let status = {}
         if (state.dealerBlackjack) {
-            status = {
-                playerBankroll: state.playerBankroll + state.bet,
-                handWinLossAmount: 0,
-                numHandsPlayed: state.numHandsPlayed + 1,
-                resultsShown: true,
-                dealerCardShown: true,
-                placeBetOption: true,
-            }
-        } else {
-            status = {
-                playerBankroll: state.playerBankroll - state.bet * 0.5,
-                handWinLossAmount: state.bet * 0.5 * -1,
-                playerTurn: true,
-            }
+            status = { playerBankroll: state.playerBankroll + state.netDebit, netCredit: state.netDebit }
+            dispatch({
+                type: SHOW_RESULTS,
+                payload: { status }
+            })
+            return
+        }
+        status = {
+            playerBankroll: state.playerBankroll - state.netDebit * 0.5,
+            netDebit: state.netDebit + state.netDebit * 0.5,
         }
         dispatch({
-            type: SET_STATE,
+            type: SET_PLAYER_TURN,
             payload: { status }
         })
     }
     const checkDealerBlackjack = () => {
-        let status = {}
         if (state.dealerBlackjack) {
-            status = {
-                resultsShown: true,
-                dealerCardShown: true,
-                dealerBlackjack: true,
-                handWinLossAmount: state.handWinLossAmount - state.bet,
-                numHandsPlayed: state.numHandsPlayed + 1,
-                placeBetOption: true,
-            }
-        }  else if (state.playerBlackjack) {
-            status = {
-                resultsShown: true,
-                dealerCardShown: true,
-                playerBlackjack: true,
-                handWinLossAmount: state.handWinLossAmount + state.bet * Number(state.settings.blackjackPayout),
-                numHandsPlayed: state.numHandsPlayed + 1,
-                playerBankroll: state.playerBankroll + state.bet + state.bet * Number(state.settings.blackjackPayout),
-                placeBetOption: true,
-            }
+            dispatch({ type: SHOW_RESULTS, })
+            return
         }
-        else {
-            status = { ...status, playerTurn: true, }
+        const status = {
+            netCredit: state.netDebit + state.netDebit * Number(state.settings.blackjackPayout),
+            playerBankroll: state.playerBankroll + state.netDebit + state.netDebit * Number(state.settings.blackjackPayout),
         }
-        dispatch({
-            type: SET_STATE,
-            payload: { status }
-        })
+        dispatch({ type: SHOW_RESULTS, payload: { status } })
     }
 
     const getBookMove = (hand = state.currentPlayerHand, dealerFaceUpValue = state.dealerFaceUpValue) => {
@@ -379,16 +346,21 @@ const GameProvider = ({ children }) => {
     }
 
     const playerHit = () => {
-        const bookMove = getBookMove()
+        showBookMove("hit")
         const currentPlayerHand = [...state.currentPlayerHand]
         currentPlayerHand.push(drawCard())
         let score = currentPlayerHand.reduce((acc, card) => acc + card.value, 0)
-        const hint = getBookMove(currentPlayerHand)
         const aceValue11Index = currentPlayerHand.findIndex(card => card.rank === "Ace" && card.value === 11)
         if (score > 21 && aceValue11Index !== -1) {
-            currentPlayerHand[aceValue11Index].value = 1
+            currentPlayerHand[aceValue11Index] = {
+                ...currentPlayerHand[aceValue11Index],
+                value: 1
+            }
             score -= 10
         }
+        const bookMove = getBookMove(currentPlayerHand)
+
+
         let status = {
             actionTaken: "hit",
             bookMove: bookMove,
@@ -448,7 +420,7 @@ const GameProvider = ({ children }) => {
             actionTaken: "double down",
             bookMove: bookMove,
             playerBankroll: state.playerBankroll - state.bet,
-            handWinLossAmount: state.handWinLossAmount - state.bet,
+            netCredit: state.netCredit - state.bet,
             doubledHand: true,
             playerTurn: false,
             currentPlayerHand: currentPlayerHand,
@@ -511,7 +483,7 @@ const GameProvider = ({ children }) => {
             actionTaken: "surrender",
             bookMove: bookMove,
             playerBankroll: state.playerBankroll + state.bet * 0.5,
-            handWinLossAmount: state.handWinLossAmount - state.bet * 0.5,
+            netCredit: state.netCredit - state.bet * 0.5,
             numHandsPlayed: state.numHandsPlayed + 1,
             placeBetOption: true
         }
@@ -520,6 +492,54 @@ const GameProvider = ({ children }) => {
             payload: { status }
         })
     }
+
+    const showBookMove = (actionTaken) => {
+        const toast = useToast()
+        const options = actionTaken === state.bookMove ?
+          {
+              title: "Good Move!",
+              position: "top",
+              status: "success",
+              duration: 1000
+          }
+          :
+          {
+              title: `The correct play was to ${state.bookMove}.`,
+              position: "top",
+              status: "warning",
+              duration: 1000
+          }
+        toast.closeAll()
+        toast(options)
+    }
+
+
+    const splitHand_ = () => {
+        showBookMove("split")
+        const playerHands = [...state.playerHands]
+
+        // If two aces, since we changed the first Ace value to 1 on the initial deal, should be changed back to 11 for split hand
+        if (playerHands[playerHands.length - 1][0].value === 1 && playerHands[playerHands.length - 1][1].value === 11) {
+            playerHands[playerHands.length - 1][0] = {
+                ...playerHands[playerHands.length - 1][0],
+                value: 11
+            }
+        }
+        // make new hand by popping card from last hand of array (if only one hand, will be the first hand)
+        const newHand = [playerHands[playerHands.length - 1].pop()]
+        // current hand is the hand which we just popped a card from (original hand)
+        const currentPlayerHand = playerHands[playerHands.length - 1]
+        // both current hand and new hand should only have one card each; push new hand into array of hands
+        playerHands.push(newHand)
+        // draw first card for first split hand
+        currentPlayerHand.push(drawCard())
+        // if both player's cards are aces, make the first value === 1
+        if (currentPlayerHand[0].value === 11 && currentPlayerHand[1].value === 11) {
+            currentPlayerHand[0].value = 1
+        }
+        const bookMove = getBookMove(currentPlayerHand)
+    }
+
 
     const playerSplit = () => {
         // array that holds each split hand
@@ -632,13 +652,13 @@ const GameProvider = ({ children }) => {
             if (dealerScore > 21 || playerScore > dealerScore) {
                 status = {
                     ...status,
-                    handWinLossAmount: state.handWinLossAmount + currentBet,
+                    netCredit: state.netCredit + currentBet,
                     playerBankroll: state.playerBankroll + currentBet,
                 }
             } else if (dealerScore > playerScore) {
                 status = {
                     ...status,
-                    handWinLossAmount: state.handWinLossAmount - currentBet,
+                    netCredit: state.netCredit - currentBet,
                     playerBankroll: state.playerBankroll - currentBet,
                 }
             } else {

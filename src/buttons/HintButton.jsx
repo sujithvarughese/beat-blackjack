@@ -3,12 +3,12 @@ import { Button, useToast } from '@chakra-ui/react'
 
 const HintButton = () => {
 
-    const { hint } = useGameContext()
+    const { bookMove } = useGameContext()
     const toast = useToast()
     const showHint = () => {
         toast.closeAll()
         toast({
-            title: hint.charAt(0).toUpperCase() + hint.slice(1),
+            title: bookMove.charAt(0).toUpperCase() + bookMove.slice(1),
             position: "bottom",
             status: "info",
             duration: 2000

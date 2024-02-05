@@ -12,7 +12,7 @@ const initialState = {
   roi: 0
 }
 const Stats = () => {
-  const { resultsShown, handWinLossAmount, bet } = useGameContext()
+  const { resultsShown, netCredit, bet } = useGameContext()
 
   const [stats, setStats] = useState(initialState)
 
@@ -33,14 +33,14 @@ const Stats = () => {
     return ((stats.avgBetSize) * stats.totalNumHandsPlayed + bet) /  (stats.totalNumHandsPlayed + 1)
   }
   const calculateROI = () => {
-    if (handWinLossAmount > 0) {
-      return ((stats.totalCashIn + handWinLossAmount )/(stats.totalWagered + bet)) * 100
+    if (netCredit > 0) {
+      return ((stats.totalCashIn + netCredit )/(stats.totalWagered + bet)) * 100
     }
     return ((stats.totalCashIn  - (stats.totalWagered + bet))/(stats.totalWagered + bet)) * 100
   }
   const calculateCashIn = () => {
-    if (handWinLossAmount > 0) {
-      return stats.totalCashIn + handWinLossAmount
+    if (netCredit > 0) {
+      return stats.totalCashIn + netCredit
     }
     return stats.totalCashIn
   }
@@ -53,11 +53,11 @@ const Stats = () => {
       totalWagered: stats.totalWagered + bet,
       avgBetSize: calculateAvgBetSize(),
       totalCashIn: calculateCashIn(),
-      totalProfit: stats.totalProfit + handWinLossAmount,
+      totalProfit: stats.totalProfit + netCredit,
       roi: calculateROI()
     })
 
-    // console.log(`numHandsPlayed: ${stats.totalNumHandsPlayed}, totalCashIn: ${stats.totalCashIn}, handWinLossAmount: ${handWinLossAmount}, bet: ${bet}`)
+    // console.log(`numHandsPlayed: ${stats.totalNumHandsPlayed}, totalCashIn: ${stats.totalCashIn}, netCredit: ${netCredit}, bet: ${bet}`)
     // console.log(`totalWagered: ${stats.totalWagered}, avgBetSize: ${stats.avgBetSize}, profit: ${stats.totalProfit}, roi: ${stats.roi}`)
   }, [resultsShown])
 

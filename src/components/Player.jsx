@@ -21,24 +21,6 @@ const Player = () => {
     getBookMove
   } = useGameContext()
 
-  const checkPlayerBlackjacks = () => {
-    let playerBlackjack
-    // if player has blackjack
-    if (currentPlayerHand.reduce((acc, card) => acc + card.value, 0) === 21) {
-      playerBlackjack = true
-    }
-    // if both player's cards are aces, make the first value === 1
-    if (currentPlayerHand[0].value === 11 && currentPlayerHand[1].value === 11) {
-      currentPlayerHand[0].value = 1
-    }
-    const hint = getBookMove(currentPlayerHand, dealerFaceUpValue)
-    setPlayerInitial({ playerBlackjack, currentPlayerHand, hint })
-  }
-
-  useEffect(() => {
-    if (!dealerFaceUpValue) return
-    checkPlayerBlackjacks()
-  }, [dealerFaceUpValue])
 
   const toast = useToast()
   const options = actionTaken === bookMove ?
