@@ -379,23 +379,17 @@ const GameProvider = ({ children }) => {
             bookMove: bookMove,
             playerBankroll: state.playerBankroll - state.netDebit,
             netDebit: state.netDebit - state.netDebit,
-            playerTurn: false,
             currentPlayerHand: currentPlayerHand,
             playerHands: playerHands,
             doubledHands: doubledHands
         }
         // if current index is not last index, it is a split hand which needs to be finished
         if (currentHandIndex + 1 < playerHands.length) {
-            currentHandIndex++
-            playerHands[currentHandIndex].push(drawCard())
-            currentPlayerHand = [...playerHands[currentHandIndex]]
+            playerHands[state.currentHandIndex + 1].push(drawCard())
+            const bookMove = getBookMove(playerHands[state.currentHandIndex + 1])
             dispatch({
                 type: PLAY_NEXT_SPLIT,
-                payload: {
-                    currentPlayerHand: currentPlayerHand,
-                    playerHands: playerHands,
-                    currentHandIndex: currentHandIndex
-                }
+                payload: { status, playerHands, bookMove }
             })
             return
         }

@@ -5,8 +5,6 @@ const Results = () => {
 
     const { netCredit, netDebit, playerBlackjack, dealerBlackjack } = useGameContext()
 
-    console.log(netCredit)
-    console.log(netDebit)
 
     let heading = ""
     let description = ""
