@@ -31,7 +31,7 @@ const PlayerHand = ({ playerHand, doubledHand }) => {
         )
       }
       {playerHand.length !== 0 &&
-        <Box position="absolute" bottom="5px" width="55px" textAlign="center">
+        <Box position="absolute" bottom="5px" textAlign="center">
           <Score hand={playerHand}/>
         </Box>
       }

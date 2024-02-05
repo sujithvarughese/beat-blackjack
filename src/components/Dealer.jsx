@@ -15,11 +15,9 @@ const Dealer = () => {
     setDealerInitial,
     dealerCardShown,
     dealerHit,
-    determineWinner
+    getResults
   }
     = useGameContext()
-
-
 
   useEffect(() => {
     const score = dealerHand.reduce((acc, card) => acc + card.value, 0)
@@ -27,13 +25,13 @@ const Dealer = () => {
       if (score < 17) {
         dealerHit()
     } else {
-        determineWinner()
+        getResults()
       }
     }
   }, [dealerCardShown, dealerHand]);
 
     return (
-      <SimpleGrid>
+      <VStack>
         <HStack position="relative" justifyContent="center" width="100%" sx={{ transform: `translate(70px)` }}>
           {
             dealerHand.map((card, index) =>
@@ -61,11 +59,11 @@ const Dealer = () => {
         </HStack>
 
         { dealerCardShown === true && dealerHand.length !== 0 &&
-          <Box zIndex="100" position="absolute" left="0" right="0" width="55px" top="75px" textAlign="center" margin="auto">
+          <Box zIndex="100" position="absolute" top="75px" textAlign="center">
             <Score hand={dealerHand} />
           </Box>
         }
-      </SimpleGrid>
+      </VStack>
     );
 };
 

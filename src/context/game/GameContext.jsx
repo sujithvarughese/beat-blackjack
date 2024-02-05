@@ -11,36 +11,17 @@ import {
     RESET_SETTINGS,
     SET_SHOE,
     SET_BET,
-    SET_DEALER_INITIAL,
-    SET_PLAYER_INITIAL,
-    DEAL_HANDS,
     DRAW_CARD,
-    HANDLE_DEALER_ACE,
-    DEALER_BLACKJACK,
-    PLAYER_BLACKJACK,
-    HANDLE_INSURANCE,
-    HANDLE_EVEN_MONEY,
     SET_PLAYER_TURN,
-    PLAYER_HIT,
-    PLAYER_DOUBLE_DOWN,
-    PLAYER_STAY,
     DEALER_HIT,
-    DETERMINE_WINNER,
     ADD_FUNDS,
-
-    PLAYER_PUSH,
-    PLAYER_WIN,
-    DEALER_WIN,
-    PLAYER_EVEN_MONEY_PAYOUT,
-    PLAYER_INSURANCE_PAYOUT,
     SPLIT_HANDS,
     PLAY_NEXT_SPLIT,
     SHOW_RESULTS,
-  SET_DEALER_TURN,
-  SHOW_BOOK_MOVE
+    SET_DEALER_TURN,
+    SHOW_BOOK_MOVE
 
 } from './game-actions.js'
-import { useToast } from '@chakra-ui/react'
 
 const GameContext = createContext()
 
@@ -95,10 +76,7 @@ const initialState= {
     addFundsOption: false,
     placeBetOption: false,
 
-    totalSplits: 0,
-    splitCount: 0,
-    splitHands: [],
-    splitDoubledHands: [],
+    doubledHands: [false, false, false, false],
 
     hintShown: false,
     hint: "",
@@ -168,18 +146,7 @@ const GameProvider = ({ children }) => {
             payload: { playerBankroll }
         })
     }
-    const setDealerInitial = ({ dealerBlackjack, dealer21, dealerFaceUpValue }) => {
-        dispatch({
-            type: SET_DEALER_INITIAL,
-            payload: { dealerBlackjack, dealer21, dealerFaceUpValue }
-        })
-    }
-    const setPlayerInitial = ({ playerBlackjack, currentPlayerHand, hint }) => {
-        dispatch({
-            type: SET_PLAYER_INITIAL,
-            payload: { playerBlackjack, currentPlayerHand, hint }
-        })
-    }
+
     // sets state of shoe after popping top card
     const drawCard = () => {
         const shoe = state.shoe
@@ -191,22 +158,24 @@ const GameProvider = ({ children }) => {
         return nextCard
     }
     // user places initial bet, set to state, then cards are dealt
+    // handles complete initial deal before any user input is needed
+    // -resets values, deals first 2 cards to player and dealer,
+    // checks blackjacks(asks for insurance if available)
+    // if blackjacks are found, results will be displayed, and user will be able to place bet and deal next hand
     const dealHands = () => {
         let status = {
             placeBetOption: false,
             resultsShown: false,
             dealerCardShown: false,
 
-            doubledHand: false,
+            doubledHands: [false, false, false, false],
             splitHand: false,
             surrenderTaken: false,
             insuranceTaken: false,
             evenMoneyTaken: false,
 
-            splitCount: 0,
-            totalSplits: 0,
-            splitHands: [],
-            splitDoubledHands: [],
+            currentHandIndex: 0,
+
             bookMove: ""
         }
 
@@ -349,9 +318,10 @@ const GameProvider = ({ children }) => {
     }
 
     const playerHit = () => {
-        console.log(state)
         showBookMove("hit")
-        const currentPlayerHand = [...state.currentPlayerHand]
+        let currentPlayerHand = [...state.currentPlayerHand]
+        const playerHands = [...state.playerHands]
+        let currentHandIndex = state.currentHandIndex
         currentPlayerHand.push(drawCard())
         let score = currentPlayerHand.reduce((acc, card) => acc + card.value, 0)
         const aceValue11Index = currentPlayerHand.findIndex(card => card.rank === "Ace" && card.value === 11)
@@ -362,11 +332,13 @@ const GameProvider = ({ children }) => {
             }
             score -= 10
         }
+        playerHands[currentHandIndex] = [...currentPlayerHand]
         const bookMove = getBookMove(currentPlayerHand)
 
         let status = {
             bookMove: bookMove,
-            currentPlayerHand: currentPlayerHand
+            currentPlayerHand: currentPlayerHand,
+            playerHands: playerHands
         }
 
         if (score < 21) {
@@ -378,14 +350,16 @@ const GameProvider = ({ children }) => {
         }
 
         // if current index is not last index, it is a split hand which needs to be finished
-        if (state.currentHandIndex + 1 < state.playerHands.length) {
-            const currentPlayerHand = [...state.playerHands[state.currentHandIndex + 1]]
-            currentPlayerHand.push(drawCard())
+        if (currentHandIndex + 1 < playerHands.length) {
+            currentHandIndex++
+            playerHands[currentHandIndex].push(drawCard())
+            currentPlayerHand = [...playerHands[currentHandIndex]]
             dispatch({
                 type: PLAY_NEXT_SPLIT,
                 payload: {
                     currentPlayerHand: currentPlayerHand,
-                    currentHandIndex: state.currentHandIndex + 1
+                    playerHands: playerHands,
+                    currentHandIndex: currentHandIndex
                 }
             })
             return
@@ -396,152 +370,107 @@ const GameProvider = ({ children }) => {
         })
     }
 
-
-/*
-        if (state.splitHand === true) {
-            const splitHands = [...state.splitHands]
-            splitHands[state.splitCount] = [...currentPlayerHand]
-            status = {
-                ...status,
-                splitHands: splitHands
-            }
-            if (score >= 21) {
-                status = {
-                    ...status,
-                    splitDoubledHands: [...state.splitDoubledHands, false],
-                    splitCount: state.splitCount + 1
-                }
-            }
-        } else {
-            if (score === 21) {
-                status = {
-                    ...status,
-                    playerTurn: false,
-                    dealerTurn: true,
-                    dealerCardShown: true
-                }
-            } else if (score > 21) {
-                status = {
-                    ...status,
-                    playerTurn: false,
-                    dealerCardShown: true,
-                    placeBetOption: true,
-                    resultsShown: true
-                }
-            }
-        }
-        dispatch({
-            type: SET_STATE,
-            payload: { status }
-        })
-    }
-*/
     const playerDoubleDown = () => {
         showBookMove("double")
-        const currentPlayerHand = [...state.currentPlayerHand]
+        let currentPlayerHand = [...state.currentPlayerHand]
+        const playerHands = [...state.playerHands]
+        let currentHandIndex = state.currentHandIndex
+        const doubledHands = [...state.doubledHands]
+        doubledHands[currentHandIndex] = true
+        console.log(doubledHands)
         currentPlayerHand.push(drawCard())
-        const aceValue11Index = currentPlayerHand.findIndex(card => card.rank === "Ace" && card.value === 11)
         let score = currentPlayerHand.reduce((acc, card) => acc + card.value, 0)
+        const aceValue11Index = currentPlayerHand.findIndex(card => card.rank === "Ace" && card.value === 11)
         if (score > 21 && aceValue11Index !== -1) {
-            currentPlayerHand[aceValue11Index].value = 1
-            score -= 10
+            currentPlayerHand[aceValue11Index] = {
+                ...currentPlayerHand[aceValue11Index],
+                value: 1
+            }
         }
+        playerHands[currentHandIndex] = [...currentPlayerHand]
+        const bookMove = getBookMove(currentPlayerHand)
+
         let status = {
-            actionTaken: "double down",
             bookMove: bookMove,
-            playerBankroll: state.playerBankroll - state.bet,
-            netCredit: state.netCredit - state.bet,
-            doubledHand: true,
+            playerBankroll: state.playerBankroll - state.netDebit,
+            netDebit: state.netDebit - state.netDebit,
             playerTurn: false,
             currentPlayerHand: currentPlayerHand,
+            playerHands: playerHands,
+            doubledHands: doubledHands
         }
-        if (state.splitHand) {
-            const splitHands = [...state.splitHands]
-            splitHands[state.splitCount] = [...currentPlayerHand]
-            status = {
-                ...status,
-                splitHands: splitHands,
-                splitDoubledHands: [...state.splitDoubledHands, true],
-                splitCount: state.splitCount + 1,
-            }
-        } else {
-            status = {
-                ...status,
-                placeBetOption: true,
-                numHandsPlayed: state.numHandsPlayed + 1,
-                resultsShown: true,
-                dealerCardShown: true,
-                dealerTurn: true,
-            }
+        // if current index is not last index, it is a split hand which needs to be finished
+        if (currentHandIndex + 1 < playerHands.length) {
+            currentHandIndex++
+            playerHands[currentHandIndex].push(drawCard())
+            currentPlayerHand = [...playerHands[currentHandIndex]]
+            dispatch({
+                type: PLAY_NEXT_SPLIT,
+                payload: {
+                    currentPlayerHand: currentPlayerHand,
+                    playerHands: playerHands,
+                    currentHandIndex: currentHandIndex
+                }
+            })
+            return
         }
         dispatch({
-            type: PLAYER_DOUBLE_DOWN,
+            type: SET_DEALER_TURN,
             payload: { status }
         })
     }
 
     const playerStay = () => {
         showBookMove("stay")
-        let status = {}
-        if (state.splitHand) {
-            status = {
-                ...status,
-                splitDoubledHands: [...state.splitDoubledHands, false],
-                splitCount: state.splitCount + 1
-            }
-        } else {
-            status = {
-                ...status,
-                playerTurn: false,
-                dealerTurn: true,
-                dealerCardShown: true,
-            }
+        let currentHandIndex = state.currentHandIndex
+        const playerHands = [...state.playerHands]
+        let currentPlayerHand = [...state.currentPlayerHand]
+        if (currentHandIndex + 1 < playerHands.length) {
+            playerHands[state.currentHandIndex + 1].push(drawCard())
+            const bookMove = getBookMove(playerHands[state.currentHandIndex + 1])
+            dispatch({
+                type: PLAY_NEXT_SPLIT,
+                payload: { playerHands, bookMove }
+            })
+            return
         }
-
-        dispatch({
-            type: PLAYER_STAY,
-            payload: { status }
-        })
+        dispatch({ type: SET_DEALER_TURN })
     }
 
     const surrender = () => {
         showBookMove("surrender")
-        const status = {
-            actionTaken: "surrender",
-            bookMove: bookMove,
-            playerBankroll: state.playerBankroll + state.bet * 0.5,
-            netCredit: state.netCredit - state.bet * 0.5,
-            numHandsPlayed: state.numHandsPlayed + 1,
-            placeBetOption: true
+        let status = {
+            netDebit: state.netDebit - state.netDebit * 0.5,
+            playerBankroll: state.playerBankroll - state.netDebit * 0.5
+        }
+        const playerHands = [...state.playerHands]
+
+        if (state.currentHandIndex + 1 < playerHands.length) {
+            playerHands[state.currentHandIndex + 1].push(drawCard())
+            const bookMove = getBookMove(playerHands[state.currentHandIndex + 1])
+            dispatch({
+                type: PLAY_NEXT_SPLIT,
+                payload: { ...status, playerHands, bookMove }
+            })
+            return
         }
         dispatch({
-            type: SET_STATE,
+            type: SHOW_RESULTS,
             payload: { status }
         })
     }
 
     const showBookMove = (actionTaken) => {
         const feedback = actionTaken === state.bookMove ?
-          {
-              title: "Good Move!",
-              position: "top",
-              status: "success",
-              duration: 1000
-          }
-          :
-          {
-              title: `The correct play was to ${state.bookMove}.`,
-              position: "top",
-              status: "warning",
-              duration: 1000
-          }
+          { title: "Good Move!", position: "top", status: "success", duration: 1000 }
+            :
+          { title: `The correct play was to ${state.bookMove}.`, position: "top", status: "warning", duration: 1000 }
         dispatch({
             type: SHOW_BOOK_MOVE, payload: { feedback }
         })
     }
 
-
-    const splitHand_ = () => {
+    const splitHand = () => {
         showBookMove("split")
         const playerHands = [...state.playerHands]
         const currentHandIndex = state.currentHandIndex
@@ -561,6 +490,7 @@ const GameProvider = ({ children }) => {
         if (currentPlayerHand[0].value === 11 && currentPlayerHand[1].value === 11) {
             currentPlayerHand[0].value = 1
         }
+
         const bookMove = getBookMove(currentPlayerHand)
         dispatch({
             type: SPLIT_HANDS,
@@ -571,82 +501,6 @@ const GameProvider = ({ children }) => {
                 bookMove: bookMove,
             }
         })
-    }
-
-
-    const playerSplit = () => {
-        // array that holds each split hand
-        let splitHands = [...state.splitHands]
-        // currentPlayerHand = 2 cards which will need to be split that make up the base of a split hand
-        const currentPlayerHand = [...state.currentPlayerHand]
-        // since we changed the Ace value to 1 on the initial deal, should be changed back to 11 for split hand
-        if (currentPlayerHand[0].value === 1 && currentPlayerHand[1].value === 1) {
-            currentPlayerHand[0].value = 11
-        }
-        //const bookMove = getBookMove(state.currentPlayerHand.slice(state.currentPlayerHand.length - 2))
-        // second of the split hands
-        const newHand = [state.currentPlayerHand[state.currentPlayerHand.length - 1]]
-        // if not first split, pop out newest hand as we will be adding it as currentPlayerHand with one card
-        if (splitHands.length > 0) {
-            splitHands.pop()
-        }
-        // remove the second card which is now in newHand array
-        currentPlayerHand.pop()
-        // draw first card for first split hand
-        currentPlayerHand.push(drawCard())
-        const bookMove = getBookMove(currentPlayerHand)
-        // split hands array will contain previous split hands and both current split hands
-        splitHands = [...splitHands, currentPlayerHand, newHand]
-        const status = {
-            splitHands: splitHands,
-            currentPlayerHand: currentPlayerHand,
-            totalSplits: state.totalSplits + 1,
-            splitHand: true,
-            playerBankroll: state.playerBankroll - state.bet,
-            actionTaken: "split",
-            bookMove: bookMove,
-            playerTurn: true,
-        }
-        dispatch({
-            type: "SPLIT",
-            payload: { status }
-        })
-    }
-
-    const playNextSplitHand = () => {
-        console.log(state.splitHand)
-        console.log(state.splitCount)
-        console.log(state.totalSplits)
-        if (state.splitCount <= state.totalSplits) {
-            let splitHands = [...state.splitHands]
-            // set currentPlayerHand to current working hand at index splitCount
-            const currentPlayerHand = splitHands[state.splitCount]
-            currentPlayerHand.push(drawCard())
-            // set current player hand at index in splitHands array
-            splitHands[state.splitCount] = currentPlayerHand
-            const status = {
-                splitHands: splitHands,
-                currentPlayerHand: currentPlayerHand,
-                playerTurn: true,
-
-            }
-            dispatch({
-                type: "SPLIT",
-                payload: { status }
-            })
-        }
-        else {
-            const status = {
-                playerTurn: false,
-                dealerTurn: true,
-                dealerCardShown: true,
-                resultsShown: true
-            }
-            dispatch({
-                type: "SPLIT",
-                payload: { status }
-            })
-        }
     }
 
     const dealerHit = () => {
@@ -664,52 +518,26 @@ const GameProvider = ({ children }) => {
         })
     }
 
-    const determineWinner = () => {
-        let status = {
-            dealerTurn: false,
-            resultsShown: true,
-            placeBetOption: true,
-            numHandsPlayed: state.numHandsPlayed + 1,
-        }
+    const getResults = () => {
+        const playerHands = state.playerHands
+        const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
 
-        const getProfit = (index) => {
-            const playerScore = state.currentPlayerHand.reduce((acc, card) => acc + card.value, 0)
-            const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
-            let currentBet = state.bet
-
-            if (state.doubledHand === true || state.splitDoubledHands[index] === true) {
-                currentBet += state.bet
-            }
-
-            if (dealerScore > 21 || playerScore > dealerScore) {
-                status = {
-                    ...status,
-                    netCredit: state.netCredit + currentBet,
-                    playerBankroll: state.playerBankroll + currentBet,
-                }
-            } else if (dealerScore > playerScore) {
-                status = {
-                    ...status,
-                    netCredit: state.netCredit - currentBet,
-                    playerBankroll: state.playerBankroll - currentBet,
-                }
-            } else {
-                status = {
-                    ...status,
-                    playerBankroll: state.playerBankroll + currentBet
+        playerHands.forEach(hand => {
+            const playerScoreHand = hand.reduce((acc, card) => acc + card.value, 0)
+            let status = {}
+            if (playerScoreHand <= 21) {
+                if (dealerScore > 21 || playerScoreHand > dealerScore) {
+                    status = {
+                        ...status,
+                        netCredit: state.netDebit,
+                        playerBankroll: state.playerBankroll + state.netDebit + state.netCredit,
+                    }
                 }
             }
-        }
-        if (state.splitHand) {
-            state.splitHands.forEach((hand, index) => {
-                getProfit(index)
+            dispatch({
+                type: SHOW_RESULTS,
+                payload: { status }
             })
-        } else {
-            getProfit()
-        }
-        dispatch({
-            type: DETERMINE_WINNER,
-            payload: { status }
         })
     }
 
@@ -725,8 +553,6 @@ const GameProvider = ({ children }) => {
                 resetSettings,
                 setShoe,
                 dealHands,
-                setDealerInitial,
-                setPlayerInitial,
                 getBookMove,
                 handleInsurance,
                 handleEvenMoney,
@@ -736,12 +562,11 @@ const GameProvider = ({ children }) => {
                 playerDoubleDown,
                 playerStay,
                 dealerHit,
-                playerSplit,
-                playNextSplitHand,
                 surrender,
-                determineWinner,
+                getResults,
                 setSetting,
                 addFunds,
+                splitHand
 
             }
         }>

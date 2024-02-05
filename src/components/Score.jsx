@@ -3,6 +3,16 @@ import { Heading } from '@chakra-ui/react'
 
 const Score = ({ hand }) => {
 
+    const score = hand.reduce((acc, card) => acc + card.value, 0)
+    let text = score
+
+    if (score === 21 && hand.length === 2) {
+        text = "blackjack"
+    }
+    if (score > 21) {
+        text = "BUST"
+    }
+
     return (
         <Heading
             backgroundColor="black"
@@ -12,7 +22,7 @@ const Score = ({ hand }) => {
             padding="2px"
             zIndex="10"
         >
-            {hand.reduce((acc, card) => acc + card.value, 0)}
+            {text}
         </Heading>
     )
 }

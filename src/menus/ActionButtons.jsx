@@ -6,6 +6,7 @@ const ActionButtons = () => {
 
   const {
     insuranceOpen,
+    playerHands,
     currentPlayerHand,
     playerDoubleDown,
     playerBlackjack,
@@ -13,8 +14,8 @@ const ActionButtons = () => {
     playerStay,
     settings,
     surrender,
-    playerSplit,
-    totalSplits,
+    splitHand,
+    currentHandIndex
   } = useGameContext()
 
   return (
@@ -32,12 +33,11 @@ const ActionButtons = () => {
       {settings.surrenderAllowed && currentPlayerHand.length === 2 && <SurrenderBtn action={surrender} />}
 
       {
-        settings.maxNumSplits > 0
-        && totalSplits < settings.maxNumSplits
+        playerHands.length <= settings.maxNumSplits
         && currentPlayerHand.length === 2
-        && (currentPlayerHand[0].value === currentPlayerHand[1].value
-          || currentPlayerHand[0].value === 1 && currentPlayerHand[1].value === 11) // when both cards are aces, we changed the first value to 1
-        && <SplitBtn action={playerSplit}/>
+        /*&& (currentPlayerHand[0].value === currentPlayerHand[1].value
+          || currentPlayerHand[0].value === 1 && currentPlayerHand[1].value === 11)*/ // when both cards are aces, we changed the first value to 1
+        && <SplitBtn action={splitHand}/>
       }
 
       {currentPlayerHand.length === 2 && <DoubleBtn action={playerDoubleDown} />}

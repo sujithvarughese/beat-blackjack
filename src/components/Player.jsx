@@ -9,6 +9,7 @@ const Player = () => {
   const {
     playerHands,
     feedback,
+    doubledHands,
     currentPlayerHand,
     dealerFaceUpValue,
     setPlayerInitial,
@@ -40,6 +41,7 @@ const Player = () => {
     playNextSplitHand()
   }, [splitCount])
 */
+
     return (
       <HStack justifyContent="space-around">
         {
@@ -47,7 +49,7 @@ const Player = () => {
             <PlayerHand
               key={index}
               playerHand={playerHand}
-              doubledHand={doubledHand}
+              doubledHand={doubledHands[index]}
             />)
         }
       </HStack>
