@@ -33,6 +33,7 @@ import {
 
     SHOW_RESULTS,
     SET_PLAYER_TURN,
+  SPLIT_HANDS,
 
 } from './game-actions.js'
 const gameReducer = (state, action) => {
@@ -319,12 +320,23 @@ const gameReducer = (state, action) => {
             numHandsPlayed: state.numHandsPlayed + 1
         }
     }
-
     if (action.type === SET_PLAYER_TURN) {
         return {
             ...state,
             ...action.payload.status,
             playerTurn: true,
+        }
+    }
+    if (action.type === SPLIT_HANDS) {
+        return {
+            ...state,
+            playerHands: action.payload.playerHands,
+            currentPlayerHand: action.payload.currentPlayerHand,
+            currentHandIndex: action.payload.currentHandIndex,
+            bookMove: action.payload.bookMove,
+            netDebit: state.netDebit + state.netDebit,
+            playerBankroll: state.playerBankroll - state.netDebit,
+            playerTurn: true
         }
     }
 

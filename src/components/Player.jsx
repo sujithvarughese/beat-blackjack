@@ -2,10 +2,12 @@ import classes from "./styles/Hands.module.css";
 import {useGameContext} from "../context/game/GameContext.jsx";
 import {useEffect} from "react";
 import { Box, Container, Heading, HStack, Image, Text, useToast, VStack } from '@chakra-ui/react'
-import { Score } from "./"
+import { PlayerHand, Score } from './'
+import playerHand from './PlayerHand.jsx'
 const Player = () => {
 
   const {
+    playerHands,
     currentPlayerHand,
     dealerFaceUpValue,
     setPlayerInitial,
@@ -21,7 +23,7 @@ const Player = () => {
     getBookMove
   } = useGameContext()
 
-
+/*
   const toast = useToast()
   const options = actionTaken === bookMove ?
     {
@@ -49,12 +51,24 @@ const Player = () => {
     console.log("12")
     playNextSplitHand()
   }, [splitCount])
-
+*/
     return (
-      <Box>
+      <HStack justifyContent="space-around">
         {
-          splitHand ?
-            <HStack
+          playerHands?.map((playerHand, index) =>
+            <PlayerHand
+              key={index}
+              playerHand={playerHand}
+              doubledHand={doubledHand}
+            />)
+        }
+      </HStack>
+    );
+};
+
+export default Player;
+
+/*            <HStack
               width="100%"
               justifyContent="space-around"
             >
@@ -98,50 +112,4 @@ const Player = () => {
                   )
                 })
               }
-            </HStack>
-            :
-            <VStack>
-              <VStack>
-              {
-                currentPlayerHand.map((card, index) =>
-                  (doubledHand && index === 2)
-                    ?
-                    <Image
-                        key={index}
-                        className={classes.cardDoubleDown}
-                        src={card.img}
-                        alt={card.value}
-                        position="absolute"
-                        bottom="85px"
-                    />
-                    :
-                    <Image
-                        key={index}
-                        className={classes.card}
-                        src={card.img}
-                        alt={card.value}
-                        position="absolute"
-                        bottom={`calc(20px * ${index})`}
-                        sx={{ transform: `translate(calc(30px * ${index}))` }}
-                    />
-                )
-              }
-              </VStack>
-              {currentPlayerHand.length !== 0 &&
-                  <Box position="absolute" bottom="5px" width="55px" textAlign="center">
-                    <Score hand={currentPlayerHand}/>
-                  </Box>
-              }
-
-            </VStack>
-
-
-        }
-
-
-
-      </Box>
-    );
-};
-
-export default Player;
+            </HStack>*/

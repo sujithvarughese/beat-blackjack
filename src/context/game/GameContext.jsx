@@ -33,6 +33,7 @@ import {
     DEALER_WIN,
     PLAYER_EVEN_MONEY_PAYOUT,
     PLAYER_INSURANCE_PAYOUT,
+  SPLIT_HANDS,
 
     SHOW_RESULTS
 
@@ -107,7 +108,7 @@ const initialState= {
     dealerCardShown: false,
     resultsShown: false,
     numHandsPlayed: 0,
-
+    currentHandIndex: 0,
 }
 
 const GameProvider = ({ children }) => {
@@ -221,7 +222,7 @@ const GameProvider = ({ children }) => {
         dealerHand.push(drawCard())
         currentPlayerHand.push(drawCard())
         dealerHand.push(drawCard())
-
+        playerHands.push(currentPlayerHand)
         if (currentPlayerHand.reduce((acc, card) => acc + card.value, 0) === 21) {
             playerBlackjack = true
         }
@@ -285,7 +286,6 @@ const GameProvider = ({ children }) => {
         status = {
             ...status,
             playerTurn: true,
-            hint: hint
         }
         dispatch({
             type: SET_STATE,
@@ -360,12 +360,26 @@ const GameProvider = ({ children }) => {
         }
         const bookMove = getBookMove(currentPlayerHand)
 
-
         let status = {
-            actionTaken: "hit",
             bookMove: bookMove,
-            hint: hint,
             currentPlayerHand: currentPlayerHand
+        }
+
+        if (score < 21) {
+            dispatch({
+                type: SET_PLAYER_TURN,
+                payload: { status }
+            })
+            return
+        }
+
+        // if current index is not last index, it is a split hand which needs to be finished
+        if (state.currentHandIndex + 1 < state.playerHands) {
+
+        }
+
+        if (score === 21) {
+
         }
 
         if (state.splitHand === true) {
@@ -407,7 +421,7 @@ const GameProvider = ({ children }) => {
     }
 
     const playerDoubleDown = () => {
-        const bookMove = getBookMove()
+        showBookMove("double")
         const currentPlayerHand = [...state.currentPlayerHand]
         currentPlayerHand.push(drawCard())
         const aceValue11Index = currentPlayerHand.findIndex(card => card.rank === "Ace" && card.value === 11)
@@ -451,11 +465,8 @@ const GameProvider = ({ children }) => {
     }
 
     const playerStay = () => {
-        const bookMove = getBookMove()
-        let status = {
-            actionTaken: "stay",
-            bookMove: bookMove,
-        }
+        showBookMove("stay")
+        let status = {}
         if (state.splitHand) {
             status = {
                 ...status,
@@ -478,7 +489,7 @@ const GameProvider = ({ children }) => {
     }
 
     const surrender = () => {
-        const bookMove = getBookMove()
+        showBookMove("surrender")
         const status = {
             actionTaken: "surrender",
             bookMove: bookMove,
@@ -517,18 +528,15 @@ const GameProvider = ({ children }) => {
     const splitHand_ = () => {
         showBookMove("split")
         const playerHands = [...state.playerHands]
-
+        const currentHandIndex = state.currentHandIndex
         // If two aces, since we changed the first Ace value to 1 on the initial deal, should be changed back to 11 for split hand
-        if (playerHands[playerHands.length - 1][0].value === 1 && playerHands[playerHands.length - 1][1].value === 11) {
-            playerHands[playerHands.length - 1][0] = {
-                ...playerHands[playerHands.length - 1][0],
-                value: 11
-            }
+        if (playerHands[currentHandIndex][0].value === 1 && playerHands[currentHandIndex][1].value === 11) {
+            playerHands[currentHandIndex][0] = { ...playerHands[currentHandIndex][0], value: 11 }
         }
         // make new hand by popping card from last hand of array (if only one hand, will be the first hand)
-        const newHand = [playerHands[playerHands.length - 1].pop()]
+        const newHand = [playerHands[currentHandIndex].pop()]
         // current hand is the hand which we just popped a card from (original hand)
-        const currentPlayerHand = playerHands[playerHands.length - 1]
+        const currentPlayerHand = playerHands[currentHandIndex]
         // both current hand and new hand should only have one card each; push new hand into array of hands
         playerHands.push(newHand)
         // draw first card for first split hand
@@ -538,6 +546,15 @@ const GameProvider = ({ children }) => {
             currentPlayerHand[0].value = 1
         }
         const bookMove = getBookMove(currentPlayerHand)
+        dispatch({
+            type: SPLIT_HANDS,
+            payload: {
+                playerHands: playerHands,
+                currentPlayerHand: currentPlayerHand,
+                currentHandIndex: currentHandIndex,
+                bookMove: bookMove,
+            }
+        })
     }
 
 
@@ -550,7 +567,7 @@ const GameProvider = ({ children }) => {
         if (currentPlayerHand[0].value === 1 && currentPlayerHand[1].value === 1) {
             currentPlayerHand[0].value = 11
         }
-        const bookMove = getBookMove(state.currentPlayerHand.slice(state.currentPlayerHand.length - 2))
+        //const bookMove = getBookMove(state.currentPlayerHand.slice(state.currentPlayerHand.length - 2))
         // second of the split hands
         const newHand = [state.currentPlayerHand[state.currentPlayerHand.length - 1]]
         // if not first split, pop out newest hand as we will be adding it as currentPlayerHand with one card
@@ -561,7 +578,7 @@ const GameProvider = ({ children }) => {
         currentPlayerHand.pop()
         // draw first card for first split hand
         currentPlayerHand.push(drawCard())
-        const hint = getBookMove(currentPlayerHand)
+        const bookMove = getBookMove(currentPlayerHand)
         // split hands array will contain previous split hands and both current split hands
         splitHands = [...splitHands, currentPlayerHand, newHand]
         const status = {
@@ -572,7 +589,6 @@ const GameProvider = ({ children }) => {
             playerBankroll: state.playerBankroll - state.bet,
             actionTaken: "split",
             bookMove: bookMove,
-            hint: hint,
             playerTurn: true,
         }
         dispatch({
