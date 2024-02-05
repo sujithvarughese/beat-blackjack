@@ -2,8 +2,7 @@ import { Box, Image, VStack } from '@chakra-ui/react'
 import classes from './styles/Hands.module.css'
 import { Score } from './index.js'
 
-const PlayerHand = ({ playerHand, doubledHand }) => {
-
+const PlayerHand = ({ playerHand, doubledHand, isCurrentHand }) => {
   return (
     <VStack>
       {
@@ -35,8 +34,21 @@ const PlayerHand = ({ playerHand, doubledHand }) => {
           <Score hand={playerHand}/>
         </Box>
       }
+      {isCurrentHand && <CurrentHandIndicator />}
     </VStack>
   )
 }
+
+const CurrentHandIndicator = () =>
+  <Box
+    height="30px"
+    width="30px"
+    backgroundColor="black"
+    border="2px solid goldenrod"
+    borderRadius="50%"
+    position="absolute"
+    bottom="-35px"
+  ></Box>
+
 
 export default PlayerHand

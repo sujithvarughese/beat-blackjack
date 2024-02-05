@@ -10,6 +10,7 @@ const Player = () => {
     playerHands,
     feedback,
     doubledHands,
+    currentHandIndex,
     currentPlayerHand,
     dealerFaceUpValue,
     setPlayerInitial,
@@ -50,6 +51,7 @@ const Player = () => {
               key={index}
               playerHand={playerHand}
               doubledHand={doubledHands[index]}
+              isCurrentHand={index === currentHandIndex}
             />)
         }
       </HStack>

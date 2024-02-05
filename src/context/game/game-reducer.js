@@ -62,7 +62,9 @@ const gameReducer = (state, action) => {
     if (action.type === SET_SHOE) {
         return {
             ...state,
-            ...action.payload.status
+            ...action.payload.status,
+            placeBetOption: true,
+            settingsMenuOpen: false
         }
     }
     if (action.type === SET_BET) {
@@ -83,8 +85,6 @@ const gameReducer = (state, action) => {
             dealerHand: action.payload.dealerHand
         }
     }
-
-
     if (action.type === ADD_FUNDS) {
         return {
             ...state,
@@ -92,22 +92,20 @@ const gameReducer = (state, action) => {
             addFundsShown: false
         }
     }
-    if (action.type === SHOW_RESULTS) {
-        return {
-            ...state,
-            ...action.payload.status,
-            resultsShown: true,
-            dealerCardShown: true,
-            placeBetOption: true,
-            dealerTurn: false,
-            numHandsPlayed: state.numHandsPlayed + 1,
-        }
-    }
     if (action.type === SET_PLAYER_TURN) {
         return {
             ...state,
             ...action.payload.status,
             playerTurn: true,
+        }
+    }
+    if (action.type === SET_DEALER_TURN) {
+        return {
+            ...state,
+            ...action.payload?.status,
+            playerTurn: false,
+            dealerTurn: true,
+            dealerCardShown: true,
         }
     }
     if (action.type === SPLIT_HANDS) {
@@ -134,13 +132,15 @@ const gameReducer = (state, action) => {
 
         }
     }
-    if (action.type === SET_DEALER_TURN) {
+    if (action.type === SHOW_RESULTS) {
         return {
             ...state,
-            ...action.payload?.status,
-            playerTurn: false,
-            dealerTurn: true,
+            ...action.payload.status,
+            resultsShown: true,
             dealerCardShown: true,
+            placeBetOption: true,
+            dealerTurn: false,
+            numHandsPlayed: state.numHandsPlayed + 1,
         }
     }
     if (action.type === SHOW_BOOK_MOVE) {
@@ -149,7 +149,6 @@ const gameReducer = (state, action) => {
             feedback: action.payload.feedback
         }
     }
-
 }
 
 

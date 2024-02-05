@@ -102,20 +102,13 @@ const GameProvider = ({ children }) => {
 
     // state for individual settings changed when user adjusts setting value
     const setSetting = (setting) => {
-        dispatch({
-            type: SET_SETTING,
-            payload: { setting }
-        })
+        dispatch({ type: SET_SETTING, payload: { setting } })
     }
     // set to initial settings state
     const resetSettings = () => {
         const { settings } = initialState
-        dispatch({
-            type: RESET_SETTINGS,
-            payload: { settings }
-        })
+        dispatch({ type: RESET_SETTINGS, payload: { settings } })
     }
-
     // creates shoe using number of decks user selected, gives user option to change bet size and deal hands
     const setShoe = (sameShoe = false) => {
         // if user wants to play the same shoe again
@@ -124,20 +117,12 @@ const GameProvider = ({ children }) => {
             newShoe: newShoe,
             shoe: [...newShoe],
             playerBankroll: sameShoe === true ? state.playerBankroll : state.settings.playerInitialBankroll,
-            placeBetOption: true,
-            settingsMenuOpen: false
         }
-        dispatch({
-            type: SET_SHOE,
-            payload: { status }
-        })
+        dispatch({ type: SET_SHOE, payload: { status } })
     }
     // set state on change in PlaceBet component
     const setBet = (bet) => {
-        dispatch({
-            type: SET_BET,
-            payload: { bet }
-        })
+        dispatch({ type: SET_BET, payload: { bet } })
     }
     const addFunds = (reloadAmount) => {
         const playerBankroll = state.playerBankroll + Number(reloadAmount)
@@ -365,7 +350,7 @@ const GameProvider = ({ children }) => {
             return
         }
         dispatch({
-            type: SET_DEALER_TURN,
+            type: SHOW_RESULTS,
             payload: { status }
         })
     }
@@ -517,7 +502,6 @@ const GameProvider = ({ children }) => {
             payload: { dealerHand }
         })
     }
-
     const getResults = () => {
         const playerHands = state.playerHands
         const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
@@ -527,10 +511,11 @@ const GameProvider = ({ children }) => {
             let status = {}
             if (playerScoreHand <= 21) {
                 if (dealerScore > 21 || playerScoreHand > dealerScore) {
+                    const netCredit = state.netDebit * 2
                     status = {
                         ...status,
-                        netCredit: state.netDebit,
-                        playerBankroll: state.playerBankroll + state.netDebit + state.netCredit,
+                        netCredit: netCredit,
+                        playerBankroll: state.playerBankroll + netCredit,
                     }
                 }
             }
@@ -567,7 +552,6 @@ const GameProvider = ({ children }) => {
                 setSetting,
                 addFunds,
                 splitHand
-
             }
         }>
             { children }

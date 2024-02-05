@@ -9,7 +9,7 @@ const HintButton = () => {
         toast.closeAll()
         toast({
             title: bookMove.charAt(0).toUpperCase() + bookMove.slice(1),
-            position: "bottom",
+            position: "top",
             status: "info",
             duration: 2000
         })
