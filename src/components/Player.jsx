@@ -8,6 +8,7 @@ const Player = () => {
 
   const {
     playerHands,
+    feedback,
     currentPlayerHand,
     dealerFaceUpValue,
     setPlayerInitial,
@@ -23,29 +24,16 @@ const Player = () => {
     getBookMove
   } = useGameContext()
 
-/*
+
   const toast = useToast()
-  const options = actionTaken === bookMove ?
-    {
-      title: "Good Move!",
-      position: "top",
-      status: "success",
-      duration: 1000
-    }
-    :
-    {
-      title: `The correct play was to ${bookMove}.`,
-      position: "top",
-      status: "warning",
-      duration: 1000
-    }
 
   useEffect(() => {
     if (!bookMove || settings.feedback === false) return
     toast.closeAll()
-    toast(options)
-  }, [currentPlayerHand, bookMove])
+    toast(feedback)
+  }, [feedback])
 
+  /*
   useEffect(() => {
     if (!splitHand) return
     console.log("12")

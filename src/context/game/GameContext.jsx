@@ -33,9 +33,11 @@ import {
     DEALER_WIN,
     PLAYER_EVEN_MONEY_PAYOUT,
     PLAYER_INSURANCE_PAYOUT,
-  SPLIT_HANDS,
-
-    SHOW_RESULTS
+    SPLIT_HANDS,
+    PLAY_NEXT_SPLIT,
+    SHOW_RESULTS,
+  SET_DEALER_TURN,
+  SHOW_BOOK_MOVE
 
 } from './game-actions.js'
 import { useToast } from '@chakra-ui/react'
@@ -100,6 +102,7 @@ const initialState= {
 
     hintShown: false,
     hint: "",
+    feedback: {},
     feedbackShown: false,
     feedbackText: "",
     actionTaken: "",
@@ -346,6 +349,7 @@ const GameProvider = ({ children }) => {
     }
 
     const playerHit = () => {
+        console.log(state)
         showBookMove("hit")
         const currentPlayerHand = [...state.currentPlayerHand]
         currentPlayerHand.push(drawCard())
@@ -374,14 +378,26 @@ const GameProvider = ({ children }) => {
         }
 
         // if current index is not last index, it is a split hand which needs to be finished
-        if (state.currentHandIndex + 1 < state.playerHands) {
-
+        if (state.currentHandIndex + 1 < state.playerHands.length) {
+            const currentPlayerHand = [...state.playerHands[state.currentHandIndex + 1]]
+            currentPlayerHand.push(drawCard())
+            dispatch({
+                type: PLAY_NEXT_SPLIT,
+                payload: {
+                    currentPlayerHand: currentPlayerHand,
+                    currentHandIndex: state.currentHandIndex + 1
+                }
+            })
+            return
         }
+        dispatch({
+            type: SET_DEALER_TURN,
+            payload: { status }
+        })
+    }
 
-        if (score === 21) {
 
-        }
-
+/*
         if (state.splitHand === true) {
             const splitHands = [...state.splitHands]
             splitHands[state.splitCount] = [...currentPlayerHand]
@@ -419,7 +435,7 @@ const GameProvider = ({ children }) => {
             payload: { status }
         })
     }
-
+*/
     const playerDoubleDown = () => {
         showBookMove("double")
         const currentPlayerHand = [...state.currentPlayerHand]
@@ -505,8 +521,7 @@ const GameProvider = ({ children }) => {
     }
 
     const showBookMove = (actionTaken) => {
-        const toast = useToast()
-        const options = actionTaken === state.bookMove ?
+        const feedback = actionTaken === state.bookMove ?
           {
               title: "Good Move!",
               position: "top",
@@ -520,8 +535,9 @@ const GameProvider = ({ children }) => {
               status: "warning",
               duration: 1000
           }
-        toast.closeAll()
-        toast(options)
+        dispatch({
+            type: SHOW_BOOK_MOVE, payload: { feedback }
+        })
     }
 
 

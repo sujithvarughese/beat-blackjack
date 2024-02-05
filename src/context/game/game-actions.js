@@ -37,4 +37,7 @@ export const SHOW_RESULTS = "SHOW_RESULTS"
 
 export const SET_PLAYER_TURN = "SET_PLAYER_TURN"
 export const SPLIT_HANDS = "SPLIT_HANDS"
+export const PLAY_NEXT_SPLIT = "PLAY_NEXT_SPLIT"
+export const SET_DEALER_TURN = "SET_DEALER_TURN"
 
+export const SHOW_BOOK_MOVE = "SHOW_BOOK_MOVE"

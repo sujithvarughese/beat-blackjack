@@ -22,7 +22,6 @@ import {
     SET_DEALER_INITIAL,
     SET_PLAYER_INITIAL,
 
-
     PLAYER_EVEN_MONEY_PAYOUT,
     PLAYER_INSURANCE_PAYOUT,
     PLAYER_WIN,
@@ -33,7 +32,10 @@ import {
 
     SHOW_RESULTS,
     SET_PLAYER_TURN,
-  SPLIT_HANDS,
+    SPLIT_HANDS,
+    PLAY_NEXT_SPLIT,
+    SET_DEALER_TURN,
+  SHOW_BOOK_MOVE
 
 } from './game-actions.js'
 const gameReducer = (state, action) => {
@@ -337,6 +339,28 @@ const gameReducer = (state, action) => {
             netDebit: state.netDebit + state.netDebit,
             playerBankroll: state.playerBankroll - state.netDebit,
             playerTurn: true
+        }
+    }
+    if (action.type === PLAY_NEXT_SPLIT) {
+        return {
+            ...state,
+            currentPlayerHand: action.payload.currentPlayerHand,
+            currentHandIndex: action.payload.currentHandIndex
+
+        }
+    }
+    if (action.type === SET_DEALER_TURN) {
+        return {
+            ...state,
+            playerTurn: false,
+            dealerTurn: true,
+            dealerCardShown: true
+        }
+    }
+    if (action.type === SHOW_BOOK_MOVE) {
+        return {
+            ...state,
+            feedback: action.payload.feedback
         }
     }
 
