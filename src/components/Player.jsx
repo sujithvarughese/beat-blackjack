@@ -6,7 +6,7 @@ import { Score } from "./"
 const Player = () => {
 
   const {
-    playerHand,
+    currentPlayerHand,
     dealerFaceUpValue,
     setPlayerInitial,
 
@@ -24,15 +24,15 @@ const Player = () => {
   const checkPlayerBlackjacks = () => {
     let playerBlackjack
     // if player has blackjack
-    if (playerHand.reduce((acc, card) => acc + card.value, 0) === 21) {
+    if (currentPlayerHand.reduce((acc, card) => acc + card.value, 0) === 21) {
       playerBlackjack = true
     }
     // if both player's cards are aces, make the first value === 1
-    if (playerHand[0].value === 11 && playerHand[1].value === 11) {
-      playerHand[0].value = 1
+    if (currentPlayerHand[0].value === 11 && currentPlayerHand[1].value === 11) {
+      currentPlayerHand[0].value = 1
     }
-    const hint = getBookMove(playerHand, dealerFaceUpValue)
-    setPlayerInitial({ playerBlackjack, playerHand, hint })
+    const hint = getBookMove(currentPlayerHand, dealerFaceUpValue)
+    setPlayerInitial({ playerBlackjack, currentPlayerHand, hint })
   }
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const Player = () => {
     if (!bookMove || settings.feedback === false) return
     toast.closeAll()
     toast(options)
-  }, [playerHand, bookMove])
+  }, [currentPlayerHand, bookMove])
 
   useEffect(() => {
     if (!splitHand) return
@@ -77,14 +77,14 @@ const Player = () => {
               justifyContent="space-around"
             >
               {
-                splitHands.map((playerHand, index) => {
+                splitHands.map((currentPlayerHand, index) => {
                   return (
                     <VStack key={index}>
                       <VStack
                           flexDirection="column-reverse"
                       >
                         {
-                          playerHand.map((card, index) =>
+                          currentPlayerHand.map((card, index) =>
                               (doubledHand && index === 2)
                             ?
                             <Image key={index}
@@ -107,9 +107,9 @@ const Player = () => {
                           )
                         }
                       </VStack>
-                      {playerHand.length !== 0 &&
+                      {currentPlayerHand.length !== 0 &&
                           <Box position="absolute" bottom="5px" width="55px" textAlign="center">
-                            <Score hand={playerHand}/>
+                            <Score hand={currentPlayerHand}/>
                           </Box>
                       }
                     </VStack>
@@ -121,7 +121,7 @@ const Player = () => {
             <VStack>
               <VStack>
               {
-                playerHand.map((card, index) =>
+                currentPlayerHand.map((card, index) =>
                   (doubledHand && index === 2)
                     ?
                     <Image
@@ -145,9 +145,9 @@ const Player = () => {
                 )
               }
               </VStack>
-              {playerHand.length !== 0 &&
+              {currentPlayerHand.length !== 0 &&
                   <Box position="absolute" bottom="5px" width="55px" textAlign="center">
-                    <Score hand={playerHand}/>
+                    <Score hand={currentPlayerHand}/>
                   </Box>
               }
 
