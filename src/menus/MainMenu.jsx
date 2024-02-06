@@ -18,13 +18,13 @@ const MainMenu = () => {
       scrollBehavior="inside"
     >
       <ModalOverlay>
+        <ReactCardFlip isFlipped={isFlipped}>
 
+          <SettingsMenu flipCard={flipCard}/>
 
-          <SettingsMenu />
+          <GameRules flipCard={flipCard}/>
 
-
-
-
+        </ReactCardFlip>
       </ModalOverlay>
 
     </Modal>
