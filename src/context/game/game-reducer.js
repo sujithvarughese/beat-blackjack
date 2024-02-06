@@ -139,7 +139,9 @@ const gameReducer = (state, action) => {
             resultsShown: true,
             dealerCardShown: true,
             placeBetOption: true,
+            insuranceOpen: false,
             dealerTurn: false,
+            playerTurn: false,
             numHandsPlayed: state.numHandsPlayed + 1,
         }
     }

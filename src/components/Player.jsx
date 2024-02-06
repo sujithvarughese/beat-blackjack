@@ -11,6 +11,7 @@ const Player = () => {
     feedback,
     doubledHands,
     currentHandIndex,
+    playerTurn,
     currentPlayerHand,
     dealerFaceUpValue,
     setPlayerInitial,
@@ -35,13 +36,6 @@ const Player = () => {
     toast(feedback)
   }, [feedback])
 
-  /*
-  useEffect(() => {
-    if (!splitHand) return
-    console.log("12")
-    playNextSplitHand()
-  }, [splitCount])
-*/
 
     return (
       <HStack justifyContent="space-around">
@@ -52,6 +46,7 @@ const Player = () => {
               playerHand={playerHand}
               doubledHand={doubledHands[index]}
               isCurrentHand={index === currentHandIndex}
+              playerTurn={playerTurn}
             />)
         }
       </HStack>
@@ -59,49 +54,3 @@ const Player = () => {
 };
 
 export default Player;
-
-/*            <HStack
-              width="100%"
-              justifyContent="space-around"
-            >
-              {
-                splitHands.map((currentPlayerHand, index) => {
-                  return (
-                    <VStack key={index}>
-                      <VStack
-                          flexDirection="column-reverse"
-                      >
-                        {
-                          currentPlayerHand.map((card, index) =>
-                              (doubledHand && index === 2)
-                            ?
-                            <Image key={index}
-                                   className={classes.cardDoubleDown}
-                                   src={card.img}
-                                   alt={card.value}
-                                   position="absolute"
-                                   bottom="85px"
-                            />
-                            :
-                            <Image
-                              key={index}
-                              className={classes.card}
-                              src={card.img}
-                              alt={card.value}
-                              position="absolute"
-                              bottom={`calc(30px * ${index})`}
-                              sx={{ transform: `translate(calc(20px * ${index}))` }}
-                            />
-                          )
-                        }
-                      </VStack>
-                      {currentPlayerHand.length !== 0 &&
-                          <Box position="absolute" bottom="5px" width="55px" textAlign="center">
-                            <Score hand={currentPlayerHand}/>
-                          </Box>
-                      }
-                    </VStack>
-                  )
-                })
-              }
-            </HStack>*/

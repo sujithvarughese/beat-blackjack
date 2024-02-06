@@ -1,9 +1,9 @@
-import { Box, Image, VStack } from '@chakra-ui/react'
+import { Box, Image, keyframes, VStack } from '@chakra-ui/react'
 import classes from './styles/Hands.module.css'
 import { Score } from './index.js'
 import { useEffect, useState } from 'react'
 
-const PlayerHand = ({ playerHand, doubledHand, isCurrentHand }) => {
+const PlayerHand = ({ playerHand, doubledHand, isCurrentHand, playerTurn }) => {
   return (
     <VStack>
       {
@@ -35,41 +35,34 @@ const PlayerHand = ({ playerHand, doubledHand, isCurrentHand }) => {
           <Score hand={playerHand}/>
         </Box>
       }
-      {isCurrentHand && <CurrentHandIndicator />}
+      {isCurrentHand && playerTurn && <CurrentHandIndicator />}
     </VStack>
   )
 }
-/*
+
 const CurrentHandIndicator = () => {
 
-  const [flash, setFlash] = useState(false)
-
-
-  useEffect(() => {
-
-    let id = setInterval(() => {
-      setFlash(!flash)
-    }, 1000)
-
-  }, [])
-
-
+  const blink = keyframes`
+    0% { background-color: black }
+    49% { background-color: black }
+    50% { background-color: goldenrod }
+    100% { background-color: goldenrod }
+  `
+  const blinkAnimation = `${blink} infinite 1s`
   return (
     <Box
       height="30px"
       width="30px"
-      backgroundColor={flash ? "black" : "goldenrod"}
-      border="2px solid goldenrod"
       borderRadius="50%"
       position="absolute"
-      bottom="-35px"
+      bottom="-50px"
+      animation={blinkAnimation}
     >
-
     </Box>
     )
 
 }
-*/
+
 
 
 export default PlayerHand

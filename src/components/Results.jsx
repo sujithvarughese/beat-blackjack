@@ -28,12 +28,15 @@ const Results = () => {
           flexDirection="column"
           alignItems='center'
           gap="8px"
-          justifyContent='center'
+          justifyContent="center"
           textAlign='center'
           maxWidth="400px"
+          maxHeight="100px"
           position="absolute"
-          placeSelf="center"
-          placeItems="center"
+          left="0"
+          right="0"
+          top="0"
+          bottom="0"
           margin="auto"
           zIndex="10"
           backgroundColor="black"
@@ -45,7 +48,7 @@ const Results = () => {
         >
 
             <AlertTitle fontSize="32px" textAlign="center">{heading}</AlertTitle>
-            <Text fontSize="20px" textAlign="center">Net Gain: {convertToUSD(netCredit)}</Text>
+            <Text fontSize="20px" textAlign="center">Net Gain: {convertToUSD(netCredit - netDebit)}</Text>
 
 
 

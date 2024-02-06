@@ -7,7 +7,7 @@ const Score = ({ hand }) => {
     let text = score
 
     if (score === 21 && hand.length === 2) {
-        text = "blackjack"
+        text = "Blackjack"
     }
     if (score > 21) {
         text = "BUST"

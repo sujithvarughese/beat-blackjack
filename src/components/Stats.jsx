@@ -5,55 +5,27 @@ import { convertToUSD } from '../utils/calculations.js'
 
 const initialState = {
   totalNumHandsPlayed: 0,
-  totalWagered: 0,
   avgBetSize: 0,
-  totalCashIn: 0,
-  totalProfit: 0,
+  totalNetCredit: 0,
+  totalNetDebit: 0,
   roi: 0
 }
 const Stats = () => {
-  const { resultsShown, netCredit, bet } = useGameContext()
+  const { resultsShown, netCredit, netDebit, bet } = useGameContext()
 
   const [stats, setStats] = useState(initialState)
+  const calculateAvgBetSize = () => ((stats.avgBetSize) * stats.totalNumHandsPlayed + bet) /  (stats.totalNumHandsPlayed + 1)
 
-
-  const [totalWagered, setTotalWagered] = useState(0)
-  const [totalNumHandsPlayed, setTotalNumHandsPlayed] = useState(0)
-  const [avgBetSize, setAvgBetSize] = useState(0)
-  const [totalCashIn, setTotalCashIn] = useState(0)
-  const [totalProfit, setTotalProfit] = useState(0)
-  const [roi, setRoi] = useState(0)
-
-  /*
-  const addValueAndCalculateAvg = () => {
-    return ((numHandsPlayed - 1) / numHandsPlayed) * avgBetSize + (1 / numHandsPlayed) * bet
-  }
-  */
-  const calculateAvgBetSize = () => {
-    return ((stats.avgBetSize) * stats.totalNumHandsPlayed + bet) /  (stats.totalNumHandsPlayed + 1)
-  }
-  const calculateROI = () => {
-    if (netCredit > 0) {
-      return ((stats.totalCashIn + netCredit )/(stats.totalWagered + bet)) * 100
-    }
-    return ((stats.totalCashIn  - (stats.totalWagered + bet))/(stats.totalWagered + bet)) * 100
-  }
-  const calculateCashIn = () => {
-    if (netCredit > 0) {
-      return stats.totalCashIn + netCredit
-    }
-    return stats.totalCashIn
-  }
+  const calculateROI = () => ((stats.totalNetCredit + netCredit - stats.totalNetDebit - netDebit) / (stats.totalNetDebit + netDebit)) * 100
 
   useEffect(() => {
     if (!resultsShown) return
     setStats({
       ...stats,
       totalNumHandsPlayed: stats.totalNumHandsPlayed + 1,
-      totalWagered: stats.totalWagered + bet,
       avgBetSize: calculateAvgBetSize(),
-      totalCashIn: calculateCashIn(),
-      totalProfit: stats.totalProfit + netCredit,
+      totalNetCredit: stats.totalNetCredit + netCredit,
+      totalNetDebit: stats.totalNetDebit + netDebit,
       roi: calculateROI()
     })
 
@@ -72,10 +44,10 @@ const Stats = () => {
       borderRadius="10px"
     >
       <StatLabel>Gain/Loss</StatLabel>
-      <StatNumber>{convertToUSD(stats.totalProfit)}</StatNumber>
+      <StatNumber>{convertToUSD(stats.totalNetCredit - stats.totalNetDebit)}</StatNumber>
 
       <StatHelpText>
-        <StatArrow type={stats.totalProfit >= 0 ? "increase" : "decrease"}/>
+        <StatArrow type={stats.totalNetCredit >= stats.totalNetDebit ? "increase" : "decrease"}/>
         ROI: {Math.round(stats.roi)}%
       </StatHelpText>
       <StatLabel>
