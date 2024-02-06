@@ -7,8 +7,6 @@ const PlaceBet = () => {
   const {
     toggleShoeEmptyMenu,
     toggleAddFundsMenu,
-
-    resultsShown,
     settings,
     playerBankroll,
     bet,

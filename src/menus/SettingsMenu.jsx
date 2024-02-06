@@ -17,7 +17,12 @@ const SettingsMenu = ({ flipCard }) => {
     }
 
     return (
-        <ModalContent padding={{ base: "12px", md: "30px" }} marginX={{ base: "15px", md: "revert" }} zIndex="0">
+        <ModalContent
+          padding={{ base: "12px", md: "30px" }}
+          marginX={{ base: "15px", md: "revert" }}
+          zIndex="0"
+          top={{ base: "-2rem", sm: "revert" }}
+        >
             <ModalHeader>
                 <Heading
                   fontSize="24px"
@@ -46,7 +51,7 @@ const SettingsMenu = ({ flipCard }) => {
                 >
                     <HiOutlineRefresh />
                 </Button>
-                <VStack gap="14px">
+                <VStack gap={{ base: "9px", sm: "14px" }} fontSize={{base: "12px", sm: "16px" }}>
                     <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="16px" justifyItems="end" alignItems="center">
                         <FormLabel htmlFor="numDecks">Decks</FormLabel>
                         <Slider

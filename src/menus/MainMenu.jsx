@@ -1,5 +1,5 @@
 import { SettingsMenu, GameRules } from "./"
-import { Modal, ModalOverlay } from '@chakra-ui/react'
+import { Box, Modal, ModalOverlay } from '@chakra-ui/react'
 import { useState } from 'react'
 import ReactCardFlip from 'react-card-flip';
 import { useGameContext } from '../context/game/GameContext.jsx'
@@ -15,13 +15,17 @@ const MainMenu = () => {
       onClose={toggleSettingsMenu}
       closeOnOverlayClick={false}
       size={{base: "sm", md: "md", lg: "lg"}}
+
+      scrollBehavior="inside"
     >
       <ModalOverlay>
         <ReactCardFlip isFlipped={isFlipped}>
-
-          <SettingsMenu flipCard={flipCard}/>
-          <GameRules flipCard={flipCard}/>
-
+          <Box>
+            <SettingsMenu flipCard={flipCard}/>
+          </Box>
+          <Box>
+            <GameRules flipCard={flipCard}/>
+          </Box>
         </ReactCardFlip>
       </ModalOverlay>
 

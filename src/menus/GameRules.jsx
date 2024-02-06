@@ -3,7 +3,12 @@ import { Box, Button, Heading, ModalBody, ModalContent, ModalHeader, Text, VStac
 
 const GameRules = ({ flipCard }) => {
   return (
-    <ModalContent paddingTop="30px" zIndex="100">
+    <ModalContent
+      paddingTop={{ base: "12px", sm: "30px" }}
+      marginX={{ base: "15px", md: "revert" }}
+      zIndex="100"
+      top={{ base: "-2rem", sm: "revert" }}
+    >
       <ModalHeader>
         <Heading
           fontSize="24px"

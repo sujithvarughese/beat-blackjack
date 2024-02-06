@@ -20,16 +20,16 @@ const ShoeEmpty = () => {
   const { onClose } = useDisclosure()
 
   return (
-    <Modal isOpen={shoeEmptyMenuOpen} onClose={onClose} closeOnOverlayClick={false}>
+    <Modal isOpen={shoeEmptyMenuOpen} onClose={onClose} closeOnOverlayClick={false} size="sm">
       <ModalOverlay>
         <ModalContent textAlign="center" paddingBottom="3">
           <ModalHeader>
             Shoe is Finished
           </ModalHeader>
           <ModalBody>
-              <Text m="4">The shoe is empty. What would you like to do?</Text>
-              <ButtonGroup colorScheme="yellow">
-                <VStack  gap="20px">
+            <VStack  gap="20px">
+              <Text>The shoe is empty. What would you like to do?</Text>
+              <ButtonGroup colorScheme="yellow" orientation="vertical">
                 <Button
                   width="240px"
                   onClick={() => {
@@ -54,8 +54,8 @@ const ShoeEmpty = () => {
                   }}
                 >
                   Settings</Button>
-                </VStack>
               </ButtonGroup>
+            </VStack>
           </ModalBody>
         </ModalContent>
       </ModalOverlay>
