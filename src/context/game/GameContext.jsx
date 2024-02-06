@@ -121,6 +121,9 @@ const GameProvider = ({ children }) => {
     const drawCard = () => {
         const shoe = state.shoe
         const nextCard = shoe.pop()
+        if (nextCard.value === 1) {
+            nextCard.value = 11
+        }
         dispatch({
             type: DRAW_CARD,
             payload: { shoe }
@@ -144,7 +147,6 @@ const GameProvider = ({ children }) => {
 
             bookMove: ""
         }
-
         let playerBankroll = state.playerBankroll - state.bet
         let netDebit =  state.bet
         let netCredit = 0
@@ -166,18 +168,24 @@ const GameProvider = ({ children }) => {
         }
         // if both player's cards are aces, make the first value === 1
         if (currentPlayerHand[0].value === 11 && currentPlayerHand[1].value === 11) {
-            currentPlayerHand[0].value = 1
+            currentPlayerHand[0] = {
+                ...currentPlayerHand[0],
+                value: 1
+            }
         }
-        if (dealerHand[0].value === 11 && dealerHand[1] === 10) {
+        if (dealerHand[0].value === 11 && dealerHand[1].value === 11) {
+            dealerHand[0] = {
+                ...dealerHand[0],
+                value: 1
+            }
+        }
+        if (dealerHand[0].value === 11 && dealerHand[1].value === 10) {
             dealerBlackjack = true
-        } else if (dealerHand[0].value === 10 && dealerHand[1] === 11){
+        } else if (dealerHand[0].value === 10 && dealerHand[1].value === 11){
             dealer21 = true
         }
         // dealer's face up card to see if insurance or even money should be offered
         dealerFaceUpValue = dealerHand[0].value
-
-        console.log(netDebit)
-        console.log(netCredit)
 
         const bookMove = getBookMove(currentPlayerHand, dealerFaceUpValue)
 
@@ -202,7 +210,6 @@ const GameProvider = ({ children }) => {
             dispatch({ type: SET_STATE, payload: { status } })
             return
         }
-        console.log(state)
         // remaining code in this function assumes no insurance/even money option
         // dealer21 = dealer made 21 with A face down (no insurance)
         if (dealer21 && playerBlackjack) {
@@ -290,7 +297,6 @@ const GameProvider = ({ children }) => {
     }
 
     const playerHit = () => {
-        console.log(state)
         showBookMove("hit")
         let currentPlayerHand = [...state.currentPlayerHand]
         const playerHands = [...state.playerHands]
@@ -454,12 +460,22 @@ const GameProvider = ({ children }) => {
         currentPlayerHand.push(drawCard())
         // if both player's cards are aces, make the first value === 1
         if (currentPlayerHand[0].value === 11 && currentPlayerHand[1].value === 11) {
-            currentPlayerHand[0].value = 1
+            currentPlayerHand[0] = { ...playerHands[currentHandIndex][0], value: 11 }
         }
         const bookMove = getBookMove(currentPlayerHand)
 
         if (currentPlayerHand.reduce((acc, card) => acc + card.value, 0) === 21) {
-
+            playerHands[currentHandIndex].push(drawCard())
+            const bookMove = getBookMove(playerHands[currentHandIndex + 1])
+            dispatch({
+                type: PLAY_NEXT_SPLIT,
+                payload: {
+                    playerHands: playerHands,
+                    currentPlayerHand: currentPlayerHand,
+                    currentHandIndex: currentHandIndex,
+                    bookMove: bookMove,
+                }
+            })
         }
         dispatch({
             type: SPLIT_HANDS,
@@ -498,10 +514,10 @@ const GameProvider = ({ children }) => {
                 if (dealerScore > 21 || playerScoreHand > dealerScore) {
                     netCredit = netCredit + state.bet * 2
                     playerBankroll = state.playerBankroll + state.bet * 2
-                }
-                if (state.doubledHands[index] === true) {
-                    playerBankroll = playerBankroll + state.bet * 2
-                    netCredit = netCredit + state.bet * 2
+                    if (state.doubledHands[index] === true) {
+                        playerBankroll = playerBankroll + state.bet * 2
+                        netCredit = netCredit + state.bet * 2
+                    }
                 }
             }
             if (playerScoreHand === dealerScore) {
