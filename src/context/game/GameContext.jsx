@@ -494,7 +494,10 @@ const GameProvider = ({ children }) => {
         if (dealerHand.reduce((acc, card) => acc + card.value, 0) > 21) {
             const aceValue11Index = dealerHand.findIndex(card => card.rank === "Ace" && card.value === 11)
             if (aceValue11Index !== -1) {
-                dealerHand[aceValue11Index].value = 1
+                dealerHand[aceValue11Index] = {
+                    ...dealerHand[aceValue11Index],
+                    value: 1
+                }
             }
         }
         dispatch({
@@ -503,7 +506,7 @@ const GameProvider = ({ children }) => {
         })
     }
     const getResults = () => {
-        const playerHands = state.playerHands
+        const playerHands = [...state.playerHands]
         const dealerScore = state.dealerHand.reduce((acc, card) => acc + card.value, 0)
         let playerBankroll = state.playerBankroll
         let netCredit = state.netCredit

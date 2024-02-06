@@ -29,7 +29,6 @@ const Table = () => {
       maxWidth="1980px"
       position="relative"
       margin="auto"
-      border="blue solid 3px"
     >
       <Image
         display={{ base: "block", md: "none" }}
