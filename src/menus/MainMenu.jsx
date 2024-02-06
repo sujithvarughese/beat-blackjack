@@ -14,6 +14,7 @@ const MainMenu = () => {
       isOpen={settingsMenuOpen}
       onClose={toggleSettingsMenu}
       closeOnOverlayClick={false}
+      size="lg"
       scrollBehavior="inside"
     >
       <ModalOverlay>
