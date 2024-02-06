@@ -15,15 +15,14 @@ const MainMenu = () => {
       onClose={toggleSettingsMenu}
       closeOnOverlayClick={false}
       size={{base: "sm", md: "md", lg: "lg"}}
-
       scrollBehavior="inside"
     >
       <ModalOverlay>
         <ReactCardFlip isFlipped={isFlipped}>
 
-            <SettingsMenu flipCard={flipCard}/>
+          <SettingsMenu flipCard={flipCard}/>
 
-            <GameRules flipCard={flipCard}/>
+          <GameRules flipCard={flipCard}/>
 
         </ReactCardFlip>
       </ModalOverlay>

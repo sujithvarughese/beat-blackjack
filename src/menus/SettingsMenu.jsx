@@ -226,19 +226,6 @@ const SettingsMenu = ({ flipCard }) => {
                         </Switch>
                     </HStack>
 
-                    <HStack width="100%" justifyContent="space-between">
-                        <FormLabel htmlFor="hints">Hints</FormLabel>
-                        <Switch
-                          colorScheme="orange"
-                          name="hints"
-                          id="hints"
-                          value={settings.hints}
-                          isChecked={settings.hints}
-                          onChange={handleChecked}
-                        >
-                        </Switch>
-                    </HStack>
-
                     <SimpleGrid gridTemplateColumns="1fr 1fr" width="100%" alignItems="flex-end">
                         <FormLabel htmlFor="blackjackPayout">Blackjack Payout</FormLabel>
                         <Select
@@ -252,6 +239,21 @@ const SettingsMenu = ({ flipCard }) => {
                             <option value={1}>No Bonus</option>
                         </Select>
                     </SimpleGrid>
+
+                    <HStack width="100%" justifyContent="space-between">
+                        <FormLabel htmlFor="hints">Hints</FormLabel>
+                        <Switch
+                          colorScheme="orange"
+                          name="hints"
+                          id="hints"
+                          value={settings.hints}
+                          isChecked={settings.hints}
+                          onChange={handleChecked}
+                        >
+                        </Switch>
+                    </HStack>
+
+
 
                     <ButtonGroup colorScheme="yellow">
                         {placeBetOption && <Button onClick={toggleSettingsMenu}>Resume</Button>}
