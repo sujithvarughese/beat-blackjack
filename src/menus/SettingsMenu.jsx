@@ -3,7 +3,7 @@ import { Button, ButtonGroup, FormLabel, Switch, Select, Modal, ModalBody, Modal
 import { HiOutlineRefresh } from "react-icons/hi";
 import { GameRules } from "../components"
 
-const SettingsMenu = ({ flipCard }) => {
+const SettingsMenu = ({ flipCard, isFlipped }) => {
 
     const { settings, setSetting, resetSettings, settingsMenuOpen, setShoe, toggleSettingsMenu, placeBetOption } = useGameContext()
 
@@ -22,6 +22,7 @@ const SettingsMenu = ({ flipCard }) => {
           marginX={{ base: "15px", md: "revert" }}
           zIndex="0"
           top={{ base: "-2rem", sm: "revert" }}
+          display={isFlipped ? "none" : ""}
         >
             <ModalHeader>
                 <Heading
