@@ -22,7 +22,6 @@ const SettingsMenu = ({ flipCard }) => {
           marginX={{ base: "15px", md: "revert" }}
           zIndex="0"
           top={{ base: "-2rem", sm: "revert" }}
-          height="100vh"
         >
             <ModalHeader>
                 <Heading
