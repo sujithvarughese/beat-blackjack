@@ -253,8 +253,6 @@ const SettingsMenu = ({ flipCard }) => {
                         </Select>
                     </SimpleGrid>
 
-
-
                     <ButtonGroup colorScheme="yellow">
                         {placeBetOption && <Button onClick={toggleSettingsMenu}>Resume</Button>}
                         <Button onClick={setShoe}>Start Game</Button>
