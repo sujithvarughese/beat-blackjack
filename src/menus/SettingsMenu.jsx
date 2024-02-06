@@ -17,7 +17,7 @@ const SettingsMenu = ({ flipCard }) => {
     }
 
     return (
-        <ModalContent padding={{ base: "12px", md: "30px" }} marginX={{ base: "15px", md: "revert" }}>
+        <ModalContent padding={{ base: "12px", md: "30px" }} marginX={{ base: "15px", md: "revert" }} zIndex="0">
             <ModalHeader>
                 <Heading
                   fontSize="24px"
