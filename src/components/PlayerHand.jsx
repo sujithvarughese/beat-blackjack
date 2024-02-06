@@ -1,7 +1,6 @@
 import { Box, Image, keyframes, VStack } from '@chakra-ui/react'
 import classes from './styles/Hands.module.css'
 import { Score } from './index.js'
-import { useEffect, useState } from 'react'
 
 const PlayerHand = ({ playerHand, doubledHand, isCurrentHand, playerTurn }) => {
   return (
@@ -60,7 +59,6 @@ const CurrentHandIndicator = () => {
     >
     </Box>
     )
-
 }
 
 

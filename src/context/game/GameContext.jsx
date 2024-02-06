@@ -20,7 +20,6 @@ import {
     SHOW_RESULTS,
     SET_DEALER_TURN,
     SHOW_BOOK_MOVE
-
 } from './game-actions.js'
 
 const GameContext = createContext()
@@ -66,24 +65,12 @@ const initialState= {
 
     insuranceOpen: false,
 
-    doubledHand: false,
-    splitHand: false,
-    surrenderTaken: false,
-    insuranceTaken: false,
-    evenMoneyTaken: false,
-
     dealOption: false,
     addFundsOption: false,
     placeBetOption: false,
 
     doubledHands: [false, false, false, false],
 
-    hintShown: false,
-    hint: "",
-    feedback: {},
-    feedbackShown: false,
-    feedbackText: "",
-    actionTaken: "",
     bookMove: "",
 
     dealerCardShown: false,
@@ -95,7 +82,6 @@ const initialState= {
 const GameProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(gameReducer, initialState)
-
     const toggleSettingsMenu = () => dispatch({ type: TOGGLE_SETTINGS_MENU, })
     const toggleShoeEmptyMenu = () => dispatch({ type: TOGGLE_SHOE_EMPTY_MENU })
     const toggleAddFundsMenu = () => dispatch({ type: TOGGLE_ADD_FUNDS_MENU, })
@@ -131,7 +117,6 @@ const GameProvider = ({ children }) => {
             payload: { playerBankroll }
         })
     }
-
     // sets state of shoe after popping top card
     const drawCard = () => {
         const shoe = state.shoe
@@ -154,10 +139,6 @@ const GameProvider = ({ children }) => {
             dealerCardShown: false,
 
             doubledHands: [false, false, false, false],
-            splitHand: false,
-            surrenderTaken: false,
-            insuranceTaken: false,
-            evenMoneyTaken: false,
 
             currentHandIndex: 0,
 
@@ -195,6 +176,9 @@ const GameProvider = ({ children }) => {
         // dealer's face up card to see if insurance or even money should be offered
         dealerFaceUpValue = dealerHand[0].value
 
+        console.log(netDebit)
+        console.log(netCredit)
+
         const bookMove = getBookMove(currentPlayerHand, dealerFaceUpValue)
 
         status = {
@@ -218,6 +202,7 @@ const GameProvider = ({ children }) => {
             dispatch({ type: SET_STATE, payload: { status } })
             return
         }
+        console.log(state)
         // remaining code in this function assumes no insurance/even money option
         // dealer21 = dealer made 21 with A face down (no insurance)
         if (dealer21 && playerBlackjack) {
@@ -258,8 +243,8 @@ const GameProvider = ({ children }) => {
 
     const handleEvenMoney = () => {
         const status = {
-            playerBankroll:  state.playerBankroll + state.netDebit * 2,
-            netCredit: state.netDebit * 2,
+            playerBankroll:  state.playerBankroll + state.bet * 2,
+            netCredit: state.bet * 2,
         }
         dispatch({
             type: SHOW_RESULTS,
@@ -270,7 +255,7 @@ const GameProvider = ({ children }) => {
 
         let status = {}
         if (state.dealerBlackjack) {
-            status = { playerBankroll: state.playerBankroll + state.netDebit, netCredit: state.netDebit }
+            status = { playerBankroll: state.playerBankroll + state.bet, netCredit: state.bet }
             dispatch({
                 type: SHOW_RESULTS,
                 payload: { status }
@@ -278,8 +263,8 @@ const GameProvider = ({ children }) => {
             return
         }
         status = {
-            playerBankroll: state.playerBankroll - state.netDebit * 0.5,
-            netDebit: state.netDebit + state.netDebit * 0.5,
+            playerBankroll: state.playerBankroll - state.bet * 0.5,
+            netDebit: state.netDebit + state.bet * 0.5,
         }
         dispatch({
             type: SET_PLAYER_TURN,
@@ -305,6 +290,7 @@ const GameProvider = ({ children }) => {
     }
 
     const playerHit = () => {
+        console.log(state)
         showBookMove("hit")
         let currentPlayerHand = [...state.currentPlayerHand]
         const playerHands = [...state.playerHands]
@@ -378,8 +364,8 @@ const GameProvider = ({ children }) => {
         playerHands[currentHandIndex] = [...currentPlayerHand]
 
         let status = {
-            playerBankroll: state.playerBankroll - state.netDebit,
-            netDebit: state.netDebit + state.netDebit,
+            playerBankroll: state.playerBankroll - state.bet,
+            netDebit: state.netDebit + state.bet,
             currentPlayerHand: currentPlayerHand,
             playerHands: playerHands,
             doubledHands: doubledHands
@@ -420,7 +406,7 @@ const GameProvider = ({ children }) => {
         showBookMove("surrender")
         let status = {
             netCredit: state.netDebit * 0.5,
-            playerBankroll: state.playerBankroll + state.netDebit * 0.5
+            playerBankroll: state.playerBankroll + state.bet * 0.5
         }
         const playerHands = [...state.playerHands]
 
@@ -511,17 +497,22 @@ const GameProvider = ({ children }) => {
             if (playerScoreHand <= 21) {
                 if (dealerScore > 21 || playerScoreHand > dealerScore) {
                     netCredit = netCredit + state.bet * 2
-                    playerBankroll = state.playerBankroll + netCredit
+                    playerBankroll = state.playerBankroll + state.bet * 2
+                }
+                if (state.doubledHands[index] === true) {
+                    playerBankroll = playerBankroll + state.bet * 2
+                    netCredit = netCredit + state.bet * 2
                 }
             }
             if (playerScoreHand === dealerScore) {
                 netCredit = netCredit + state.bet
-                playerBankroll = state.playerBankroll + netCredit
+                playerBankroll = state.playerBankroll + state.bet
+                if (state.doubledHands[index]) {
+                    playerBankroll = playerBankroll + state.bet
+                    netCredit = netCredit = state.bet
+                }
             }
-            if (state.doubledHand[index]) {
-                playerBankroll = playerBankroll + state.bet * 2
-                netCredit = netCredit = state.bet * 2
-            }
+
             const status = { netCredit, playerBankroll }
             dispatch({
                 type: SHOW_RESULTS,

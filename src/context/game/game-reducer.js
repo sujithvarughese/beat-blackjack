@@ -73,6 +73,13 @@ const gameReducer = (state, action) => {
             bet: action.payload.bet,
         }
     }
+    if (action.type === ADD_FUNDS) {
+        return {
+            ...state,
+            playerBankroll: action.payload.playerBankroll,
+            addFundsShown: false
+        }
+    }
     if (action.type === DRAW_CARD) {
         return {
             ...state,
@@ -85,13 +92,7 @@ const gameReducer = (state, action) => {
             dealerHand: action.payload.dealerHand
         }
     }
-    if (action.type === ADD_FUNDS) {
-        return {
-            ...state,
-            playerBankroll: action.payload.playerBankroll,
-            addFundsShown: false
-        }
-    }
+
     if (action.type === SET_PLAYER_TURN) {
         return {
             ...state,

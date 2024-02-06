@@ -4,7 +4,8 @@ import { convertToUSD }from "../utils/calculations.js"
 const Results = () => {
 
     const { netCredit, netDebit, playerBlackjack, dealerBlackjack } = useGameContext()
-
+    console.log(netDebit)
+    console.log(netCredit)
 
     let heading = ""
     let description = ""

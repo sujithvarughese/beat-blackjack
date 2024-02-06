@@ -12,17 +12,23 @@ const Dealer = () => {
   const {
     dealerTurn,
     dealerHand,
-    setDealerInitial,
     dealerCardShown,
     dealerHit,
-    getResults
+    getResults,
+    settings
   }
     = useGameContext()
 
+
   useEffect(() => {
     const score = dealerHand.reduce((acc, card) => acc + card.value, 0)
+    let aceValue11Index = dealerHand.findIndex(card => card.rank === "Ace" && card.value === 11)
+    if (aceValue11Index !== -1) {
+      aceValue11Index = true
+    }
     if (dealerTurn) {
-      if (score < 17) {
+      if (score < 17 ||
+        (score === 17 && aceValue11Index === true && settings.dealerHitSoft17 === true)) {
         dealerHit()
     } else {
         getResults()
