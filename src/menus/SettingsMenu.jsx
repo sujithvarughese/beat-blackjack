@@ -22,6 +22,7 @@ const SettingsMenu = ({ flipCard }) => {
           marginX={{ base: "15px", md: "revert" }}
           zIndex="0"
           top={{ base: "-2rem", sm: "revert" }}
+          height="100vh"
         >
             <ModalHeader>
                 <Heading
@@ -51,7 +52,7 @@ const SettingsMenu = ({ flipCard }) => {
                 >
                     <HiOutlineRefresh />
                 </Button>
-                <VStack gap={{ base: "9px", sm: "14px" }} fontSize={{base: "12px", sm: "16px" }}>
+                <VStack gap={{ base: "9px", sm: "14px" }}>
                     <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="16px" justifyItems="end" alignItems="center">
                         <FormLabel htmlFor="numDecks">Decks</FormLabel>
                         <Slider
@@ -226,6 +227,19 @@ const SettingsMenu = ({ flipCard }) => {
                         </Switch>
                     </HStack>
 
+                    <HStack width="100%" justifyContent="space-between">
+                        <FormLabel htmlFor="hints">Hints</FormLabel>
+                        <Switch
+                          colorScheme="orange"
+                          name="hints"
+                          id="hints"
+                          value={settings.hints}
+                          isChecked={settings.hints}
+                          onChange={handleChecked}
+                        >
+                        </Switch>
+                    </HStack>
+
                     <SimpleGrid gridTemplateColumns="1fr 1fr" width="100%" alignItems="flex-end">
                         <FormLabel htmlFor="blackjackPayout">Blackjack Payout</FormLabel>
                         <Select
@@ -239,19 +253,6 @@ const SettingsMenu = ({ flipCard }) => {
                             <option value={1}>No Bonus</option>
                         </Select>
                     </SimpleGrid>
-
-                    <HStack width="100%" justifyContent="space-between">
-                        <FormLabel htmlFor="hints">Hints</FormLabel>
-                        <Switch
-                          colorScheme="orange"
-                          name="hints"
-                          id="hints"
-                          value={settings.hints}
-                          isChecked={settings.hints}
-                          onChange={handleChecked}
-                        >
-                        </Switch>
-                    </HStack>
 
 
 
