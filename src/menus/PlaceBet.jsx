@@ -27,7 +27,7 @@ const PlaceBet = () => {
   return (
       <ButtonGroup
         border="solid 3px #ECC94B"
-        backgroundColor="black"
+        backgroundColor="rgba(0, 0, 0, 0.8)"
         padding="12px"
         borderRadius="10px"
         zIndex="10"

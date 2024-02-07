@@ -9,7 +9,7 @@ const Bankroll = () => {
     return (
         <VStack
           border="solid 3px #ECC94B"
-          backgroundColor="black"
+          backgroundColor="rgba(0, 0, 0, 0.8)"
           color="white"
           fontWeight="800"
           padding={{ base: "5px", sm: "10px"}}

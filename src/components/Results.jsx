@@ -46,11 +46,10 @@ const Results = () => {
           bottom="0"
           margin="auto"
           zIndex="10"
-          backgroundColor="black"
+          backgroundColor="rgba(0, 0, 0, 0.75)"
           border="solid 3px #ECC94B"
           padding="12px"
           borderRadius="10px"
-          opacity="75%"
           color="white"
         >
 

@@ -15,7 +15,7 @@ const Score = ({ hand }) => {
 
     return (
         <Heading
-            backgroundColor="black"
+            backgroundColor="rgba(0, 0, 0, 0.8)"
             color="#ECC94B"
             border="#ECC94B solid 2px"
             borderRadius="8px"
