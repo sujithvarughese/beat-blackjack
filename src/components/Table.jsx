@@ -28,12 +28,12 @@ const Table = () => {
     <SimpleGrid
       margin="0"
       maxWidth="1980px"
-      height={{ base: "90vh", sm: "revert" }}
+      height={{ base: "100vh", sm: "revert" }}
     >
       <Image
         display={{ base: "block", md: "none" }}
         src={tableMobileIMG}
-        height="100vh"
+        height="100%"
         width="100vw"
       ></Image>
       <Image
