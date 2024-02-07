@@ -6,11 +6,14 @@ const GameRules = ({ flipCard, isFlipped }) => {
     <ModalContent
       paddingTop={{ base: "12px", sm: "30px" }}
       marginX={{ base: "15px", md: "revert" }}
-      top={{ base: "-2rem", sm: "revert" }}
+      top={{ base: "-3rem", sm: "revert" }}
       display={isFlipped ? "" : "none"}
-      maxHeight="750px"
-      overflow="hidden" textOverflow="hidden" whiteSpace="wrap"
-      scroll-behavior="smooth" overflowY="scroll"
+      maxHeight="620px"
+      height="620px"
+      whiteSpace="wrap"
+      overflowY="scroll"
+      scroll-behavior="smooth"
+      textOverflow="hidden"
     >
       <ModalHeader>
         <Heading

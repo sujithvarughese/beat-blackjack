@@ -41,7 +41,8 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
           marginX={{ base: "15px", md: "revert" }}
           top={{ base: "-3rem", sm: "revert" }}
           display={isFlipped ? "none" : ""}
-          maxHeight="750px"
+          maxHeight="620px"
+          height="620px"
         >
             <ModalHeader>
                 <Heading
@@ -71,7 +72,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                 >
                     <HiOutlineRefresh />
                 </Button>
-                <VStack gap={{ base: "9px", sm: "14px" }}>
+                <VStack gap={{ base: "4px", sm: "14px" }}>
                     <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="16px" justifyItems="flex-start" justifyContent="flex-start" alignItems="center">
                         <FormLabel htmlFor="numDecks">Decks</FormLabel>
                         <Slider
@@ -276,7 +277,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                     </SimpleGrid>*/}
 
                     <HStack width="100%" justifyContent="space-between" alignItems="center">
-                        <FormLabel htmlFor="bblackjackPayout">Blackjack Payout</FormLabel>
+                        <FormLabel htmlFor="blackjackPayout">Blackjack Payout</FormLabel>
                         <Tabs
                           defaultIndex={0}
                           size="sm"
