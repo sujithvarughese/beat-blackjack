@@ -1,11 +1,15 @@
 import {useGameContext} from "../context/game/GameContext.jsx";
-import { Button, ButtonGroup, FormLabel, Switch, Select, Modal, ModalBody, ModalOverlay, ModalContent, ModalHeader, Heading, VStack, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark, HStack, SimpleGrid, Text, ModalCloseButton } from '@chakra-ui/react'
+import { Button, ButtonGroup, FormLabel, Switch, Select, Modal, ModalBody, ModalOverlay, ModalContent, ModalHeader, Heading, VStack, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark, HStack, SimpleGrid, Text, ModalCloseButton, Tabs, TabList, Tab } from '@chakra-ui/react'
 import { HiOutlineRefresh } from "react-icons/hi";
 import { GameRules } from "../components"
+import { useEffect, useState } from 'react'
 
 const SettingsMenu = ({ flipCard, isFlipped }) => {
 
     const { settings, setSetting, resetSettings, setShoe, toggleSettingsMenu, placeBetOption } = useGameContext()
+
+    const [blackjackPayoutIndex, setBlackjackPayoutIndex] = useState()
+    const [blackjackPayout, setBlackjackPayout] = useState()
 
     const handleChange = (e) => {
         //setValues({ ...values, [e.target.name]: e.target.value})
@@ -15,6 +19,22 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
         //setValues({ ...values, [e.target.name]: e.target.checked})
         setSetting({ [e.target.name]: e.target.checked })
     }
+    useEffect(() => {
+        switch (blackjackPayoutIndex) {
+            case 0:
+                setBlackjackPayout(1.5)
+                break
+            case 1:
+                setBlackjackPayout(1.2)
+                break
+            case 2:
+                setBlackjackPayout(1)
+                break
+            default:
+                break
+        }
+        setSetting({ blackjackPayout: blackjackPayout })
+    }, [blackjackPayoutIndex])
 
     return (
         <ModalContent
@@ -253,6 +273,18 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                             <option value={1.2}>6:5</option>
                             <option value={1}>No Bonus</option>
                         </Select>
+                    </SimpleGrid>
+
+                    <SimpleGrid gridTemplateColumns="1fr 1fr" width="100%" alignItems="flex-end">
+                        <FormLabel htmlFor="bblackjackPayout">Blackjack Payout</FormLabel>
+                        <Tabs onChange={index => setBlackjackPayoutIndex(index)}>
+                            <TabList>
+                                <Tab>3:2</Tab>
+                                <Tab>6:5</Tab>
+                                <Tab>None</Tab>
+                            </TabList>
+
+                        </Tabs>
                     </SimpleGrid>
 
 
