@@ -37,7 +37,6 @@
 body {
   font-family: "Poppins", sans-serif;
   color: var(--COLOR-DARK);
-  min-height: 100vh;
   line-height: 1.5;
   scroll-padding: 120px 0 0;
 }
