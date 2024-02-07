@@ -17,10 +17,9 @@ import { useEffect } from 'react'
 const ShoeEmpty = () => {
 
   const { setShoe, toggleSettingsMenu, shoeEmptyMenuOpen, toggleShoeEmptyMenu } = useGameContext()
-  const { onClose } = useDisclosure()
 
   return (
-    <Modal isOpen={shoeEmptyMenuOpen} onClose={onClose} closeOnOverlayClick={false} size="sm">
+    <Modal isOpen={shoeEmptyMenuOpen} onClose={toggleShoeEmptyMenu} closeOnOverlayClick={false} size="sm">
       <ModalOverlay>
         <ModalContent textAlign="center" paddingBottom="3">
           <ModalHeader>
@@ -50,7 +49,7 @@ const ShoeEmpty = () => {
                   width="240px"
                   onClick={() => {
                     toggleSettingsMenu()
-                    onClose()
+                    toggleShoeEmptyMenu()
                   }}
                 >
                   Settings</Button>

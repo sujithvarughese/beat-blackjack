@@ -14,7 +14,8 @@ const MainMenu = () => {
       isOpen={settingsMenuOpen}
       onClose={toggleSettingsMenu}
       closeOnOverlayClick={false}
-      maxHeight="800px"
+      maxHeight="750px"
+      scrollBehavior="inside"
 
     >
       <ModalOverlay>

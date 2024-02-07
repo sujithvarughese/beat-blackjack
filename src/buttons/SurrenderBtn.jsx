@@ -5,12 +5,12 @@ const SurrenderBtn = ({ action }) => {
       <Button
         onClick={action}
         height="80px"
-        width={{ base: "32%", sm: "200px" }}
+        width={{ base: "32%", lg: "200px" }}
         colorScheme="yellow"
         size="lg"
-        position={{ base: "absolute", sm: "relative" }}
-        top={{ base: "-90px", sm: "0" }}
-        left={{ base: "8px", sm: "0" }}
+        position={{ base: "absolute", md: "relative" }}
+        top={{ base: "-90px", md: "0" }}
+        left={{ base: "8px", md: "0" }}
 
       >
           Surrender

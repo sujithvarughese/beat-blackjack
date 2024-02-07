@@ -23,9 +23,10 @@ const ActionButtons = () => {
       position="absolute"
       bottom="3%"
       right={{ base: "revert", lg: "1%" }}
-      width={{ base: "98%", sm: "100%", md: "revert" }}
-      justifyContent={{ base: "space-around", md: "flex-end"}}
-      flex-wrap="wrap"
+      width={{ base: "97%", md: "revert" }}
+      placeSelf="center"
+
+      justifyContent={{ base: "space-between", md: "flex-end"}}
     >
       {insuranceOpen && playerBlackjack && <EvenMoneyBtnGrp />}
       {insuranceOpen && !playerBlackjack && <InsuranceBtnGrp />}

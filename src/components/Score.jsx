@@ -19,8 +19,10 @@ const Score = ({ hand }) => {
             color="#ECC94B"
             border="#ECC94B solid 2px"
             borderRadius="8px"
-            padding="2px"
+            padding="7px"
             zIndex="10"
+            minWidth="70px"
+
         >
             {text}
         </Heading>

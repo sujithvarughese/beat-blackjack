@@ -99,7 +99,7 @@ const GameProvider = ({ children }) => {
     const setShoe = (createNewShoe = true, createNewGame = true) => {
         // if user wants to play the same shoe again
         const newShoe = createNewShoe === true ? createShoe(state.settings.numDecks) : [...state.newShoe]
-        const playerBankroll = createNewGame === true ? initialState.playerBankroll : state.playerBankroll
+        const playerBankroll = createNewGame === true ? initialState.settings.playerInitialBankroll : state.playerBankroll
         const numHandsPlayed = createNewGame === true ? initialState.numHandsPlayed : state.numHandsPlayed
         const status = {
             newShoe: newShoe,

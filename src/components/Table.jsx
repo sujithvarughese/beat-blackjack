@@ -97,18 +97,11 @@ const Table = () => {
         </SimpleGrid>
       }
 
-
-
       {/*settingsMenuOpen && <SettingsMenu />*/}
       {settingsMenuOpen && <MainMenu />}
       {shoeEmptyMenuOpen && <ShoeEmpty />}
       {addFundsMenuOpen && <AddFunds />}
       {resultsShown && <Results />}
-
-
-
-
-
 
 
     </SimpleGrid>
