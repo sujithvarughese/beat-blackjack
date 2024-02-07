@@ -32,12 +32,11 @@ const GameRules = ({ flipCard, isFlipped }) => {
 
         <VStack
           gap="16px"
-          maxHeight="525px"
-          height="525px"
+          maxHeight="600px"
           whiteSpace="wrap"
-          overflowY="auto"
+          overflow="scroll"
           scroll-behavior="smooth"
-          textOverflow="hidden"
+          textOverflow="clip"
           sx={{ WebkitOverflowScrolling: "touch" }}
         >
           <Box>
