@@ -352,7 +352,7 @@ const GameProvider = ({ children }) => {
     }
 
     const playerDoubleDown = () => {
-        showBookMove("double")
+        showBookMove("double down")
         let currentPlayerHand = [...state.currentPlayerHand]
         const playerHands = [...state.playerHands]
         let currentHandIndex = state.currentHandIndex
@@ -471,8 +471,6 @@ const GameProvider = ({ children }) => {
                 type: PLAY_NEXT_SPLIT,
                 payload: {
                     playerHands: playerHands,
-                    currentPlayerHand: currentPlayerHand,
-                    currentHandIndex: currentHandIndex,
                     bookMove: bookMove,
                 }
             })

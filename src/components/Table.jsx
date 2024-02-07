@@ -25,7 +25,8 @@ const Table = () => {
 
 
   return (
-    <SimpleGrid maxWidth="1980px">
+    <SimpleGrid maxWidth="1980px"
+    >
       <Image
         display={{ base: "block", md: "none" }}
         src={tableMobileIMG}

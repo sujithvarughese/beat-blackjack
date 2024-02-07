@@ -19,7 +19,7 @@ const MainMenu = () => {
       <ModalOverlay>
         <ReactCardFlip isFlipped={isFlipped}>
 
-          <SettingsMenu flipCard={flipCard}/>
+          <SettingsMenu flipCard={flipCard} isFlipped={isFlipped}/>
 
           <GameRules flipCard={flipCard}/>
 

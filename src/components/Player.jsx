@@ -37,20 +37,24 @@ const Player = () => {
   }, [feedback])
 
 
-    return (
-      <HStack justifyContent="space-around">
-        {
-          playerHands?.map((playerHand, index) =>
-            <PlayerHand
-              key={index}
-              playerHand={playerHand}
-              doubledHand={doubledHands[index]}
-              isCurrentHand={index === currentHandIndex}
-              playerTurn={playerTurn}
-            />)
-        }
-      </HStack>
-    );
+
+  return (
+    <HStack
+      justifyContent="space-around"
+      width="100%"
+    >
+      {
+        playerHands?.map((playerHand, index) =>
+          <PlayerHand
+            key={Math.random()}
+            playerHand={playerHand}
+            doubledHand={doubledHands[index]}
+            isCurrentHand={index === currentHandIndex}
+            playerTurn={playerTurn}
+          />)
+      }
+    </HStack>
+  );
 };
 
 export default Player;

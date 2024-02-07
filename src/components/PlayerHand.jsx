@@ -3,6 +3,7 @@ import classes from './styles/Hands.module.css'
 import { Score } from './index.js'
 
 const PlayerHand = ({ playerHand, doubledHand, isCurrentHand, playerTurn }) => {
+
   return (
     <VStack>
       {
@@ -25,16 +26,17 @@ const PlayerHand = ({ playerHand, doubledHand, isCurrentHand, playerTurn }) => {
               alt={card.value}
               position="absolute"
               bottom={`calc(20px * ${index})`}
-              sx={{ transform: `translate(calc(30px * ${index}))` }}
+              transform={`translate(calc(30px * ${index}))`}
             />
         )
       }
       {playerHand.length !== 0 &&
         <Box position="absolute" bottom="5px" textAlign="center">
           <Score hand={playerHand}/>
+          {isCurrentHand && playerTurn && <CurrentHandIndicator />}
         </Box>
       }
-      {isCurrentHand && playerTurn && <CurrentHandIndicator />}
+
     </VStack>
   )
 }
@@ -53,8 +55,6 @@ const CurrentHandIndicator = () => {
       height="30px"
       width="30px"
       borderRadius="50%"
-      position="absolute"
-      bottom="-50px"
       animation={blinkAnimation}
     >
     </Box>
