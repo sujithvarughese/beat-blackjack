@@ -8,6 +8,10 @@ const GameRules = ({ flipCard, isFlipped }) => {
       marginX={{ base: "15px", md: "revert" }}
       top={{ base: "-2rem", sm: "revert" }}
       display={isFlipped ? "" : "none"}
+      maxHeight="800px"
+      height="800px"
+      overflow="hidden" textOverflow="hidden" whiteSpace="wrap"
+      scroll-behavior="smooth" overflowY="scroll"
     >
       <ModalHeader>
         <Heading

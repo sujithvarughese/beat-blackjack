@@ -14,7 +14,8 @@ const MainMenu = () => {
       isOpen={settingsMenuOpen}
       onClose={toggleSettingsMenu}
       closeOnOverlayClick={false}
-      scrollBehavior="outside"
+      maxHeight="800px"
+
     >
       <ModalOverlay>
         <ReactCardFlip isFlipped={isFlipped}>
