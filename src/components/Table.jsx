@@ -14,7 +14,7 @@ const Table = () => {
     settingsMenuOpen,
     shoeEmptyMenuOpen,
     addFundsMenuOpen,
-
+  settings,
     playerTurn,
     insuranceOpen,
     resultsShown,
@@ -22,7 +22,7 @@ const Table = () => {
 
   } = useGameContext()
 
-
+  console.log(settings)
 
   return (
     <SimpleGrid

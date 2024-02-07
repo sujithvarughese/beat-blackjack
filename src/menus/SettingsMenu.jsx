@@ -7,9 +7,9 @@ import { useEffect, useState } from 'react'
 const SettingsMenu = ({ flipCard, isFlipped }) => {
 
     const { settings, setSetting, resetSettings, setShoe, toggleSettingsMenu, placeBetOption } = useGameContext()
-
-    const [blackjackPayoutIndex, setBlackjackPayoutIndex] = useState()
-    const [blackjackPayout, setBlackjackPayout] = useState()
+    console.log(settings)
+    const [blackjackPayoutIndex, setBlackjackPayoutIndex] = useState(0)
+    const [blackjackPayout, setBlackjackPayout] = useState(1.5)
 
     const handleChange = (e) => {
         //setValues({ ...values, [e.target.name]: e.target.value})
@@ -261,7 +261,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                         </Switch>
                     </HStack>
 
-                    <SimpleGrid gridTemplateColumns="1fr 1fr" width="100%" alignItems="flex-end">
+                    {/*<SimpleGrid gridTemplateColumns="1fr 1fr" width="100%" alignItems="flex-end">
                         <FormLabel htmlFor="blackjackPayout">Blackjack Payout</FormLabel>
                         <Select
                           name="blackjackPayout"
@@ -273,11 +273,17 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                             <option value={1.2}>6:5</option>
                             <option value={1}>No Bonus</option>
                         </Select>
-                    </SimpleGrid>
+                    </SimpleGrid>*/}
 
-                    <SimpleGrid gridTemplateColumns="1fr 1fr" width="100%" alignItems="flex-end">
+                    <HStack width="100%" justifyContent="space-between" alignItems="center">
                         <FormLabel htmlFor="bblackjackPayout">Blackjack Payout</FormLabel>
-                        <Tabs onChange={index => setBlackjackPayoutIndex(index)}>
+                        <Tabs
+                          defaultIndex={0}
+                          size="sm"
+                          colorScheme="orange"
+                          variant="soft-rounded"
+                          onChange={index => setBlackjackPayoutIndex(index)}
+                        >
                             <TabList>
                                 <Tab>3:2</Tab>
                                 <Tab>6:5</Tab>
@@ -285,9 +291,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                             </TabList>
 
                         </Tabs>
-                    </SimpleGrid>
-
-
+                    </HStack>
 
                     <ButtonGroup colorScheme="yellow">
                         {placeBetOption && <Button onClick={toggleSettingsMenu}>Resume</Button>}
