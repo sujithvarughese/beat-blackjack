@@ -41,15 +41,10 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
           marginX={{ base: "15px", md: "revert" }}
           top={{ base: "-3rem", sm: "revert" }}
           display={isFlipped ? "none" : ""}
-          maxHeight="700px"
         >
             <ModalHeader>
-                <Heading
-                  fontSize="24px"
-                  textAlign="center"
-                >Settings</Heading>
+                <Heading fontSize="24px" textAlign="center">Settings</Heading>
             </ModalHeader>
-
             <ModalBody>
                 <Button
                     colorScheme="yellow"
@@ -72,7 +67,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                     <HiOutlineRefresh />
                 </Button>
                 <VStack gap={{ base: "4px", sm: "14px" }}>
-                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="16px" justifyItems="flex-start" justifyContent="flex-start" alignItems="center">
+                    <SimpleGrid gap="10px" width="100%" gridTemplateColumns="1fr 3fr 1fr" alignItems="center" placeSelf="start">
                         <FormLabel htmlFor="numDecks">Decks</FormLabel>
                         <Slider
                           aria-label="slider"
@@ -94,7 +89,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                         <Text paddingLeft="4">{settings.numDecks}</Text>
                     </SimpleGrid>
 
-                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="9px" justifyItems="flex-start" alignItems="center">
+                    <SimpleGrid gap="10px" width="100%" gridTemplateColumns="1fr 3fr 1fr" alignItems="center" placeSelf="start">
                         <FormLabel htmlFor="minBet" display="flex">MinBet</FormLabel>
                         <Slider
                           aria-label="slider"
@@ -116,7 +111,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                         <Text>${settings.minBet}</Text>
                     </SimpleGrid>
 
-                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="4px" justifyItems="flex-start" alignItems="center">
+                    <SimpleGrid gap="10px" width="100%" gridTemplateColumns="1fr 3fr 1fr" alignItems="center" placeSelf="start">
                         <FormLabel htmlFor="maxBet">MaxBet</FormLabel>
                         <Slider
                           aria-label="slider"
@@ -138,10 +133,9 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                         <Text>${settings.maxBet}</Text>
                     </SimpleGrid>
 
-                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" justifyItems="flex-start" alignItems="center">
+                    <SimpleGrid gap="10px" width="100%" gridTemplateColumns="1fr 3fr 1fr" alignItems="center" placeSelf="start">
                         <FormLabel htmlFor="playerInitialBankroll">Bankroll</FormLabel>
                         <Slider
-                          width="210px"
                           aria-label="slider"
                           colorScheme="yellow"
                           name="playerInitialBankroll"
@@ -161,10 +155,9 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                         <Text>${settings.playerInitialBankroll}</Text>
                     </SimpleGrid>
 
-                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="18px" justifyItems="flex-start" alignItems="center">
-                        <FormLabel htmlFor="maxNumSplits" display="flex">Splits</FormLabel>
+                    <SimpleGrid gap="10px" width="100%" gridTemplateColumns="1fr 3fr 1fr" alignItems="center" placeSelf="start">
+                        <FormLabel htmlFor="maxNumSplits" >Splits</FormLabel>
                         <Slider
-                          width="210px"
                           aria-label="slider"
                           colorScheme="yellow"
                           name="maxNumSplits"
