@@ -6,8 +6,8 @@ const InsuranceBtnGrp = () => {
 
   return (
     <ButtonGroup>
-      <Button onClick={handleInsurance} colorScheme="yellow" height="80px"  size="lg">Get Insurance</Button>;
-      <Button onClick={checkDealerBlackjack} colorScheme="yellow" height="80px"  size="lg">Decline</Button>;
+      <Button onClick={handleInsurance} colorScheme="yellow" height="80px" width="200px" size="lg">Get Insurance</Button>;
+      <Button onClick={checkDealerBlackjack} colorScheme="yellow" height="80px" width="200px"  size="lg">Decline</Button>;
     </ButtonGroup>
   )
 };

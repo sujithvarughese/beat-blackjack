@@ -22,9 +22,9 @@ const ActionButtons = () => {
     <ButtonGroup
       position="absolute"
       bottom="3%"
-      right={{ base: "revert", sm: "3%" }}
-      width={{ base: "98%", sm: "revert" }}
-      justifyContent="space-around"
+      right={{ base: "revert", lg: "1%" }}
+      width={{ base: "98%", sm: "100%", md: "revert" }}
+      justifyContent={{ base: "space-around", md: "flex-end"}}
       flex-wrap="wrap"
     >
       {insuranceOpen && playerBlackjack && <EvenMoneyBtnGrp />}

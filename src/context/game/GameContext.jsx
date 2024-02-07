@@ -96,13 +96,16 @@ const GameProvider = ({ children }) => {
         dispatch({ type: RESET_SETTINGS, payload: { settings } })
     }
     // creates shoe using number of decks user selected, gives user option to change bet size and deal hands
-    const setShoe = (sameShoe = false) => {
+    const setShoe = (createNewShoe = true, createNewGame = true) => {
         // if user wants to play the same shoe again
-        const newShoe = sameShoe === true ? [...state.newShoe] : createShoe(state.settings.numDecks)
+        const newShoe = createNewShoe === true ? createShoe(state.settings.numDecks) : [...state.newShoe]
+        const playerBankroll = createNewGame === true ? initialState.playerBankroll : state.playerBankroll
+        const numHandsPlayed = createNewGame === true ? initialState.numHandsPlayed : state.numHandsPlayed
         const status = {
             newShoe: newShoe,
             shoe: [...newShoe],
-            playerBankroll: sameShoe === true ? state.playerBankroll : state.settings.playerInitialBankroll,
+            playerBankroll: playerBankroll,
+            numHandsPlayed: numHandsPlayed
         }
         dispatch({ type: SET_SHOE, payload: { status } })
     }

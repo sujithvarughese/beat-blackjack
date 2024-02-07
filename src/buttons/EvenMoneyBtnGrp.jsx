@@ -6,8 +6,8 @@ const EvenMoneyBtnGrp= () => {
 
     return (
       <ButtonGroup>
-          <Button onClick={handleEvenMoney} colorScheme="yellow" height="80px"  size="lg">Even Money</Button>;
-          <Button onClick={checkDealerBlackjack} colorScheme="yellow" height="80px"  size="lg">Decline</Button>;
+          <Button onClick={handleEvenMoney} colorScheme="yellow" height="80px" width="200px"  size="lg">Even Money</Button>;
+          <Button onClick={checkDealerBlackjack} colorScheme="yellow" height="80px" width="200px"  size="lg">Decline</Button>;
       </ButtonGroup>
 
     )

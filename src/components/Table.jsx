@@ -22,7 +22,6 @@ const Table = () => {
 
   return (
     <SimpleGrid
-      margin="0"
       maxWidth="1980px"
       position="relative"
     >
@@ -44,7 +43,6 @@ const Table = () => {
         display="flex"
         flexDir="column"
         gap="5px"
-
       >
         <Bankroll />
         <Stats />
@@ -64,7 +62,6 @@ const Table = () => {
           textAlign='center'
           left="0"
           right="0"
-
           zIndex="10"
       >
         <Dealer />
@@ -74,7 +71,7 @@ const Table = () => {
           position="absolute"
           left="0"
           right="0"
-          bottom="30%"
+          bottom="22%"
           margin="0 auto"
       >
         <Player />

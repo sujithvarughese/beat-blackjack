@@ -11,7 +11,7 @@ const initialState = {
   roi: 0
 }
 const Stats = () => {
-  const { resultsShown, netCredit, netDebit, bet } = useGameContext()
+  const { resultsShown, netCredit, netDebit, bet, numHandsPlayed } = useGameContext()
 
   const [stats, setStats] = useState(initialState)
   const calculateAvgBetSize = () => ((stats.avgBetSize) * stats.totalNumHandsPlayed + bet) /  (stats.totalNumHandsPlayed + 1)
@@ -28,10 +28,17 @@ const Stats = () => {
       totalNetDebit: stats.totalNetDebit + netDebit,
       roi: calculateROI()
     })
-
-    // console.log(`numHandsPlayed: ${stats.totalNumHandsPlayed}, totalCashIn: ${stats.totalCashIn}, netCredit: ${netCredit}, bet: ${bet}`)
-    // console.log(`totalWagered: ${stats.totalWagered}, avgBetSize: ${stats.avgBetSize}, profit: ${stats.totalProfit}, roi: ${stats.roi}`)
   }, [resultsShown])
+
+  // if user resets game
+  useEffect(() => {
+    if (numHandsPlayed === 0) {
+      setStats(initialState)
+    }
+  },[numHandsPlayed])
+
+  // console.log(`numHandsPlayed: ${stats.totalNumHandsPlayed}, totalCashIn: ${stats.totalCashIn}, netCredit: ${netCredit}, bet: ${bet}`)
+  // console.log(`totalWagered: ${stats.totalWagered}, avgBetSize: ${stats.avgBetSize}, profit: ${stats.totalProfit}, roi: ${stats.roi}`)
 
   return (
 

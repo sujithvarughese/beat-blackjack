@@ -33,7 +33,7 @@ const ShoeEmpty = () => {
                 <Button
                   width="240px"
                   onClick={() => {
-                    setShoe()
+                    setShoe(true, false)
                     toggleShoeEmptyMenu()
                   }}
                 >
@@ -41,7 +41,7 @@ const ShoeEmpty = () => {
                 <Button
                   width="240px"
                   onClick={() => {
-                    setShoe(true)
+                    setShoe(false, false)
                     toggleShoeEmptyMenu()
                   }}
                 >

@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react'
 const SettingsMenu = ({ flipCard, isFlipped }) => {
 
     const { settings, setSetting, resetSettings, setShoe, toggleSettingsMenu, placeBetOption } = useGameContext()
-    console.log(settings)
     const [blackjackPayoutIndex, setBlackjackPayoutIndex] = useState(0)
     const [blackjackPayout, setBlackjackPayout] = useState(1.5)
 
@@ -295,7 +294,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
 
                     <ButtonGroup colorScheme="yellow">
                         {placeBetOption && <Button onClick={toggleSettingsMenu}>Resume</Button>}
-                        <Button onClick={setShoe}>Start Game</Button>
+                        <Button onClick={() => setShoe(true, true)}>New Game</Button>
                     </ButtonGroup>
                 </VStack>
 
