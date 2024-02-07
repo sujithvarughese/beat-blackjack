@@ -51,10 +51,13 @@ const Stats = () => {
         ROI: {Math.round(stats.roi)}%
       </StatHelpText>
       <StatLabel>
-        Hands Played: {stats.totalNumHandsPlayed}
+        <Box as="span" display={{ base: "none", sm: "revert" }}>Total </Box>
+        Hands: {stats.totalNumHandsPlayed}
       </StatLabel>
       <StatLabel>
-        Average Bet: {convertToUSD(stats.avgBetSize)}
+        <Box as="span" display={{ sm: "none" }}>Avg </Box>
+        <Box as="span" display={{ base: "none", sm: "revert" }}>Average </Box>
+        Bet: {convertToUSD(stats.avgBetSize)}
       </StatLabel>
     </Stat>
 

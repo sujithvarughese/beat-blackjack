@@ -46,7 +46,7 @@ const Results = () => {
           bottom="0"
           margin="auto"
           zIndex="10"
-          backgroundColor="rgba(0, 0, 0, 0.75)"
+          backgroundColor="rgba(0, 0, 0, 0.8)"
           border="solid 3px #ECC94B"
           padding="12px"
           borderRadius="10px"

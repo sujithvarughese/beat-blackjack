@@ -11,7 +11,8 @@ const Bankroll = () => {
           border="solid 3px #ECC94B"
           backgroundColor="rgba(0, 0, 0, 0.8)"
           color="white"
-          fontWeight="800"
+          fontSize={{ base: "14px", sm: "16"}}
+          fontWeight={{base: "500", sm: "800"}}
           padding={{ base: "5px", sm: "10px"}}
           borderRadius="10px"
           alignItems="flex-start"

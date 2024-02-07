@@ -14,15 +14,11 @@ const Table = () => {
     settingsMenuOpen,
     shoeEmptyMenuOpen,
     addFundsMenuOpen,
-  settings,
     playerTurn,
     insuranceOpen,
     resultsShown,
     placeBetOption,
-
   } = useGameContext()
-
-  console.log(settings)
 
   return (
     <SimpleGrid
@@ -41,7 +37,15 @@ const Table = () => {
         src={tableIMG}
       ></Image>
 
-      <SimpleGrid position="absolute" top="1%" left="1%" display="flex" flexDir="column" gap="5px">
+      <SimpleGrid
+        position="absolute"
+        top="1%"
+        left="1%"
+        display="flex"
+        flexDir="column"
+        gap="5px"
+
+      >
         <Bankroll />
         <Stats />
       </SimpleGrid>
@@ -54,7 +58,7 @@ const Table = () => {
 
       <Box
           position="absolute"
-          top={{ base: "26%", md: "10%" }}
+          top={{ base: "15%", md: "10%" }}
           alignItems='center'
           justifyContent='center'
           textAlign='center'
@@ -70,7 +74,7 @@ const Table = () => {
           position="absolute"
           left="0"
           right="0"
-          bottom="18%"
+          bottom="30%"
           margin="0 auto"
       >
         <Player />

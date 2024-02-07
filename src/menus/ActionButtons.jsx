@@ -22,8 +22,8 @@ const ActionButtons = () => {
     <ButtonGroup
       position="absolute"
       bottom="3%"
-      right={{ base: "revert", md: "3%" }}
-      width={{ base: "100%", md: "revert" }}
+      right={{ base: "revert", sm: "3%" }}
+      width={{ base: "98%", sm: "revert" }}
       justifyContent="space-around"
       flex-wrap="wrap"
     >
