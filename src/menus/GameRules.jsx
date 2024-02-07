@@ -8,12 +8,7 @@ const GameRules = ({ flipCard, isFlipped }) => {
       marginX={{ base: "15px", md: "revert" }}
       top={{ base: "-3rem", sm: "revert" }}
       display={isFlipped ? "" : "none"}
-      maxHeight="620px"
-      height="620px"
-      whiteSpace="wrap"
-      overflowY="scroll"
-      scroll-behavior="smooth"
-      textOverflow="hidden"
+
     >
       <ModalHeader>
         <Heading
@@ -32,7 +27,15 @@ const GameRules = ({ flipCard, isFlipped }) => {
         >
           Settings
         </Button>
-        <VStack gap="16px">
+        <VStack
+          gap="16px"
+          maxHeight="525px"
+          height="525px"
+          whiteSpace="wrap"
+          overflowY="scroll"
+          scroll-behavior="smooth"
+          textOverflow="hidden"
+        >
           <Box>
             <Heading fontSize="18px">Introduction</Heading>
             <Text>{rules.introduction}</Text>

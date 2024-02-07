@@ -14,7 +14,7 @@ const MainMenu = () => {
       isOpen={settingsMenuOpen}
       onClose={toggleSettingsMenu}
       closeOnOverlayClick={false}
-      maxHeight="620px"
+      maxHeight="700px"
       scrollBehavior="inside"
 
     >

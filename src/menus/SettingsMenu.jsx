@@ -41,8 +41,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
           marginX={{ base: "15px", md: "revert" }}
           top={{ base: "-3rem", sm: "revert" }}
           display={isFlipped ? "none" : ""}
-          maxHeight="620px"
-          height="620px"
+          maxHeight="700px"
         >
             <ModalHeader>
                 <Heading
