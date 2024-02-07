@@ -35,6 +35,7 @@ const GameRules = ({ flipCard, isFlipped }) => {
           overflowY="scroll"
           scroll-behavior="smooth"
           textOverflow="hidden"
+          sx={{ WebkitOverflowScrolling: "touch" }}
         >
           <Box>
             <Heading fontSize="18px">Introduction</Heading>
