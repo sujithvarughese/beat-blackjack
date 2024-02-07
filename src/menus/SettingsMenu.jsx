@@ -5,7 +5,7 @@ import { GameRules } from "../components"
 
 const SettingsMenu = ({ flipCard, isFlipped }) => {
 
-    const { settings, setSetting, resetSettings, settingsMenuOpen, setShoe, toggleSettingsMenu, placeBetOption } = useGameContext()
+    const { settings, setSetting, resetSettings, setShoe, toggleSettingsMenu, placeBetOption } = useGameContext()
 
     const handleChange = (e) => {
         //setValues({ ...values, [e.target.name]: e.target.value})
@@ -20,7 +20,6 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
         <ModalContent
           padding={{ base: "12px", md: "30px" }}
           marginX={{ base: "15px", md: "revert" }}
-          zIndex="0"
           top={{ base: "-2rem", sm: "revert" }}
           display={isFlipped ? "none" : ""}
         >
@@ -53,7 +52,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                     <HiOutlineRefresh />
                 </Button>
                 <VStack gap={{ base: "9px", sm: "14px" }}>
-                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="16px" justifyItems="end" alignItems="center">
+                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="16px" justifyItems="flex-start" justifyContent="flex-start" alignItems="center">
                         <FormLabel htmlFor="numDecks">Decks</FormLabel>
                         <Slider
                           aria-label="slider"
@@ -75,7 +74,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                         <Text paddingLeft="4">{settings.numDecks}</Text>
                     </SimpleGrid>
 
-                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="9px" justifyItems="end" alignItems="center">
+                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="9px" justifyItems="flex-start" alignItems="center">
                         <FormLabel htmlFor="minBet" display="flex">MinBet</FormLabel>
                         <Slider
                           aria-label="slider"
@@ -97,7 +96,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                         <Text>${settings.minBet}</Text>
                     </SimpleGrid>
 
-                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="4px" justifyItems="end" alignItems="center">
+                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="4px" justifyItems="flex-start" alignItems="center">
                         <FormLabel htmlFor="maxBet">MaxBet</FormLabel>
                         <Slider
                           aria-label="slider"
@@ -108,7 +107,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                           onChange={val=>setSetting({ maxBet: val })}
                           value={settings.maxBet}
                           min={500}
-                          max={10000}
+                          max={5000}
                           step={100}
                         >
                             <SliderTrack>
@@ -119,9 +118,10 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                         <Text>${settings.maxBet}</Text>
                     </SimpleGrid>
 
-                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" justifyItems="end" alignItems="center">
+                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" justifyItems="flex-start" alignItems="center">
                         <FormLabel htmlFor="playerInitialBankroll">Bankroll</FormLabel>
                         <Slider
+                          width="210px"
                           aria-label="slider"
                           colorScheme="yellow"
                           name="playerInitialBankroll"
@@ -130,7 +130,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                           onChange={val=>setSetting({ playerInitialBankroll: val })}
                           value={settings.playerInitialBankroll}
                           min={500}
-                          max={10000}
+                          max={5000}
                           step={100}
                         >
                             <SliderTrack>
@@ -141,9 +141,10 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                         <Text>${settings.playerInitialBankroll}</Text>
                     </SimpleGrid>
 
-                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="18px" justifyItems="end" alignItems="center">
+                    <SimpleGrid gridTemplateColumns="1fr 5fr 1fr"  width="100%" gap="18px" justifyItems="flex-start" alignItems="center">
                         <FormLabel htmlFor="maxNumSplits" display="flex">Splits</FormLabel>
                         <Slider
+                          width="210px"
                           aria-label="slider"
                           colorScheme="yellow"
                           name="maxNumSplits"
@@ -176,7 +177,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                     </HStack>
 
                     <HStack width="100%" justifyContent="space-between">
-                        <FormLabel htmlFor="insuranceAllowed">Insurance</FormLabel>
+                        <FormLabel htmlFor="insuranceAllowed">Insurance Available</FormLabel>
                         <Switch
                           colorScheme="orange"
                           name="insuranceAllowed"
@@ -189,7 +190,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                     </HStack>
 
                     <HStack width="100%" justifyContent="space-between">
-                        <FormLabel htmlFor="evenMoneyAllowed">Even Money on Blackjack</FormLabel>
+                        <FormLabel htmlFor="evenMoneyAllowed">Even Money Available</FormLabel>
                         <Switch
                           colorScheme="orange"
                           name="evenMoneyAllowed"
@@ -202,7 +203,7 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                     </HStack>
 
                     <HStack width="100%" justifyContent="space-between">
-                        <FormLabel htmlFor="surrenderAllowed">Surrender</FormLabel>
+                        <FormLabel htmlFor="surrenderAllowed">Surrender Allowed</FormLabel>
                         <Switch
                           colorScheme="orange"
                           name="surrenderAllowed"

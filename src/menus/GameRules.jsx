@@ -6,7 +6,6 @@ const GameRules = ({ flipCard, isFlipped }) => {
     <ModalContent
       paddingTop={{ base: "12px", sm: "30px" }}
       marginX={{ base: "15px", md: "revert" }}
-      zIndex="100"
       top={{ base: "-2rem", sm: "revert" }}
       display={isFlipped ? "" : "none"}
     >

@@ -31,9 +31,9 @@ const initialState= {
     shoeEmptyMenuOpen: false,
 
     settings: {
-        numDecks: 1,
+        numDecks: 4,
         minBet: 25,
-        maxBet: 500,
+        maxBet: 1000,
         dealerHitSoft17: true,
         insuranceAllowed: false,
         evenMoneyAllowed: false,

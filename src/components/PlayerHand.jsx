@@ -31,7 +31,7 @@ const PlayerHand = ({ playerHand, doubledHand, isCurrentHand, playerTurn }) => {
         )
       }
       {playerHand.length !== 0 &&
-        <Box position="absolute" bottom="-45px" textAlign="center">
+        <Box position="absolute" top="-60px" textAlign="center">
           <Score hand={playerHand} />
           {isCurrentHand && playerTurn && <CurrentHandIndicator />}
         </Box>

@@ -28,13 +28,13 @@ const Table = () => {
     <SimpleGrid
       margin="0"
       maxWidth="1980px"
-
+      position="relative"
     >
       <Image
         display={{ base: "block", md: "none" }}
         src={tableMobileIMG}
+        width="100%"
         height="100%"
-        width="100vw"
       ></Image>
       <Image
         display={{ base: "none", md: "block" }}
@@ -47,22 +47,10 @@ const Table = () => {
       </SimpleGrid>
 
 
-      <Box position="absolute" top="2%" right="2%">
+      <VStack position="absolute" top="2%" right="2%" alignItems="flex-end">
         <SettingsBtn />
-      </Box>
-      {
-        playerTurn &&
-        <HStack
-          position="absolute"
-          left={{ md: "3%" }}
-          right={{ base: "2%", md: "revert" }}
-          bottom={{ md: "3%" }}
-          top={{ base: "10%", md: "revert" }}
-          marginTop="8px"
-        >
-          <HintButton />
-        </HStack>
-      }
+        {playerTurn && <HintButton />}
+      </VStack>
 
       <Box
           position="absolute"
