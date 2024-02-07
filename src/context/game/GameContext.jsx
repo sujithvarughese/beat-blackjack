@@ -545,6 +545,11 @@ const GameProvider = ({ children }) => {
             })
         })
     }
+    const hideResults = () => {
+        const status = { resultsShown: false }
+        dispatch({ type: SET_STATE, payload: { status } })
+    }
+
 
 
     return (
@@ -571,7 +576,8 @@ const GameProvider = ({ children }) => {
                 getResults,
                 setSetting,
                 addFunds,
-                splitHand
+                splitHand,
+                hideResults
             }
         }>
             { children }

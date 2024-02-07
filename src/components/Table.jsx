@@ -50,6 +50,19 @@ const Table = () => {
       <Box position="absolute" top="2%" right="2%">
         <SettingsBtn />
       </Box>
+      {
+        playerTurn &&
+        <HStack
+          position="absolute"
+          left={{ md: "3%" }}
+          right={{ base: "2%", md: "revert" }}
+          bottom={{ md: "3%" }}
+          top={{ base: "10%", md: "revert" }}
+          marginTop="8px"
+        >
+          <HintButton />
+        </HStack>
+      }
 
       <Box
           position="absolute"
@@ -95,18 +108,7 @@ const Table = () => {
         </SimpleGrid>
       }
 
-      {
-        playerTurn &&
-        <HStack
-            position="absolute"
-            left={{ md: "3%" }}
-            right={{ base: "2%", md: "revert" }}
-            bottom={{ md: "3%" }}
-            top={{ base: "10%", md: "revert" }}
-        >
-          <HintButton />
-        </HStack>
-      }
+
 
       {/*settingsMenuOpen && <SettingsMenu />*/}
       {settingsMenuOpen && <MainMenu />}

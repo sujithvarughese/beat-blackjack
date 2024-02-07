@@ -38,7 +38,7 @@ const Dealer = () => {
 
     return (
       <VStack>
-        <HStack position="relative" justifyContent="center" width="100%" sx={{ transform: `translate(70px)` }}>
+        <HStack justifyContent="center" width="100%" sx={{ transform: `translate(85px)` }}>
           {
             dealerHand.map((card, index) =>
               (index === 1 && !dealerCardShown)

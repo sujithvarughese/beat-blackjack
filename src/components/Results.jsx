@@ -1,12 +1,12 @@
 import {useGameContext} from "../context/game/GameContext.jsx";
 import { Alert, AlertTitle, Text } from '@chakra-ui/react'
 import { convertToUSD }from "../utils/calculations.js"
+import { useEffect } from 'react'
 const Results = () => {
 
-    const { netCredit, netDebit, playerBlackjack, dealerBlackjack } = useGameContext()
+    const { netCredit, netDebit, playerBlackjack, dealerBlackjack, hideResults } = useGameContext()
 
     let heading = ""
-    let description = ""
     if (netCredit > netDebit) {
         heading = "You Win"
     } else if (netCredit < netDebit) {
@@ -20,6 +20,14 @@ const Results = () => {
     if (dealerBlackjack) {
         heading = "Dealer blackjack"
     }
+
+    // show results for 2 seconds, then hide and clean up useEffect
+    useEffect(() => {
+        const timerID = setTimeout(() => {
+            hideResults()
+        }, 2000)
+        return () => clearTimeout(timerID)
+    }, [])
 
     return (
         <Alert
