@@ -272,6 +272,7 @@ const GameProvider = ({ children }) => {
         status = {
             playerBankroll: state.playerBankroll - state.bet * 0.5,
             netDebit: state.netDebit + state.bet * 0.5,
+            insuranceOpen: false,
         }
         dispatch({
             type: SET_PLAYER_TURN,
@@ -283,7 +284,8 @@ const GameProvider = ({ children }) => {
             dispatch({ type: SHOW_RESULTS })
             return
         }
-        dispatch({ type: SET_PLAYER_TURN })
+        const status = { insuranceOpen: false }
+        dispatch({ type: SET_PLAYER_TURN, payload: { status } })
     }
 
     const getBookMove = (hand = state.currentPlayerHand, dealerFaceUpValue = state.dealerFaceUpValue) => {
@@ -343,7 +345,13 @@ const GameProvider = ({ children }) => {
             })
             return
         }
-
+        if (score === 21) {
+            dispatch({
+                type: SET_DEALER_TURN,
+                payload: { status }
+            })
+            return
+        }
 
         dispatch({
             type: SHOW_RESULTS,
@@ -460,12 +468,12 @@ const GameProvider = ({ children }) => {
         currentPlayerHand.push(drawCard())
         // if both player's cards are aces, make the first value === 1
         if (currentPlayerHand[0].value === 11 && currentPlayerHand[1].value === 11) {
-            currentPlayerHand[0] = { ...playerHands[currentHandIndex][0], value: 11 }
+            currentPlayerHand[0] = { ...currentPlayerHand[0], value: 1 }
         }
         const bookMove = getBookMove(currentPlayerHand)
 
         if (currentPlayerHand.reduce((acc, card) => acc + card.value, 0) === 21) {
-            playerHands[currentHandIndex].push(drawCard())
+            playerHands[currentHandIndex + 1].push(drawCard())
             const bookMove = getBookMove(playerHands[currentHandIndex + 1])
             dispatch({
                 type: PLAY_NEXT_SPLIT,
@@ -524,7 +532,7 @@ const GameProvider = ({ children }) => {
             if (playerScoreHand === dealerScore) {
                 netCredit = netCredit + state.bet
                 playerBankroll = state.playerBankroll + state.bet
-                if (state.doubledHands[index]) {
+                if (state.doubledHands[index] === true) {
                     playerBankroll = playerBankroll + state.bet
                     netCredit = netCredit = state.bet
                 }

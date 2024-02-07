@@ -31,8 +31,8 @@ const PlayerHand = ({ playerHand, doubledHand, isCurrentHand, playerTurn }) => {
         )
       }
       {playerHand.length !== 0 &&
-        <Box position="absolute" bottom="5px" textAlign="center">
-          <Score hand={playerHand}/>
+        <Box position="absolute" bottom="-45px" textAlign="center">
+          <Score hand={playerHand} />
           {isCurrentHand && playerTurn && <CurrentHandIndicator />}
         </Box>
       }
@@ -55,6 +55,7 @@ const CurrentHandIndicator = () => {
       height="30px"
       width="30px"
       borderRadius="50%"
+      margin="10px"
       animation={blinkAnimation}
     >
     </Box>

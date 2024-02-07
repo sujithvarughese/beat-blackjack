@@ -30,19 +30,20 @@ const ActionButtons = () => {
       {insuranceOpen && playerBlackjack && <EvenMoneyBtnGrp />}
       {insuranceOpen && !playerBlackjack && <InsuranceBtnGrp />}
 
-      {settings.surrenderAllowed && currentPlayerHand.length === 2 && <SurrenderBtn action={surrender} />}
+      {settings.surrenderAllowed && currentPlayerHand.length === 2 && !insuranceOpen && <SurrenderBtn action={surrender} />}
 
       {
         playerHands.length <= settings.maxNumSplits
         && currentPlayerHand.length === 2
-        /*&& (currentPlayerHand[0].value === currentPlayerHand[1].value
-          || currentPlayerHand[0].value === 1 && currentPlayerHand[1].value === 11)*/ // when both cards are aces, we changed the first value to 1
+        && (currentPlayerHand[0].value === currentPlayerHand[1].value
+        && !insuranceOpen
+          || currentPlayerHand[0].value === 1 && currentPlayerHand[1].value === 11) // when both cards are aces, we changed the first value to 1
         && <SplitBtn action={splitHand}/>
       }
 
-      {currentPlayerHand.length === 2 && <DoubleBtn action={playerDoubleDown} />}
-      <HitBtn action={playerHit} />
-      <StayBtn action={playerStay} />
+      {currentPlayerHand.length === 2 && !insuranceOpen && <DoubleBtn action={playerDoubleDown} />}
+      {!insuranceOpen && <HitBtn action={playerHit} />}
+      {!insuranceOpen && <StayBtn action={playerStay} />}
     </ButtonGroup>
   )
 }

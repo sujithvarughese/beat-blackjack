@@ -1,13 +1,14 @@
 
 import { Box, Button, Heading, ModalBody, ModalContent, ModalHeader, Text, VStack } from '@chakra-ui/react'
 
-const GameRules = ({ flipCard }) => {
+const GameRules = ({ flipCard, isFlipped }) => {
   return (
     <ModalContent
       paddingTop={{ base: "12px", sm: "30px" }}
       marginX={{ base: "15px", md: "revert" }}
       zIndex="100"
       top={{ base: "-2rem", sm: "revert" }}
+      display={isFlipped ? "" : "none"}
     >
       <ModalHeader>
         <Heading
