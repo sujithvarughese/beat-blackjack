@@ -55,7 +55,8 @@ const CurrentHandIndicator = () => {
       height="30px"
       width="30px"
       borderRadius="50%"
-      margin="10px"
+      marginLeft="20px"
+      marginTop="10px"
       animation={blinkAnimation}
     >
     </Box>

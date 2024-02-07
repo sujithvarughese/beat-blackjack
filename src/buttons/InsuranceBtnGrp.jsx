@@ -5,8 +5,8 @@ const InsuranceBtnGrp = () => {
   const { handleInsurance, checkDealerBlackjack } = useGameContext()
 
   return (
-    <ButtonGroup>
-      <Button onClick={handleInsurance} colorScheme="yellow" height="80px" width="200px" size="lg">Get Insurance</Button>;
+    <ButtonGroup width="100%">
+      <Button onClick={handleInsurance} colorScheme="yellow" height="80px" width="200px" size="lg">Take Insurance</Button>;
       <Button onClick={checkDealerBlackjack} colorScheme="yellow" height="80px" width="200px"  size="lg">Decline</Button>;
     </ButtonGroup>
   )

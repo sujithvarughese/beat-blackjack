@@ -5,8 +5,8 @@ const EvenMoneyBtnGrp= () => {
     const { handleEvenMoney, checkDealerBlackjack } = useGameContext()
 
     return (
-      <ButtonGroup>
-          <Button onClick={handleEvenMoney} colorScheme="yellow" height="80px" width="200px"  size="lg">Even Money</Button>;
+      <ButtonGroup width="100%">
+          <Button onClick={handleEvenMoney} colorScheme="yellow" height="80px" width="200px"  size="lg">Take Even Money</Button>;
           <Button onClick={checkDealerBlackjack} colorScheme="yellow" height="80px" width="200px"  size="lg">Decline</Button>;
       </ButtonGroup>
 
