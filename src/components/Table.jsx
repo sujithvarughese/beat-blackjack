@@ -27,7 +27,7 @@ const Table = () => {
   return (
     <SimpleGrid
       maxWidth="1980px"
-      height={{ base: "100vh", sm: "revert" }}
+      height={{ base: "95vh", sm: "revert" }}
     >
       <Image
         display={{ base: "block", md: "none" }}

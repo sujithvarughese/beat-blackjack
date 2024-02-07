@@ -38,7 +38,6 @@ body {
   font-family: "Poppins", sans-serif;
   color: var(--COLOR-DARK);
   min-height: 100vh;
-  transition: color 0.3s, background-color 0.3s;
   line-height: 1.5;
   scroll-padding: 120px 0 0;
 }
@@ -51,11 +50,6 @@ a {
 
 ul {
   list-style: none;
-}
-
-select:focus {
-  outline: 4px auto -webkit-focus-ring-color;
-  outline-offset: -1px;
 }
 
 img {
