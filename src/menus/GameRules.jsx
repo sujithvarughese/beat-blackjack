@@ -1,5 +1,5 @@
 
-import { Box, Button, Heading, ModalBody, ModalContent, ModalHeader, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Container, Heading, ModalBody, ModalContent, ModalHeader, Text, VStack } from '@chakra-ui/react'
 
 const GameRules = ({ flipCard, isFlipped }) => {
   return (
@@ -27,12 +27,15 @@ const GameRules = ({ flipCard, isFlipped }) => {
         >
           Settings
         </Button>
+        <Container>
+
+
         <VStack
           gap="16px"
           maxHeight="525px"
           height="525px"
           whiteSpace="wrap"
-          overflowY="scroll"
+          overflowY="auto"
           scroll-behavior="smooth"
           textOverflow="hidden"
           sx={{ WebkitOverflowScrolling: "touch" }}
@@ -54,6 +57,7 @@ const GameRules = ({ flipCard, isFlipped }) => {
             <Text>{rules.scoring}</Text>
           </Box>
         </VStack>
+        </Container>
       </ModalBody>
 
     </ModalContent>
