@@ -214,19 +214,21 @@ const SettingsMenu = ({ flipCard, isFlipped }) => {
                         >
                         </Switch>
                     </HStack>
+                    {/*
+                        <HStack width="100%" justifyContent="space-between">
+                            <FormLabel htmlFor="surrenderAllowed">Surrender Allowed</FormLabel>
+                            <Switch
+                              colorScheme="orange"
+                              name="surrenderAllowed"
+                              id="surrenderAllowed"
+                              value={settings.surrenderAllowed}
+                              isChecked={settings.surrenderAllowed}
+                              onChange={handleChecked}
+                            >
+                            </Switch>
+                        </HStack>
+                    */}
 
-                    <HStack width="100%" justifyContent="space-between">
-                        <FormLabel htmlFor="surrenderAllowed">Surrender Allowed</FormLabel>
-                        <Switch
-                          colorScheme="orange"
-                          name="surrenderAllowed"
-                          id="surrenderAllowed"
-                          value={settings.surrenderAllowed}
-                          isChecked={settings.surrenderAllowed}
-                          onChange={handleChecked}
-                        >
-                        </Switch>
-                    </HStack>
 
                     <HStack width="100%" justifyContent="space-between">
                         <FormLabel htmlFor="feedback">Live Feedback</FormLabel>

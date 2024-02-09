@@ -12,19 +12,8 @@ const Player = () => {
     doubledHands,
     currentHandIndex,
     playerTurn,
-    currentPlayerHand,
-    dealerFaceUpValue,
-    setPlayerInitial,
-
-    doubledHand,
-    splitHand,
-    splitHands,
-    splitCount,
-    playNextSplitHand,
-    actionTaken,
     bookMove,
     settings,
-    getBookMove
   } = useGameContext()
 
 
@@ -35,8 +24,6 @@ const Player = () => {
     toast.closeAll()
     toast(feedback)
   }, [feedback])
-
-
 
   return (
     <HStack
