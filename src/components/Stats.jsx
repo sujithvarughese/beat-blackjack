@@ -16,6 +16,7 @@ const Stats = () => {
   const [stats, setStats] = useState(initialState)
   const calculateAvgBetSize = () => ((stats.avgBetSize) * stats.totalNumHandsPlayed + bet) /  (stats.totalNumHandsPlayed + 1)
 
+  // (total amount taken in - total amount wagered) / total amount wagered
   const calculateROI = () => ((stats.totalNetCredit + netCredit - stats.totalNetDebit - netDebit) / (stats.totalNetDebit + netDebit)) * 100
 
   useEffect(() => {
