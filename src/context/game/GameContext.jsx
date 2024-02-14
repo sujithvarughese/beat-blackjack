@@ -143,11 +143,8 @@ const GameProvider = ({ children }) => {
             placeBetOption: false,
             resultsShown: false,
             dealerCardShown: false,
-
             doubledHands: [false, false, false, false],
-
             currentHandIndex: 0,
-
             bookMove: ""
         }
         let playerBankroll = state.playerBankroll - state.bet

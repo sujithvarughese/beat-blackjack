@@ -29,7 +29,9 @@ const Dealer = () => {
     if (dealerTurn) {
       if (score < 17 ||
         (score === 17 && aceValue11Index === true && settings.dealerHitSoft17 === true)) {
-        dealerHit()
+        setTimeout(() => {
+          dealerHit()
+        }, 400)
     } else {
         getResults()
       }

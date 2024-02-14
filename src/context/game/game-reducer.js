@@ -136,7 +136,7 @@ const gameReducer = (state, action) => {
     if (action.type === SHOW_RESULTS) {
         return {
             ...state,
-            ...action.payload.status,
+            ...action.payload?.status,
             resultsShown: true,
             dealerCardShown: true,
             placeBetOption: true,
