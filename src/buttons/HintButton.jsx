@@ -16,7 +16,7 @@ const HintButton = () => {
     }
 
     return (
-        <Button onClick={showHint} colorScheme="yellow" size="lg">Help!</Button>
+        <Button zIndex="100" onClick={showHint} colorScheme="yellow" size="lg">Help!</Button>
     );
 };
 
